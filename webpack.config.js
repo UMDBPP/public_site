@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: "./src/leaflet_map.js",
+    entry: "./src/historical_flight_map.js",
     output: {
         filename: "bundled.js"
     }
