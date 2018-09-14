@@ -17,7 +17,7 @@
 </div>
 <div id="bottom_pane">
     <div id="main_map" class="map" style="height: 100%;"></div>
-    <script type="text/javascript" src="../scripts/predict_map.js"></script>
+
     <script type="text/javascript">
         function resizeMapHeight() {
             document.getElementById("bottom_pane").style.height = window.innerHeight - document.getElementById("top_pane").offsetHeight + 'px';
@@ -25,6 +25,8 @@
 
         resizeMapHeight();
     </script>
+    <script type="text/javascript" src="../base_layers.js"></script>
+    <script type="text/javascript" src="predicts.js"></script>
 </div>
 </body>
 </html>
