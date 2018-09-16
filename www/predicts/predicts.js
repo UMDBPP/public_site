@@ -79,8 +79,6 @@ function getPredictLineString(api_url, launch_location_name, launch_latitude, la
                 reject(response);
             },
             success: function (response) {
-                let intersects_controlled_airspace = false;
-
                 let output_feature = {
                     type: 'Feature',
                     geometry: {
@@ -104,8 +102,6 @@ function getPredictLineString(api_url, launch_location_name, launch_latitude, la
                         output_feature['geometry']['coordinates'].push([entry['longitude'] - 360, entry['latitude'], entry['altitude']]);
                     }
                 }
-
-                output_feature['properties']['intersects_controlled_airspace'] = intersects_controlled_airspace;
 
                 resolve(output_feature);
             }
