@@ -173,7 +173,6 @@ async function changePredictLayers() {
     });
     overlay_layers['CUSF'][launch_datetime] = cusf_predicts_layer;
     layer_control.addOverlay(cusf_predicts_layer, launch_datetime, 'CUSF');
-    cusf_predicts_layer.addTo(map);
 
     // if (!overlay_layers['Luke Renegar']) {
     //     overlay_layers['Luke Renegar'] = {};
@@ -185,6 +184,9 @@ async function changePredictLayers() {
     // });
     // overlay_layers['Luke Renegar'][launch_datetime] = lukerenegar_predicts_layer;
     // layer_control.addOverlay(lukerenegar_predicts_layer, launch_datetime, 'Luke Renegar');
+
+    cusf_predicts_layer.addTo(map);
+    map.fitBounds(cusf_predicts_layer.getBounds());
 }
 
 // dictionary to contain toggleable layers
