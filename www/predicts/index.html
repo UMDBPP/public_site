@@ -25,30 +25,39 @@
     <div class="top_pane_div"><a href="../">Home</a></div>
     <span class="stretch"></span>
     <div class="top_pane_div">
-        date: <input type="text" id="launch_date_textbox" placeholder="select a date"
-                     onchange="changePredictLayers()" style="width: 11ch;">
-        <input type="time"
-               id="launch_time_textbox"
-               value="08:30"
-               step="1800"
-               onchange="changePredictLayers()"
-               style="width: 10ch;">
+        <label for="launch_time_textbox">Date: </label><input type="text" title="Date" id="launch_date_textbox"
+                                                              placeholder="select a date"
+                                                              onchange="changePredictLayers()" style="width: 11ch;">
+        <label for="launch_time_textbox">Time: </label><input type="time" title="Time"
+                                                              id="launch_time_textbox"
+                                                              value="08:30"
+                                                              step="1800"
+                                                              onchange="changePredictLayers()"
+                                                              style="width: 10ch;">
     </div>
     <span class="stretch"></span>
     <div class="top_pane_div">
-        ascent (m/s): <input type="number" id="ascent_rate_textbox" value=6.209808
-                             onchange="changePredictLayers()" style="width: 8ch;">
+        <label for="launch_time_textbox">Ascent Rate (m/s): </label><input type="number" title="Ascent Rate (m/s)"
+                                                                           id="ascent_rate_textbox" value=6.209808
+                                                                           onchange="changePredictLayers()"
+                                                                           style="width: 8ch;">
     </div>
     <span class="stretch"></span>
     <div class="top_pane_div">
-        burst (m): <input type="number" id="burst_altitude_textbox" value=26047.734976
-                          onchange="changePredictLayers()" style="width: 8ch;">
+        <label for="launch_time_textbox">Burst Altitude (m): </label><input type="number" title="Burst Altitude (m)"
+                                                                            id="burst_altitude_textbox"
+                                                                            value=26047.734976
+                                                                            onchange="changePredictLayers()"
+                                                                            style="width: 8ch;">
     </div>
     <span class="stretch"></span>
     <div class="top_pane_div">
-        descent (m/s): <input type="number" id="sea_level_descent_rate_textbox"
-                              value=6.017126
-                              onchange="changePredictLayers()" style="width: 8ch;">
+        <label for="launch_time_textbox">Sea Level Descent Rate (m/s): </label><input type="number"
+                                                                                      title="Sea Level Descent Rate (m/s)"
+                                                                                      id="sea_level_descent_rate_textbox"
+                                                                                      value=6.017126
+                                                                                      onchange="changePredictLayers()"
+                                                                                      style="width: 8ch;">
     </div>
 </div>
 <div id="bottom_pane">
