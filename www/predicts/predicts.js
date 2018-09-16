@@ -79,6 +79,8 @@ function getPredictLineString(api_url, launch_location_name, launch_latitude, la
                 reject(response);
             },
             success: function (response) {
+                let intersects_controlled_airspace = false;
+
                 let output_feature = {
                     type: 'Feature',
                     geometry: {
@@ -94,14 +96,26 @@ function getPredictLineString(api_url, launch_location_name, launch_latitude, la
                     }
                 };
 
+                let counter = 0;
+
                 for (stage_index in response['prediction']) {
                     let stage = response['prediction'][stage_index];
 
                     for (trajectory_index in stage['trajectory']) {
                         let entry = stage['trajectory'][trajectory_index];
+
+                        // check if current point is within any controlled airspace (check every 10 entries)
+                        if (!intersects_controlled_airspace && counter % 10 == 0) {
+                            // TODO add 3D intersection (UPPER_VAL, LOWER_VAL) of airspace polygons
+                            intersects_controlled_airspace = leafletPip.pointInLayer([entry['longitude'], entry['latitude']], controlled_airspace, true).length > 0;
+                        }
+
                         output_feature['geometry']['coordinates'].push([entry['longitude'] - 360, entry['latitude'], entry['altitude']]);
+                        counter++;
                     }
                 }
+
+                output_feature['properties']['intersects_controlled_airspace'] = intersects_controlled_airspace;
 
                 resolve(output_feature);
             }
