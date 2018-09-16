@@ -156,9 +156,7 @@ async function changePredictLayers() {
     predicts_map_layer_control.addOverlay(geojson_layer, launch_datetime, 'predict');
 }
 
-let predicts_map_layer_control = L.control.groupedLayers(base_layers, predicts_overlay_layers, {
-    collapsed: false
-});
+let predicts_map_layer_control = L.control.groupedLayers(base_layers, predicts_overlay_layers);
 
 var predicts_map = L.map('predicts_map', {layers: [base_layers['OSM Road'], predicts_overlay_layers['reference']['Controlled Airspace']]}).setView([39.656674, -77.934194], 9);
 predicts_map_layer_control.addTo(predicts_map);

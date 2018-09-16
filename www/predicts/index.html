@@ -24,23 +24,23 @@
 <div id="top_pane">
     <div class="top_box"><a href="../">Home</a></div>
     <span class="stretch"></span>
-    <div class="top_box">launch date: <input type="text" id="launch_date_textbox" placeholder="select a date"
-                                             onchange="changePredictLayers()" style="width: 11ch;"></div>
+    <div class="top_box">date: <input type="text" id="launch_date_textbox" placeholder="select a date"
+                                      onchange="changePredictLayers()" style="width: 11ch;"></div>
     <span class="stretch"></span>
-    <div class="top_box">launch time: <input type="time" id="launch_time_textbox"
-                                             value="08:30" step="1800"
-                                             onchange="changePredictLayers()"
-                                             style="width: 14ch;"></div>
+    <div class="top_box">time: <input type="time" id="launch_time_textbox"
+                                      value="08:30" step="1800"
+                                      onchange="changePredictLayers()"
+                                      style="width: 10ch;"></div>
     <span class="stretch"></span>
-    <div class="top_box">mean ascent rate: <input type="number" id="ascent_rate_textbox" value=6.209808
-                                                  onchange="changePredictLayers()" style="width: 10ch;"></div>
+    <div class="top_box">ascent: <input type="number" id="ascent_rate_textbox" value=6.209808
+                                        onchange="changePredictLayers()" style="width: 8ch;"></div>
     <span class="stretch"></span>
-    <div class="top_box">burst altitude: <input type="number" id="burst_altitude_textbox" value=26047.734976
-                                                onchange="changePredictLayers()" style="width: 10ch;"></div>
+    <div class="top_box">burst: <input type="number" id="burst_altitude_textbox" value=26047.734976
+                                       onchange="changePredictLayers()" style="width: 8ch;"></div>
     <span class="stretch"></span>
-    <div class="top_box">mean sea level descent rate: <input type="number" id="sea_level_descent_rate_textbox"
-                                                             value=6.017126
-                                                             onchange="changePredictLayers()" style="width: 10ch;">
+    <div class="top_box">descent: <input type="number" id="sea_level_descent_rate_textbox"
+                                         value=6.017126
+                                         onchange="changePredictLayers()" style="width: 8ch;">
     </div>
 </div>
 <div id="bottom_pane">
@@ -72,13 +72,12 @@
             });
         });
 
-        let today = new Date();
-        let days_to_next_saturday = (1 + 5 - today.getDay()) % 7;
-        if (days_to_next_saturday == 0) {
-            days_to_next_saturday = 7;
-        }
-
         window.onload = function () {
+            let today = new Date();
+            let days_to_next_saturday = (1 + 5 - today.getDay()) % 7;
+            if (days_to_next_saturday == 0) {
+                days_to_next_saturday = 7;
+            }
             $("#launch_date_textbox").datepicker("setDate", 'today +' + days_to_next_saturday);
             changePredictLayers();
         };
