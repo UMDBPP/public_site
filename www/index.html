@@ -13,15 +13,19 @@
 </head>
 <body onresize="resizeMapHeight()">
 <div id="top_pane">
-    <div class="top_box"><a href="/archives">Archives</a></div>
+    <div class="top_pane_div">
+        <a href="/archives">Archives</a>
+    </div>
     <span class="stretch"></span>
-    <div class="top_box"><a href="predicts">Predicts</a></div>
+    <div class="top_pane_div">
+        <a href="predicts">Predicts</a>
+    </div>
     <span class="stretch"></span>
-    <div class="top_box"><a href="tracking">Tracking</a></div>
+    <div class="top_pane_div">
+        <a href="tracking">Tracking</a>
+    </div>
 </div>
 <div id="bottom_pane">
-    <div id="flights_map" class="map" style="height: 100%;"></div>
-
     <script type="text/javascript">
         function resizeMapHeight() {
             document.getElementById("bottom_pane").style.height = window.innerHeight - document.getElementById("top_pane").offsetHeight + 'px';
@@ -29,8 +33,11 @@
 
         resizeMapHeight();
     </script>
-    <script type="text/javascript" src="leaflet_layers.js"></script>
-    <script type="text/javascript" src="flights.js"></script>
+
+    <div id="map">
+        <script type="text/javascript" src="leaflet_layers.js"></script>
+        <script type="text/javascript" src="flights.js"></script>
+    </div>
 </div>
 </body>
 </html>

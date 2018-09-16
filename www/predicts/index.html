@@ -22,30 +22,36 @@
 </head>
 <body onresize="resizeMapHeight()">
 <div id="top_pane">
-    <div class="top_box"><a href="../">Home</a></div>
+    <div class="top_pane_div"><a href="../">Home</a></div>
     <span class="stretch"></span>
-    <div class="top_box">date: <input type="text" id="launch_date_textbox" placeholder="select a date"
-                                      onchange="changePredictLayers()" style="width: 11ch;"></div>
+    <div class="top_pane_div">
+        date: <input type="text" id="launch_date_textbox" placeholder="select a date"
+                     onchange="changePredictLayers()" style="width: 11ch;">
+        <input type="time"
+               id="launch_time_textbox"
+               value="08:30"
+               step="1800"
+               onchange="changePredictLayers()"
+               style="width: 10ch;">
+    </div>
     <span class="stretch"></span>
-    <div class="top_box">time: <input type="time" id="launch_time_textbox"
-                                      value="08:30" step="1800"
-                                      onchange="changePredictLayers()"
-                                      style="width: 10ch;"></div>
+    <div class="top_pane_div">
+        ascent (m/s): <input type="number" id="ascent_rate_textbox" value=6.209808
+                             onchange="changePredictLayers()" style="width: 8ch;">
+    </div>
     <span class="stretch"></span>
-    <div class="top_box">ascent: <input type="number" id="ascent_rate_textbox" value=6.209808
-                                        onchange="changePredictLayers()" style="width: 8ch;"></div>
+    <div class="top_pane_div">
+        burst (m): <input type="number" id="burst_altitude_textbox" value=26047.734976
+                          onchange="changePredictLayers()" style="width: 8ch;">
+    </div>
     <span class="stretch"></span>
-    <div class="top_box">burst: <input type="number" id="burst_altitude_textbox" value=26047.734976
-                                       onchange="changePredictLayers()" style="width: 8ch;"></div>
-    <span class="stretch"></span>
-    <div class="top_box">descent: <input type="number" id="sea_level_descent_rate_textbox"
-                                         value=6.017126
-                                         onchange="changePredictLayers()" style="width: 8ch;">
+    <div class="top_pane_div">
+        descent (m/s): <input type="number" id="sea_level_descent_rate_textbox"
+                              value=6.017126
+                              onchange="changePredictLayers()" style="width: 8ch;">
     </div>
 </div>
 <div id="bottom_pane">
-    <div id="predicts_map" class="map" style="height: 100%;"></div>
-
     <script type="text/javascript">
         function resizeMapHeight() {
             document.getElementById("bottom_pane").style.height = window.innerHeight - document.getElementById("top_pane").offsetHeight + 'px';
@@ -53,35 +59,39 @@
 
         resizeMapHeight();
     </script>
-    <script type="text/javascript" src="../leaflet_layers.js"></script>
-    <script type="text/javascript" src="predicts.js"></script>
-    <script type="text/javascript">
-        /* add date picker to input box */
-        $(function () {
-            $("#launch_date_textbox").datepicker({
-                beforeShow: function () {
-                    setTimeout(function () {
-                        $('.ui-datepicker').css('z-index', 99999999999999);
-                    }, 0);
-                },
-                minDate: +1,
-                maxDate: +8,
-                showOtherMonths: true,
-                selectOtherMonths: true,
-                dateFormat: 'yy-mm-dd'
-            });
-        });
 
-        window.onload = function () {
-            let today = new Date();
-            let days_to_next_saturday = (1 + 5 - today.getDay()) % 7;
-            if (days_to_next_saturday == 0) {
-                days_to_next_saturday = 7;
-            }
-            $("#launch_date_textbox").datepicker("setDate", 'today +' + days_to_next_saturday);
-            changePredictLayers();
-        };
-    </script>
+    <div id="map">
+        <script type="text/javascript" src="../leaflet_layers.js"></script>
+        <script type="text/javascript" src="predicts.js"></script>
+        <script type="text/javascript">
+            /* add date picker to input box */
+            $(function () {
+                $("#launch_date_textbox").datepicker({
+                    beforeShow: function () {
+                        setTimeout(function () {
+                            $('.ui-datepicker').css('z-index', 99999999999999);
+                        }, 0);
+                    },
+                    minDate: +1,
+                    maxDate: +8,
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
+                    dateFormat: 'yy-mm-dd'
+                });
+            });
+
+            window.onload = function () {
+                let today = new Date();
+                let days_to_next_saturday = (1 + 5 - today.getDay()) % 7;
+                if (days_to_next_saturday == 0) {
+                    days_to_next_saturday = 7;
+                }
+                $("#launch_date_textbox").datepicker("setDate", 'today +' + days_to_next_saturday);
+
+                changePredictLayers();
+            };
+        </script>
+    </div>
 </div>
 </body>
 </html>

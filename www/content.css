@@ -25,11 +25,15 @@ body {
     float: bottom;
 }
 
+#map {
+    height: 100%;
+}
+
 .stretch {
     width: 3%;
 }
 
-.top_box {
+.top_pane_div {
     text-align: center;
     display: inline-block;
 }
