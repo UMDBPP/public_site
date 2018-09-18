@@ -196,7 +196,6 @@ async function changePredictLayers() {
     // layer_control.addOverlay(lukerenegar_predicts_layer, launch_datetime, 'Luke Renegar');
 
     cusf_predicts_layer.addTo(map);
-    map.fitBounds(cusf_predicts_layer.getBounds());
 }
 
 // dictionary to contain toggleable layers
