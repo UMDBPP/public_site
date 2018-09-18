@@ -214,3 +214,30 @@ let overlay_layers = {
 let map = L.map('map', {layers: [base_layers['OSM Road'], controlled_airspace]});
 let layer_control = L.control.groupedLayers(base_layers, overlay_layers);
 layer_control.addTo(map);
+
+/* add date picker to input box */
+$(function () {
+    $("#launch_date_textbox").datepicker({
+        beforeShow: function () {
+            setTimeout(function () {
+                $('.ui-datepicker').css('z-index', 99999999999999);
+            }, 0);
+        },
+        minDate: +1,
+        maxDate: +8,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
+window.onload = function () {
+    let today = new Date();
+    let days_to_next_saturday = (1 + 5 - today.getDay()) % 7;
+    if (days_to_next_saturday == 0) {
+        days_to_next_saturday = 7;
+    }
+    $("#launch_date_textbox").datepicker("setDate", 'today +' + days_to_next_saturday);
+
+    changePredictLayers();
+};

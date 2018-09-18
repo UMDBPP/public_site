@@ -15,14 +15,14 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
-                    'dist/leaflet.groupedlayercontrol.min.js': 'src/leaflet.groupedlayercontrol.js'
+                    'dist/leaflet.groupedlayercontrol.min.js': 'scripts/leaflet.groupedlayercontrol.js'
                 }
             }
         },
         cssmin: {
             dist: {
                 files: {
-                    'dist/leaflet.groupedlayercontrol.min.css': 'src/leaflet.groupedlayercontrol.css'
+                    'dist/leaflet.groupedlayercontrol.min.css': 'scripts/leaflet.groupedlayercontrol.css'
                 }
             }
         },

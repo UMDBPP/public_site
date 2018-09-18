@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
     <script type="text/javascript" src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
 </head>
-<body onresize="resizeMapHeight()">
+<body onresize="resizeBottomPaneHeight()">
 <div id="top_pane">
     <div class="top_pane_div">
         <a href="/archives">Archives</a>
@@ -26,16 +26,10 @@
     </div>
 </div>
 <div id="bottom_pane">
-    <script type="text/javascript">
-        function resizeMapHeight() {
-            document.getElementById("bottom_pane").style.height = window.innerHeight - document.getElementById("top_pane").offsetHeight + 'px';
-        }
-
-        resizeMapHeight();
-    </script>
+    <script type="text/javascript" src="scripts/resize.js"></script>
 
     <div id="map">
-        <script type="text/javascript" src="leaflet_layers.js"></script>
+        <script type="text/javascript" src="scripts/layers.js"></script>
         <script type="text/javascript" src="flights.js"></script>
     </div>
 </div>
