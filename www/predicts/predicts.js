@@ -62,6 +62,7 @@ launch_locations.on('data:loaded', function () {
 function getPredictLineString(api_url, launch_location_name, launch_latitude, launch_longitude, launch_altitude, launch_datetime, ascent_rate, burst_altitude, sea_level_descent_rate) {
     return new Promise(function (resolve, reject) {
         $.ajax({
+            url: api_url,
             data: {
                 launch_latitude: launch_latitude,
                 launch_longitude: launch_longitude,
@@ -71,10 +72,8 @@ function getPredictLineString(api_url, launch_location_name, launch_latitude, la
                 burst_altitude: burst_altitude,
                 descent_rate: sea_level_descent_rate
             },
-            url: api_url,
             type: 'GET',
             dataType: 'json',
-            aync: false,
             error: function (response, status, error) {
                 reject(response);
             },
@@ -111,7 +110,7 @@ function getPredictLineString(api_url, launch_location_name, launch_latitude, la
 
 // retrieve predicts for every launch location, and put them into a GeoJSON FeatureCollection
 async function getPredictGeoJSON(api_url, launch_locations_layer, launch_datetime, ascent_rate, burst_altitude, sea_level_descent_rate) {
-    let predicts_geojson = {type: 'FeatureCollection', features: []};
+    let features_geojson = {type: 'FeatureCollection', features: []};
 
     for (launch_location_index in launch_locations_layer) {
         let launch_location_name = launch_locations_layer[launch_location_index].feature.properties['name'];
@@ -126,14 +125,14 @@ async function getPredictGeoJSON(api_url, launch_locations_layer, launch_datetim
         }
 
         await getPredictLineString(api_url, launch_location_name, launch_latitude, launch_longitude, launch_altitude, launch_datetime, ascent_rate, burst_altitude, sea_level_descent_rate).then(function (feature) {
-            predicts_geojson['features'].push(feature);
+            features_geojson['features'].push(feature);
         }).catch(function (response) {
             console.log('Prediction error: ' + response.status + ' ' + response.error);
             }
         )
     }
 
-    return predicts_geojson;
+    return features_geojson;
 }
 
 // remove all predict layers from the map
