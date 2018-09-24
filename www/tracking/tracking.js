@@ -75,7 +75,7 @@ async function addAPRSLayers() {
     overlay_layers['ground']['vans'] = ground_aprs_layer;
 
     layer_control.addOverlay(flight_aprs_layer, 'balloon', 'flight');
-    layer_control.addOverlay(ground_aprs_layer, 'balloon', 'flight');
+    layer_control.addOverlay(ground_aprs_layer, 'vans', 'ground');
 
     flight_aprs_layer.addTo(map);
     ground_aprs_layer.addTo(map);
@@ -86,7 +86,7 @@ let overlay_layers = {};
 
 // add Leaflet map to "map" div with grouped layer control
 let map = L.map('map', {layers: [base_layers['OSM Road']]}).setView([39.656674, -77.934194], 9);
-let layer_control = L.control.layers(base_layers, overlay_layers);
+let layer_control = L.control.groupedLayers(base_layers, overlay_layers);
 layer_control.addTo(map);
 
 let callsigns = {
