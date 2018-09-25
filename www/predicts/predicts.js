@@ -89,7 +89,8 @@ function getPredictLineString(api_url, launch_location_name, launch_latitude, la
                         launch_datetime: launch_datetime,
                         launch_longitude: launch_longitude - 360,
                         launch_latitude: launch_latitude,
-                        launch_altitude: launch_altitude
+                        launch_altitude: launch_altitude,
+                        intersects_airspace: false
                     }
                 };
 
@@ -99,6 +100,21 @@ function getPredictLineString(api_url, launch_location_name, launch_latitude, la
                     for (trajectory_index in stage['trajectory']) {
                         let entry = stage['trajectory'][trajectory_index];
                         output_feature['geometry']['coordinates'].push([entry['longitude'] - 360, entry['latitude'], entry['altitude']]);
+                    }
+                }
+
+                // check if line intersects airspace
+                for (feature_index in controlled_airspace.getLayers()) {
+                    let airspace_feature = controlled_airspace.getLayers()[feature_index].feature;
+                    let airspace_polygon = turf.polygon(airspace_feature.geometry.coordinates[0]);
+
+                    let linestring_points = turf.points(output_feature['geometry']['coordinates']);
+                    let linestring_points_within_airspace = turf.pointsWithinPolygon(linestring_points, airspace_polygon);
+
+                    if (linestring_points_within_airspace.length > 0) {
+                        let airspace_upper_altitude = airspace_feature.properties['UPPER_VAL'];
+                        output_feature['properties']['intersects_airspace'] = true;
+                        break;
                     }
                 }
 
@@ -164,7 +180,20 @@ async function changePredictLayers() {
 
     let cusf_predicts_geojson = await getPredictGeoJSON(cusf_api_url, launch_locations_features, launch_datetime, ascent_rate, burst_altitude, sea_level_descent_rate);
     let cusf_predicts_layer = L.geoJSON(cusf_predicts_geojson, {
-        onEachFeature: popupProperties
+        onEachFeature: popupProperties,
+        style: function (feature) {
+            let intersects_airspace = feature.properties['intersects_airspace'];
+
+            if (intersects_airspace) {
+                return {
+                    color: "red"
+                };
+            } else {
+                return {
+                    color: "blue"
+                }
+            }
+        }
     });
     overlay_layers['CUSF'][launch_datetime] = cusf_predicts_layer;
     layer_control.addOverlay(cusf_predicts_layer, launch_datetime, 'CUSF');
