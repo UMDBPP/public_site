@@ -1,3 +1,5 @@
+let global_run_id = 0;
+
 // asynchronously load polygons of controlled airspace from GeoJSON file
 let controlled_airspace = L.geoJson.ajax('../data/controlled_airspace.geojson', {
     onEachFeature: popupProperties,
@@ -127,7 +129,7 @@ async function getPredictGeoJSON(api_url, launch_locations_layer, launch_datetim
         await getPredictLineString(api_url, launch_location_name, launch_latitude, launch_longitude, launch_altitude, launch_datetime, ascent_rate, burst_altitude, sea_level_descent_rate).then(function (feature) {
             features_geojson['features'].push(feature);
         }).catch(function (response) {
-            console.log('Prediction error: ' + response.status + ' ' + response.error);
+                console.log('Prediction error: ' + response.status + ' ' + response.error);
             }
         )
     }
@@ -138,7 +140,7 @@ async function getPredictGeoJSON(api_url, launch_locations_layer, launch_datetim
 // remove all predict layers from the map
 function removePredictLayers() {
     for (layer_group in overlay_layers) {
-        if (layer_group != 'reference') {
+        if (layer_group == 'predicts') {
             for (layer_name in overlay_layers[layer_group]) {
                 layer_control.removeLayer(overlay_layers[layer_group][layer_name]);
                 map.removeLayer(overlay_layers[layer_group][layer_name]);
@@ -150,12 +152,15 @@ function removePredictLayers() {
 
 // refresh map with new predicts using given parameters
 async function changePredictLayers() {
+    let run_id = ++global_run_id;
+    let utc_offset_minutes = (new Date()).getTimezoneOffset();
+
     let cusf_api_url = 'http://predict.cusf.co.uk/api/v1/';
     let lukerenegar_api_url = 'https://predict.lukerenegar.com/api/v1.1/';
 
     let launch_locations_features = launch_locations.getLayers();
     let launch_datetime = document.getElementById('launch_date_textbox').value + 'T' +
-        document.getElementById('launch_time_textbox').value + ':00Z';
+        (parseInt(document.getElementById('launch_time_hour_box').value) + (utc_offset_minutes / 60)) + ':' + (parseInt(document.getElementById('launch_time_minute_box').value) + (utc_offset_minutes % 60)) + ':00Z';
     let ascent_rate = document.getElementById('ascent_rate_textbox').value;
     let burst_altitude = document.getElementById('burst_altitude_textbox').value;
     let sea_level_descent_rate = document.getElementById('sea_level_descent_rate_textbox').value;
@@ -166,21 +171,61 @@ async function changePredictLayers() {
     let cusf_predicts_layer = L.geoJSON(cusf_predicts_geojson, {
         onEachFeature: popupProperties
     });
-    overlay_layers['CUSF'][launch_datetime] = cusf_predicts_layer;
-    layer_control.addOverlay(cusf_predicts_layer, launch_datetime, 'CUSF');
 
-    // if (!overlay_layers['Luke Renegar']) {
-    //     overlay_layers['Luke Renegar'] = {};
-    // }
     // let lukerenegar_predicts_geojson = await getPredictGeoJSON(lukerenegar_api_url, launch_locations_features, launch_datetime, ascent_rate, burst_altitude, sea_level_descent_rate);
     // let lukerenegar_predicts_layer = L.geoJSON(lukerenegar_predicts_geojson, {
     //     onEachFeature: popupProperties,
     //     style: {color: 'red'}
     // });
-    // overlay_layers['Luke Renegar'][launch_datetime] = lukerenegar_predicts_layer;
-    // layer_control.addOverlay(lukerenegar_predicts_layer, launch_datetime, 'Luke Renegar');
 
-    cusf_predicts_layer.addTo(map);
+    // check if user has changed options since
+    if (run_id == global_run_id) {
+        overlay_layers['predicts'][launch_datetime] = cusf_predicts_layer;
+        layer_control.addOverlay(cusf_predicts_layer, launch_datetime, 'predicts');
+
+        // overlay_layers['predicts'][launch_datetime] = lukerenegar_predicts_layer;
+        // layer_control.addOverlay(lukerenegar_predicts_layer, launch_datetime, 'predicts');
+
+        cusf_predicts_layer.addTo(map);
+    }
+}
+
+function downloadPredictsKML() {
+    if (Object.keys(overlay_layers["predicts"]).length > 0) {
+        for (predict_layer_index in overlay_layers["predicts"]) {
+            let predict_geojson = overlay_layers["predicts"][predict_layer_index].toGeoJSON();
+
+            if (predict_geojson['features'].length > 0) {
+                let output_kml = tokml(predict_geojson);
+
+                output_kml = output_kml.replace(/<LineString>/g, '<LineString><extrude>1</extrude><tesselate>1</tesselate><altitudeMode>absolute</altitudeMode>');
+
+                let download_filename = 'predicts_' + predict_layer_index.replace(/-|_|:|Z|T/g, '') + '.kml';
+                let download_link = document.createElement('a');
+                let xml_blob = new Blob([output_kml], {type: 'text/xml'});
+
+                download_link.setAttribute('href', window.URL.createObjectURL(xml_blob));
+                download_link.setAttribute('download', download_filename);
+
+                download_link.dataset.downloadurl = ['text/xml', download_link.download, download_link.href].join(':');
+                download_link.draggable = true;
+                download_link.classList.add('dragout');
+
+                download_link.click();
+            } else {
+                alert('Predicts have not loaded yet.');
+            }
+        }
+    } else {
+        alert('No predicts.');
+    }
+}
+
+function downloadURI(uri, name) {
+    var download_link = document.createElement('a');
+    download_link.download = name;
+    download_link.href = uri;
+    download_link.click();
 }
 
 // dictionary to contain toggleable layers
@@ -191,7 +236,7 @@ let overlay_layers = {
         'McDonald\'s Locations': mcdonalds_locations,
         'Launch Locations': launch_locations
     },
-    'CUSF': {}
+    'predicts': {}
 };
 
 // add Leaflet map to "map" div with grouped layer control
