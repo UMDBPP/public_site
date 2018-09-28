@@ -237,6 +237,52 @@
           213.0
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Harpers Ferry Middle School",
+        "phone": 3045356357,
+        "street": "1710 West Washington Street",
+        "city": "Harpers Ferry",
+        "state": "WV",
+        "zip": 25425,
+        "url": "<a href='https:\/\/hfms.jeff.k12.wv.us'>link<\/a>",
+        "x": -77.756622,
+        "y": 39.323833,
+        "z": 162.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.756622,
+          39.323833,
+          162.0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Washington High School",
+        "phone": 3048855110,
+        "street": "300 Washington Patriot Drive",
+        "city": "Charles Town",
+        "state": "WV",
+        "zip": 25414,
+        "url": "<a href='https:\/\/whs.jeff.k12.wv.us'>link<\/a>",
+        "x": -77.756622,
+        "y": 39.323833,
+        "z": 213.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.880783,
+          39.260691,
+          163.0
+        ]
+      }
     }
   ]
 }

@@ -24,13 +24,18 @@
 </head>
 <body onresize="resizeBottomPane()">
 <div id="top_pane">
-    <div class="top_pane_div"><a href="../">Home</a></div>
-    <span class="stretch"></span>
     <div class="top_pane_div">
-        <label for="launch_date_textbox">Date:</label><input type="text" title="Date" id="launch_date_textbox"
-                                                             onchange="changePredictLayers()" style="width: 10ch;">
-        <label for="launch_time_input">Time:</label>
-        <div id="launch_time_input">
+        <a href="../">Home</a>
+    </div>
+
+    <span class="stretch"></span>
+
+    <div class="top_pane_div">
+        <div class="top_pane_div">
+            <label for="launch_date_textbox">Date</label>
+            <input type="text" title="Date" id="launch_date_textbox"
+                   onchange="changePredictLayers()" style="width: 10ch;">
+            <label for="launch_time_hour_box">Time</label>
             <input type="number" title="Time"
                    id="launch_time_hour_box"
                    value=8
@@ -47,40 +52,48 @@
                    onchange="changePredictLayers()"
                    style="width: 4ch;">
         </div>
-    </div>
-    <span class="stretch"></span>
-    <div class="top_pane_div">
-        <label for="ascent_rate_textbox">Ascent Rate (m/s):</label><input type="number" title="Ascent Rate (m/s)"
-                                                                          id="ascent_rate_textbox" value=6.21
-                                                                          onchange="changePredictLayers()"
-                                                                          style="width: 8ch;">
-    </div>
-    <span class="stretch"></span>
-    <div class="top_pane_div">
-        <label for="burst_altitude_textbox">Burst Altitude (m):</label><input type="number" title="Burst Altitude (m)"
-                                                                              id="burst_altitude_textbox"
-                                                                              value=26050
-                                                                              onchange="changePredictLayers()"
-                                                                              style="width: 8ch;">
-    </div>
-    <span class="stretch"></span>
-    <div class="top_pane_div">
-        <label for="sea_level_descent_rate_textbox">Sea Level Descent Rate (m/s):</label><input type="number"
-                                                                                                title="Sea Level Descent Rate (m/s)"
-                                                                                                id="sea_level_descent_rate_textbox"
-                                                                                                value=6.02
-                                                                                                onchange="changePredictLayers()"
-                                                                                                style="width: 8ch;">
-    </div>
-    <span class="stretch"></span>
-    <div class="top_pane_div">
-        <label for="buttons">Download:</label>
-        <div id="buttons">
-            <button id="download_predicts_button" onclick="downloadPredictsKML()">Predicts</button>
-            <button id="download_airspace_button"
-                    onclick="downloadURI('../data/controlled_airspace.kmz', 'controlled_airspace.kmz')">Airspace
-            </button>
+
+        <span class="stretch"></span>
+
+        <div class="top_pane_div">
+            <label for="ascent_rate_textbox">Ascent Rate (m/s)</label>
+            <input type="text" title="Ascent Rate (m/s)"
+                   id="ascent_rate_textbox" value=6.21
+                   onchange="changePredictLayers()"
+                   style="width: 4ch;">
         </div>
+
+        <span class="stretch"></span>
+
+        <div class="top_pane_div">
+            <label for="burst_altitude_textbox">Burst Altitude (m)</label>
+            <input type="text"
+                   title="Burst Altitude (m)"
+                   id="burst_altitude_textbox"
+                   value=26050
+                   onchange="changePredictLayers()"
+                   style="width: 5ch;">
+        </div>
+
+        <span class="stretch"></span>
+
+        <div class="top_pane_div">
+            <label for="sea_level_descent_rate_textbox">Descent Rate at S.L. (m/s)</label>
+            <input type="text"
+                   title="Sea Level Descent Rate (m/s)"
+                   id="sea_level_descent_rate_textbox"
+                   value=6.02
+                   onchange="changePredictLayers()"
+                   style="width: 4ch;">
+        </div>
+    </div>
+    <span class="stretch"></span>
+    <div class="top_pane_div">
+        <button id="download_predicts_button" onclick="downloadPredictsKML()">Download Predicts</button>
+        <button id="download_airspace_button"
+                onclick="downloadURI('../data/controlled_airspace.kmz', 'controlled_airspace.kmz')">Download
+            Airspace
+        </button>
     </div>
 </div>
 <div id="bottom_pane">
