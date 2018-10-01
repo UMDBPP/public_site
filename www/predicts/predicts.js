@@ -1,5 +1,31 @@
 let global_run_id = 0;
 
+// asynchronously load polygons of controlled airspace from GeoJSON file
+let controlled_airspace = L.geoJson.ajax('../data/controlled_airspace.geojson', {
+    onEachFeature: popupProperties,
+    style: function (feature) {
+        let local_type = feature.properties['LOCAL_TYPE'];
+
+        switch (local_type) {
+            case 'R':
+                return {color: "red"};
+            case 'CLASS_B':
+                return {color: "orange"};
+            case 'CLASS_C':
+                return {color: "yellow"};
+            case 'CLASS_D':
+                return {color: "purple"};
+            default:
+                return {color: "green"};
+        }
+    }
+});
+
+// asynchronously load polygons of uncontrolled airspace from GeoJSON file
+let uncontrolled_airspace = L.geoJson.ajax('../data/uncontrolled_airspace.geojson', {
+    onEachFeature: popupProperties
+});
+
 // asynchronously load McDonald's locations from GeoJSON file
 let mcdonalds_locations = L.geoJson.ajax('../data/mcdonalds.geojson', {
     onEachFeature: popupProperties,
@@ -137,7 +163,15 @@ async function changePredictLayers() {
 
     let cusf_predicts_geojson = await getPredictGeoJSON(cusf_api_url, launch_locations_features, launch_datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate);
     let cusf_predicts_layer = L.geoJSON(cusf_predicts_geojson, {
-        onEachFeature: popupProperties
+        onEachFeature: popupProperties,
+        style: function (feature) {
+            let h = 240;
+            let s = Math.floor(Math.random() * 100);
+            let l = Math.floor(Math.random() * 50);
+            let color = 'hsl(' + h + ', ' + s + '%, ' + l + '%)';
+
+            return {color: color};
+        }
     });
 
     // let lukerenegar_predicts_geojson = await getPredictGeoJSON(lukerenegar_api_url, launch_locations_features, launch_datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate);

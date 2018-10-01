@@ -1,4 +1,30 @@
-let aprs_fi_api_key = '117248.ldu4GclLLEul1';
+// let last_packets = {};
+
+// asynchronously load polygons of controlled airspace from GeoJSON file
+let controlled_airspace = L.geoJson.ajax('../data/controlled_airspace.geojson', {
+    onEachFeature: popupProperties,
+    style: function (feature) {
+        let local_type = feature.properties['LOCAL_TYPE'];
+
+        switch (local_type) {
+            case 'R':
+                return {color: "red"};
+            case 'CLASS_B':
+                return {color: "orange"};
+            case 'CLASS_C':
+                return {color: "yellow"};
+            case 'CLASS_D':
+                return {color: "purple"};
+            default:
+                return {color: "green"};
+        }
+    }
+});
+
+// asynchronously load polygons of uncontrolled airspace from GeoJSON file
+let uncontrolled_airspace = L.geoJson.ajax('../data/uncontrolled_airspace.geojson', {
+    onEachFeature: popupProperties
+});
 
 // retrieve a single predict from the given API and convert to a GeoJSON Feature (LineString)
 function getAPRSPoint(station_callsign) {
@@ -13,18 +39,22 @@ function getAPRSPoint(station_callsign) {
             type: 'GET',
             dataType: 'jsonp',
             success: function (data) {
-                let response_entries = data.query.results.json['entries'];
+                if (data.query.results.json.found > 0) {
+                    let response_entries = data.query.results.json['entries'];
 
-                let output_feature = {
-                    type: 'Feature',
-                    geometry: {
-                        type: 'Point',
-                        coordinates: [response_entries['lng'], response_entries['lat']]
-                    },
-                    properties: response_entries
-                };
+                    let output_feature = {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [response_entries['lng'], response_entries['lat']]
+                        },
+                        properties: response_entries
+                    };
 
-                resolve(output_feature);
+                    resolve(output_feature);
+                } else {
+                    reject(data);
+                }
             },
             error: function (response, status, error) {
                 reject(response);
@@ -43,7 +73,7 @@ async function getAPRSGeoJSON(station_names) {
         await getAPRSPoint(station_name).then(function (feature) {
             features_geojson['features'].push(feature);
         }).catch(function (response) {
-                console.log('APRS API error: ' + response.status + ' ' + response.error);
+            console.log('APRS API error: ' + response.query.results.json.found + ' results found on ' + response.query.created);
             }
         )
     }
@@ -96,45 +126,77 @@ async function changeAPRSLayers() {
     let flight_callsigns = document.getElementById('flight_callsigns_input').value;
     let ground_callsigns = document.getElementById('ground_callsigns_input').value;
 
-    flight_callsigns = document.getElementById('flight_callsigns_input').value.split(',');
-    ground_callsigns = document.getElementById('ground_callsigns_input').value.split(',');
+    flight_callsigns = document.getElementById('flight_callsigns_input').value;
+    ground_callsigns = document.getElementById('ground_callsigns_input').value;
 
-    let flight_aprs_geojson = await getAPRSGeoJSON(flight_callsigns);
-    let ground_aprs_geojson = await getAPRSGeoJSON(ground_callsigns);
+    if (flight_callsigns) {
+        flight_callsigns = document.getElementById('flight_callsigns_input').value.split(',');
 
-    let flight_aprs_layer = L.geoJSON(flight_aprs_geojson, {
-        onEachFeature: popupProperties,
-        pointToLayer: function (feature, latlng) {
-            return L.marker(latlng, {
-                icon: new L.Icon({
-                    iconSize: [33, 42],
-                    iconUrl: '../data/icons/balloon.png'
-                })
+        var flight_aprs_geojson = await getAPRSGeoJSON(flight_callsigns);
+
+        if (flight_aprs_geojson.features.length > 0) {
+            var flight_aprs_layer = L.geoJSON(flight_aprs_geojson, {
+                onEachFeature: popupProperties,
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, {
+                        icon: new L.Icon({
+                            iconSize: [33, 42],
+                            iconUrl: '../data/icons/balloon.png'
+                        })
+                    });
+                },
+                attribution: '&copy; https://aprs.fi'
             });
+
+            overlay_layers['flight']['balloon'] = flight_aprs_layer;
+
+            layer_control.addOverlay(flight_aprs_layer, 'balloon', 'flight');
+
+            flight_aprs_layer.addTo(map);
         }
-    });
-    let ground_aprs_layer = L.geoJSON(ground_aprs_geojson, {
-        onEachFeature: popupProperties,
-        pointToLayer: function (feature, latlng) {
-            return L.marker(latlng, {
-                icon: new L.Icon({
-                    iconSize: [41, 20],
-                    iconUrl: '../data/icons/van.png'
-                })
+    }
+
+    if (ground_callsigns) {
+        ground_callsigns = document.getElementById('ground_callsigns_input').value.split(',');
+
+        var ground_aprs_geojson = await getAPRSGeoJSON(ground_callsigns);
+
+        if (ground_aprs_geojson.features.length > 0) {
+            var ground_aprs_layer = L.geoJSON(ground_aprs_geojson, {
+                onEachFeature: popupProperties,
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, {
+                        icon: new L.Icon({
+                            iconSize: [41, 20],
+                            iconUrl: '../data/icons/van.png'
+                        })
+                    });
+                },
+                attribution: '&copy; https://aprs.fi'
             });
+
+            overlay_layers['ground']['vans'] = ground_aprs_layer;
+
+            layer_control.addOverlay(ground_aprs_layer, 'vans', 'ground');
+
+            ground_aprs_layer.addTo(map);
         }
-    });
+    }
 
-    overlay_layers['flight']['balloon'] = flight_aprs_layer;
-    overlay_layers['ground']['vans'] = ground_aprs_layer;
+    // if (last_packets.length > 0) {
+    //
+    // } else {
+    //     last_packets['ground'] = {};
+    //     last_packets['flight'] = {};
+    //
+    //     // for (packet in ) {
+    //     //
+    //     // }
+    // }
 
-    layer_control.addOverlay(flight_aprs_layer, 'balloon', 'flight');
-    layer_control.addOverlay(ground_aprs_layer, 'vans', 'ground');
-
-    flight_aprs_layer.addTo(map);
-    ground_aprs_layer.addTo(map);
-
-    map.fitBounds(getOverallBounds([ground_aprs_layer, flight_aprs_layer]), {padding: [50, 50]});
+    if (flight_aprs_layer && ground_aprs_layer) {
+        map.fitBounds(getOverallBounds([ground_aprs_layer, flight_aprs_layer]), {padding: [50, 50]});
+    }
 }
 
 // dictionary to contain toggleable layers
@@ -148,12 +210,12 @@ let overlay_layers = {
 };
 
 // add Leaflet map to "map" div with grouped layer control
-let map = L.map('map', {layers: [base_layers['OSM Road']]}).setView([39.656674, -77.934194], 9);
+let map = L.map('map', {layers: [base_layers['OSM Road'], controlled_airspace]}).setView([39.656674, -77.934194], 9);
 let layer_control = L.control.groupedLayers(base_layers, overlay_layers);
 layer_control.addTo(map);
 
-controlled_airspace.addTo(map);
-
 window.onload = function () {
     changeAPRSLayers();
+
+    window.setInterval(changeAPRSLayers(), 10000);
 };
