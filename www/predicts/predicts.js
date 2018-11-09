@@ -165,12 +165,7 @@ async function changePredictLayers() {
     let cusf_predicts_layer = L.geoJSON(cusf_predicts_geojson, {
         onEachFeature: popupProperties,
         style: function (feature) {
-            let h = 240;
-            let s = Math.floor(Math.random() * 100);
-            let l = Math.floor(Math.random() * 50);
-            let color = 'hsl(' + h + ', ' + s + '%, ' + l + '%)';
-
-            return {color: color};
+            return {color: "#0000ff", weight: 7};
         }
     });
 
