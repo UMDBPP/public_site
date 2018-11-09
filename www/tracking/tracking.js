@@ -8,15 +8,15 @@ let controlled_airspace = L.geoJson.ajax('../data/controlled_airspace.geojson', 
 
         switch (local_type) {
             case 'R':
-                return {color: "red"};
+                return {color: '#EA2027'};
             case 'CLASS_B':
-                return {color: "orange"};
+                return {color: '#0652DD'};
             case 'CLASS_C':
-                return {color: "yellow"};
+                return {color: '#6F1E51'};
             case 'CLASS_D':
-                return {color: "purple"};
+                return {color: '#0652DD', dashArray: '4'};
             default:
-                return {color: "green"};
+                return {color: '#6F1E51', dashArray: '4'};
         }
     }
 });

@@ -151,8 +151,18 @@ async function changePredictLayers() {
     let lukerenegar_api_url = 'https://predict.lukerenegar.com/api/v1.1/';
 
     let launch_locations_features = launch_locations.getLayers();
-    let launch_datetime_utc = document.getElementById('launch_date_textbox').value + 'T' +
-        (parseInt(document.getElementById('launch_time_hour_box').value) + (utc_offset_minutes / 60)) + ':' + (parseInt(document.getElementById('launch_time_minute_box').value) + (utc_offset_minutes % 60)) + ':00Z';
+
+    let hour = (parseInt(document.getElementById('launch_time_hour_box').value) + (utc_offset_minutes / 60));
+    if (hour < 10) {
+        hour = '0' + hour
+    }
+
+    let minute = (parseInt(document.getElementById('launch_time_minute_box').value) + (utc_offset_minutes % 60));
+    if (minute < 10) {
+        minute = '0' + minute
+    }
+
+    let launch_datetime_utc = document.getElementById('launch_date_textbox').value + 'T' + hour + ':' + minute + ':00Z';
     let launch_datetime_local = document.getElementById('launch_date_textbox').value + 'T' +
         document.getElementById('launch_time_hour_box').value + ':' + document.getElementById('launch_time_minute_box').value + ':00Z';
     let ascent_rate = document.getElementById('ascent_rate_textbox').value;
