@@ -278,9 +278,32 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -77.880783,
-          39.260691,
-          163.0
+          -77.756622,
+          39.323833,
+          213.0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "James Wood High School",
+        "phone": 5406675226,
+        "street": "161 Apple Pie Ridge Road",
+        "city": "Winchester",
+        "state": "VA",
+        "zip": 22603,
+        "url": "<a href='https:\/\/jwh.frederick.k12.va.us'>link<\/a>",
+        "x": -78.183070,
+        "y": 39.212050,
+        "z": 282.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.183070,
+          39.212050,
+          282.0
         ]
       }
     }
