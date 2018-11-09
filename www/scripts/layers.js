@@ -22,8 +22,8 @@ function popupProperties(feature, layer) {
         selected_feature = click_event.target;
 
         if (selected_feature.setStyle != null) {
-            selected_feature_style = {color: selected_feature.options.color, weight: selected_feature.options.weight};
-            selected_feature.setStyle({color: '#ffff02', weight: selected_feature_style.weight + 2});
+            selected_feature_style = {color: selected_feature.options.color};
+            selected_feature.setStyle({color: '#12CBC4'});
         } else {
             selected_feature = null;
             selected_feature_style = null;

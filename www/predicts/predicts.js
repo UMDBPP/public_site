@@ -8,15 +8,15 @@ let controlled_airspace = L.geoJson.ajax('../data/controlled_airspace.geojson', 
 
         switch (local_type) {
             case 'R':
-                return {color: "red"};
+                return {color: '#EA2027'};
             case 'CLASS_B':
-                return {color: "orange"};
+                return {color: '#0652DD'};
             case 'CLASS_C':
-                return {color: "yellow"};
+                return {color: '#6F1E51'};
             case 'CLASS_D':
-                return {color: "purple"};
+                return {color: '#0652DD', dashArray: '4'};
             default:
-                return {color: "green"};
+                return {color: '#6F1E51', dashArray: '4'};
         }
     }
 });
@@ -32,8 +32,8 @@ let mcdonalds_locations = L.geoJson.ajax('../data/mcdonalds.geojson', {
     pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, {
             radius: 4,
-            fillColor: "#ff7800",
-            color: "#000",
+            fillColor: '#EE5A24',
+            color: '#000000',
             weight: 1,
             opacity: 1,
             fillOpacity: 0.8
@@ -165,7 +165,7 @@ async function changePredictLayers() {
     let cusf_predicts_layer = L.geoJSON(cusf_predicts_geojson, {
         onEachFeature: popupProperties,
         style: function (feature) {
-            return {color: "#0000ff", weight: 7};
+            return {color: '#1B1464', weight: 5};
         }
     });
 
@@ -189,9 +189,9 @@ async function changePredictLayers() {
 }
 
 function downloadPredictsKML() {
-    if (Object.keys(overlay_layers["predicts"]).length > 0) {
-        for (predict_layer_index in overlay_layers["predicts"]) {
-            let predict_geojson = overlay_layers["predicts"][predict_layer_index].toGeoJSON();
+    if (Object.keys(overlay_layers['predicts']).length > 0) {
+        for (predict_layer_index in overlay_layers['predicts']) {
+            let predict_geojson = overlay_layers['predicts'][predict_layer_index].toGeoJSON();
 
             if (predict_geojson['features'].length > 0) {
                 let output_kml = tokml(predict_geojson);
@@ -233,14 +233,14 @@ let overlay_layers = {
     'predicts': {}
 };
 
-// add Leaflet map to "map" div with grouped layer control
+// add Leaflet map to 'map' div with grouped layer control
 let map = L.map('map', {layers: [base_layers['OSM Road'], controlled_airspace]});
 let layer_control = L.control.groupedLayers(base_layers, overlay_layers);
 layer_control.addTo(map);
 
 /* add date picker to input box */
 $(function () {
-    $("#launch_date_textbox").datepicker({
+    $('#launch_date_textbox').datepicker({
         beforeShow: function () {
             setTimeout(function () {
                 $('.ui-datepicker').css('z-index', 99999999999999);
@@ -261,6 +261,6 @@ if (days_to_next_saturday == 0) {
 }
 
 window.onload = function () {
-    $("#launch_date_textbox").datepicker("setDate", 'today +' + days_to_next_saturday);
+    $('#launch_date_textbox').datepicker('setDate', 'today +' + days_to_next_saturday);
     changePredictLayers();
 };
