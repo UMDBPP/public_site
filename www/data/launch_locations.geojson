@@ -105,20 +105,20 @@
       "properties": {
         "name": "Hancock Elementary School",
         "phone": 3017668178,
-        "street": "290 West Main Street",
+        "street": "289 West Main Street",
         "city": "Hancock",
         "state": "MD",
         "zip": 21750,
-        "url": "<a href='http:\/\/wcpsmd.com\/schools\/elementary-schools\/hancock-elementary'>link<\/a>",
-        "x": -78.196146,
-        "y": 39.699886,
+        "url": "<a href='http:\/\/wcpsmd.com\/schools\/high-schools\/hancock-high'>link<\/a>",
+        "x": -78.196810,
+        "y": 39.696802,
         "z": 172.0
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -78.196146,
-          39.699886,
+          -78.196810,
+          39.696802,
           172.0
         ]
       }

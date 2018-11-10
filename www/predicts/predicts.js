@@ -23,7 +23,10 @@ let controlled_airspace = L.geoJson.ajax('../data/controlled_airspace.geojson', 
 
 // asynchronously load polygons of uncontrolled airspace from GeoJSON file
 let uncontrolled_airspace = L.geoJson.ajax('../data/uncontrolled_airspace.geojson', {
-    onEachFeature: popupProperties
+    onEachFeature: popupProperties,
+    style: function (feature) {
+        return {color: '#6F1E51', dashArray: '4'};
+    }
 });
 
 // asynchronously load McDonald's locations from GeoJSON file
