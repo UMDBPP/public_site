@@ -247,9 +247,11 @@ let overlay_layers = {
 };
 
 // add Leaflet map to 'map' div with grouped layer control
-let map = L.map('map', {layers: [base_layers['OSM Road'], controlled_airspace]});
+let map = L.map('map', {layers: [base_layers['OSM Road'], controlled_airspace], zoomSnap: 0});
 let layer_control = L.control.groupedLayers(base_layers, overlay_layers);
 layer_control.addTo(map);
+
+L.control.scale().addTo(map);
 
 /* add date picker to input box */
 $(function () {
