@@ -306,6 +306,28 @@
           282.0
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Martinsburg High School",
+        "phone": 3042673530,
+        "street": "701 South Queen Street",
+        "city": "Martinsburg",
+        "state": "WV",
+        "zip": 25401,
+        "url": "https:\/\/www.berkeleycountyschools.org\/martinsburghigh",
+        "x": -77.968370,
+        "y": 39.448438,
+        "z": 148.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.968370,
+          39.448438
+        ]
+      }
     }
   ]
 }
