@@ -1,4 +1,4 @@
-let data_dir = '/develop/data/';
+let data_dir = '/data/';
 
 let base_layers = {
     'OSM Road': L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -43,11 +43,6 @@ let uncontrolled_airspace = L.geoJson.ajax(data_dir + 'uncontrolled_airspace.geo
 let launch_locations = L.geoJson.ajax(data_dir + 'launch_locations.geojson', {
     'onEachFeature': popupProperties
 });
-
-// fit map to launch locations as soon as it loads
-launch_locations.on('data:loaded', function () {
-    map.fitBounds(launch_locations.getBounds());
-}.bind(this));
 
 // asynchronously load McDonald's locations from GeoJSON file
 let mcdonalds_locations = L.geoJson.ajax(data_dir + 'mcdonalds.geojson', {
