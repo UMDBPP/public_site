@@ -1,27 +1,41 @@
 let selected_feature;
-let selected_feature_style;
+let selected_feature_previous_style;
 
-function popupProperties(feature, layer) {
+function featureProperties(feature, layer) {
     layer.bindPopup('<pre>' + JSON.stringify(feature.properties, null, ' ').replace(/[\{\}"]/g, '') + '</pre>');
+}
 
+function highlightFeature(feature) {
+    let starting_style = feature.options.style;
+    feature.setStyle({'color': '#12CBC4', 'weight': feature.options.weight + 3});
+    feature.bringToFront();
+
+    return starting_style;
+}
+
+function featureHighlight(feature, layer) {
     layer.on('click', function (click_event) {
         if (selected_feature != null) {
-            selected_feature.setStyle(selected_feature_style);
+            selected_feature.setStyle(selected_feature_previous_style(selected_feature));
         }
 
         selected_feature = click_event.target;
 
         if (selected_feature.setStyle != null) {
-            selected_feature_style = {'color': selected_feature.options.color};
-            selected_feature.setStyle({'color': '#12CBC4'});
+            selected_feature_previous_style = highlightFeature(selected_feature);
         } else {
             selected_feature = null;
-            selected_feature_style = null;
+            selected_feature_previous_style = null;
         }
     });
 }
 
-// return the overall bounds of multiple layers
+function popupHighlight(feature, layer) {
+    featureProperties(feature, layer);
+    featureHighlight(feature, layer);
+}
+
+/* return the overall bounds of multiple layers */
 function getOverallBounds(layers) {
     let northeast = layers[0].getBounds()._northEast;
     let southwest = layers[0].getBounds()._southWest;
@@ -95,3 +109,34 @@ L.Control.GroupedLayers.include({
         return overlay_layer_names;
     }
 });
+
+async function resizeToOverlayLayers() {
+    let active_overlay_layers = layer_control.getActiveOverlayLayers();
+
+    let layers = [];
+
+    for (let layer_group_name in active_overlay_layers) {
+        if (layer_group_name != 'reference' && layer_group_name != '') {
+            let layer_group = active_overlay_layers[layer_group_name];
+
+            if (layer_group != null) {
+                if (Object.keys(layer_group).length > 0) {
+                    layers.push(...Object.values(layer_group));
+                }
+            }
+        }
+    }
+
+    if (layers.length > 0) {
+        map.fitBounds(getOverallBounds(layers), {'padding': [50, 50]});
+    }
+}
+
+function bringReferenceLayersToBack(add_event) {
+    if (add_event.overlay) {
+        if (add_event.group.name == 'reference') {
+            let added_layer = add_event.layer;
+            added_layer.bringToBack();
+        }
+    }
+}

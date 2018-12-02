@@ -10,9 +10,9 @@ let base_layers = {
     })
 };
 
-// asynchronously load polygons of controlled airspace from GeoJSON file
+/* asynchronously load polygons of controlled airspace from GeoJSON file */
 let controlled_airspace = L.geoJson.ajax(data_dir + 'controlled_airspace.geojson', {
-    'onEachFeature': popupProperties,
+    'onEachFeature': featureProperties,
     'style': function (feature) {
         let local_type = feature.properties['LOCAL_TYPE'];
 
@@ -31,22 +31,22 @@ let controlled_airspace = L.geoJson.ajax(data_dir + 'controlled_airspace.geojson
     }
 });
 
-// asynchronously load polygons of uncontrolled airspace from GeoJSON file
+/* asynchronously load polygons of uncontrolled airspace from GeoJSON file */
 let uncontrolled_airspace = L.geoJson.ajax(data_dir + 'uncontrolled_airspace.geojson', {
-    'onEachFeature': popupProperties,
+    'onEachFeature': featureProperties,
     'style': function (feature) {
         return {'color': '#6F1E51', 'dashArray': '4'};
     }
 });
 
-// asynchronously load launch locations from GeoJSON file
+/* asynchronously load launch locations from GeoJSON file */
 let launch_locations = L.geoJson.ajax(data_dir + 'launch_locations.geojson', {
-    'onEachFeature': popupProperties
+    'onEachFeature': featureProperties
 });
 
-// asynchronously load McDonald's locations from GeoJSON file
+/* asynchronously load McDonald's locations from GeoJSON file */
 let mcdonalds_locations = L.geoJson.ajax(data_dir + 'mcdonalds.geojson', {
-    'onEachFeature': popupProperties,
+    'onEachFeature': featureProperties,
     'pointToLayer': function (feature, latlng) {
         return L.circleMarker(latlng, {
             'radius': 4,
@@ -58,3 +58,21 @@ let mcdonalds_locations = L.geoJson.ajax(data_dir + 'mcdonalds.geojson', {
         });
     }
 });
+
+/* dictionary to contain toggleable layers */
+let overlay_layers = {
+    'reference': {
+        'Controlled Airspace': controlled_airspace,
+        'Uncontrolled Airspace': uncontrolled_airspace
+    }
+};
+
+/* add Leaflet map to 'map' div with grouped layer control */
+let map = L.map('map', {
+    'layers': [base_layers['OSM Road']],
+    'zoomSnap': 0
+});
+
+map.on('layeradd', bringReferenceLayersToBack);
+
+map.addControl(L.control.scale());

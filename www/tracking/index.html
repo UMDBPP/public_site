@@ -28,21 +28,21 @@
     <div class="top_pane_div">
         <div class="top_pane_div">
             <label for="flight_callsigns_input">Flight Callsign(s)</label>
-            <input type="text" id="flight_callsigns_input" value="W3EAX-12,W3EAX-14" onchange="changeAPRSLayers()">
+            <input type="text" id="flight_callsigns_input" value="W3EAX-12,W3EAX-14" onchange="updateAPRSLayers()">
         </div>
-
         <span class="stretch"></span>
-
         <div class="top_pane_div">
             <label for="ground_callsigns_input">Ground Callsign(s)</label>
             <input type="text" id="ground_callsigns_input" value="KC3FXX-5,KC3HOB-10"
-                   onchange="changeAPRSLayers()">
+                   onchange="updateAPRSLayers()">
         </div>
-
         <span class="stretch"></span>
-
         <div class="top_pane_div">
-            <button id="reload_APRS_button" onclick="changeAPRSLayers()">Reload APRS</button>
+            <button id="reload_APRS_button" onclick="updateAPRSLayers()">Reload APRS</button>
+        </div>
+        <span class="stretch"></span>
+        <div class="top_pane_div">
+            <button id="resize_button" onclick="resizeToOverlayLayers()">Resize</button>
         </div>
     </div>
 </div>

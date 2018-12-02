@@ -5,42 +5,31 @@ let API_URLS = {
     'lukerenegar': 'https://predict.lukerenegar.com/api/v1.1/'
 };
 
-// dictionary to contain toggleable layers
-let overlay_layers = {
-    'reference': {
-        'Controlled Airspace': controlled_airspace,
-        'Uncontrolled Airspace': uncontrolled_airspace,
-        'McDonald\'s Locations': mcdonalds_locations,
-        'Launch Locations': launch_locations
-    },
-    'predicts': {}
-};
-
-// add Leaflet map to 'map' div with grouped layer control
-let map = L.map('map', {
-    'layers': [base_layers['OSM Road'], controlled_airspace],
-    'zoomSnap': 0
-}).setView([39.656674, -77.934194], 9);
+overlay_layers['reference']['McDonald\'s Locations'] = mcdonalds_locations;
+overlay_layers['reference']['Launch Locations'] = launch_locations;
+overlay_layers['predicts'] = {};
 
 let layer_control = L.control.groupedLayers(base_layers, overlay_layers);
 
 map.addControl(layer_control);
-map.addControl(L.control.scale());
+
+map.setView([39.656674, -77.934194], 9);
+
+map.addLayer(controlled_airspace);
 
 /* add date picker to input box */
-$(function () {
-    $('#launch_date_textbox').datepicker({
-        'beforeShow': function () {
-            setTimeout(function () {
-                $('.ui-datepicker').css('z-index', 99999999999999);
-            }, 0);
-        },
-        'minDate': +1,
-        'maxDate': +8,
-        'showOtherMonths': true,
-        'selectOtherMonths': true,
-        'dateFormat': 'yy-mm-dd'
-    });
+let date_picker = $('#launch_date_textbox');
+date_picker.datepicker({
+    'beforeShow': function () {
+        setTimeout(function () {
+            $('.ui-datepicker').css('z-index', 99999999999999);
+        }, 0);
+    },
+    'minDate': +1,
+    'maxDate': +8,
+    'showOtherMonths': true,
+    'selectOtherMonths': true,
+    'dateFormat': 'yy-mm-dd'
 });
 
 window.onload = function () {
@@ -49,12 +38,12 @@ window.onload = function () {
     if (days_to_next_saturday == 0) {
         days_to_next_saturday = 7;
     }
+    date_picker.datepicker('setDate', 'today +' + days_to_next_saturday);
 
-    $('#launch_date_textbox').datepicker('setDate', 'today +' + days_to_next_saturday);
     updatePredictLayers();
 };
 
-// retrieve a single predict from the given API and convert to a GeoJSON Feature (LineString)
+/* retrieve a single predict from the given API and convert to a GeoJSON Feature (LineString) */
 function getPredictLineString(api_url, name, longitude, latitude, datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate) {
     return new Promise(function (resolve, reject) {
         $.ajax({
@@ -100,11 +89,11 @@ function getPredictLineString(api_url, name, longitude, latitude, datetime_utc, 
     });
 }
 
-// retrieve predict for a single launch location as a GeoJSON FeatureCollection
+/* retrieve predict for a single launch location as a GeoJSON FeatureCollection */
 async function getPredictLayer(api_url, launch_location_name, launch_longitude, launch_latitude, launch_datetime, ascent_rate, burst_altitude, sea_level_descent_rate) {
     let predict_geojson = {'type': 'FeatureCollection', 'features': []};
 
-    // CUSF API requires longitude in 0-360 format
+    /* CUSF API requires longitude in 0-360 format */
     if (launch_longitude < 0) {
         launch_longitude = launch_longitude + 360;
     }
@@ -117,7 +106,7 @@ async function getPredictLayer(api_url, launch_location_name, launch_longitude, 
     );
 
     let predict_layer = L.geoJSON(predict_geojson, {
-        'onEachFeature': popupProperties,
+        'onEachFeature': popupHighlight,
         'style': function (feature) {
             return {'color': '#1B1464', 'weight': 5};
         }
@@ -126,7 +115,7 @@ async function getPredictLayer(api_url, launch_location_name, launch_longitude, 
     return predict_layer;
 }
 
-// remove all predict layers from the map
+/* remove all predict layers from the map */
 function removePredictLayers() {
     for (let layer_group in overlay_layers) {
         if (layer_group == 'predicts') {
@@ -139,8 +128,8 @@ function removePredictLayers() {
     }
 }
 
-// refresh map with new predicts using given parameters
-async function updatePredictLayers() {
+/* refresh map with new predicts using given parameters */
+async function updatePredictLayers(resize = true) {
     let run_id = ++global_run_id;
     let utc_offset_minutes = (new Date()).getTimezoneOffset();
 
@@ -181,7 +170,7 @@ async function updatePredictLayers() {
         predict_layers[launch_location_name] = predict_layer;
     }
 
-    // check if user has changed options since
+    /* check if user has changed options in the meantime */
     if (run_id == global_run_id) {
         let layer_index = 1;
 
@@ -199,17 +188,30 @@ async function updatePredictLayers() {
                     ending_active_predict_layers[launch_location_name] = predict_layer;
                 }
             } else {
-                // if starting from nothing, only add the first four layers
-                if (layer_index <= 4) {
+                // if starting from nothing, only add the first few layers
+                if (layer_index <= 5) {
                     map.addLayer(predict_layer);
                     ending_active_predict_layers[launch_location_name] = predict_layer;
                 }
 
                 layer_index++;
             }
-        }
 
-        map.fitBounds(getOverallBounds(Object.values(ending_active_predict_layers)), {'padding': [50, 50]});
+            if (selected_feature != null) {
+                for (let feature_index in predict_layer._layers) {
+                    let feature = predict_layer._layers[feature_index];
+
+                    if (JSON.stringify(feature.feature.properties) === JSON.stringify(selected_feature.feature.properties)) {
+                        selected_feature = feature;
+                        selected_feature_previous_style = highlightFeature(selected_feature);
+                    }
+                }
+            }
+        }
+    }
+
+    if (resize) {
+        resizeToOverlayLayers();
     }
 }
 

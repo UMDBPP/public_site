@@ -1,36 +1,29 @@
-// dictionary to contain toggleable layers
-let overlay_layers = {
-    'reference': {
-        'Controlled Airspace': controlled_airspace,
-        'Uncontrolled Airspace': uncontrolled_airspace
-    },
-    'ground': {},
-    'flight': {}
-};
+overlay_layers['ground'] = {};
+overlay_layers['flight'] = {};
 
-// add Leaflet map to "map" div with grouped layer control
-let map = L.map('map', {
-    'layers': [base_layers['OSM Road'], controlled_airspace],
-    'zoomSnap': 0
-}).setView([39.656674, -77.934194], 9);
 let layer_control = L.control.groupedLayers(base_layers, overlay_layers);
+
 map.addControl(layer_control);
 
-window.onload = function () {
-    changeAPRSLayers();
+map.setView([39.656674, -77.934194], 9);
 
-    window.setInterval(changeAPRSLayers(), 10000);
+map.addLayer(controlled_airspace);
+
+window.onload = function () {
+    updateAPRSLayers();
+    window.setInterval(updateAPRSLayers(), 10000);
 };
 
 // let last_packets = {};
 
-// retrieve a single predict from the given API and convert to a GeoJSON Feature (LineString)
-function getAPRSPoint(station_callsign) {
+/* retrieve a single predict from the given API and convert to a GeoJSON Feature (LineString) */
+async function getAPRSPoint(station_callsign) {
     let api_url = 'https://api.aprs.fi/api/get';
 
-    let cors_query = encodeURIComponent('select * from json where url="http://api.aprs.fi/api/get?name=' + station_callsign + '&what=loc&apikey=' + aprs_fi_api_key + '&format=json"');
+    let cors_query = encodeURIComponent('select * from json where url="' + api_url + '?name=' + station_callsign + '&what=loc&apikey=' + aprs_fi_api_key + '&format=json"');
 
-    // use Yahoo JSONP proxy to emulate CORS request, taken from https://gist.github.com/cmdcolin/1aefb766d224446341ab
+    /* use Yahoo JSONP proxy to emulate CORS request, taken from https://gist.github.com/cmdcolin/1aefb766d224446341ab */
+    /* TODO APRS.fi doesn't like this, figure out a way to do it server-side */
     return new Promise(function (resolve, reject) {
         $.ajax({
             'url': 'http://query.yahooapis.com/v1/public/yql?q=' + cors_query + '&format=json&callback=?',
@@ -61,7 +54,7 @@ function getAPRSPoint(station_callsign) {
     });
 }
 
-// retrieve predicts for every launch location, and put them into a GeoJSON FeatureCollection
+/* retrieve predicts for every launch location, and put them into a GeoJSON FeatureCollection */
 async function getAPRSGeoJSON(station_names) {
     let features_geojson = {'type': 'FeatureCollection', 'features': []};
 
@@ -79,8 +72,8 @@ async function getAPRSGeoJSON(station_names) {
     return features_geojson;
 }
 
-// remove all layers from the map
-async function removeAPRSLayers() {
+/* remove all layers from the map */
+function removeAPRSLayers() {
     for (let layer_group in overlay_layers) {
         if (layer_group != 'reference') {
             for (let layer_name in overlay_layers[layer_group]) {
@@ -92,7 +85,7 @@ async function removeAPRSLayers() {
     }
 }
 
-async function changeAPRSLayers() {
+async function updateAPRSLayers(resize = true) {
     removeAPRSLayers();
 
     let flight_callsigns = document.getElementById('flight_callsigns_input').value;
@@ -104,8 +97,8 @@ async function changeAPRSLayers() {
         let flight_aprs_geojson = await getAPRSGeoJSON(flight_callsigns);
 
         if (flight_aprs_geojson.features.length > 0) {
-            var flight_aprs_point_layer = L.geoJSON(flight_aprs_geojson, {
-                'onEachFeature': popupProperties,
+            let flight_aprs_point_layer = L.geoJSON(flight_aprs_geojson, {
+                'onEachFeature': featureProperties,
                 'pointToLayer': function (feature, latlng) {
                     return L.marker(latlng, {
                         icon: new L.Icon({
@@ -133,8 +126,8 @@ async function changeAPRSLayers() {
         let ground_aprs_geojson = await getAPRSGeoJSON(ground_callsigns);
 
         if (ground_aprs_geojson.features.length > 0) {
-            var ground_aprs_point_layer = L.geoJSON(ground_aprs_geojson, {
-                'onEachFeature': popupProperties,
+            let ground_aprs_point_layer = L.geoJSON(ground_aprs_geojson, {
+                'onEachFeature': featureProperties,
                 'pointToLayer': function (feature, latlng) {
                     return L.marker(latlng, {
                         'icon': new L.Icon({
@@ -149,7 +142,7 @@ async function changeAPRSLayers() {
             if (ground_aprs_point_layer != null) {
                 overlay_layers['ground']['vans'] = ground_aprs_point_layer;
                 layer_control.addOverlay(ground_aprs_point_layer, 'vans', 'ground');
-                ground_aprs_point_layer.addTo(map);
+                map.addLayer(ground_aprs_point_layer);
             } else {
                 layers_valid = false;
             }
@@ -167,7 +160,7 @@ async function changeAPRSLayers() {
     //     // }
     // }
 
-    if (ground_aprs_point_layer != null && flight_aprs_point_layer != null) {
-        map.fitBounds(getOverallBounds([ground_aprs_point_layer, flight_aprs_point_layer]), {'padding': [50, 50]});
+    if (resize) {
+        resizeToOverlayLayers();
     }
 }
