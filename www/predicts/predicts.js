@@ -1,3 +1,5 @@
+let map_title = '<strong>CUSF Balloon Predictions</strong>';
+
 let global_run_id = 0;
 
 let API_URLS = {
@@ -11,7 +13,19 @@ overlay_layers['predicts'] = {};
 
 let layer_control = L.control.groupedLayers(base_layers, overlay_layers);
 
+let title_control = L.control({
+    position: 'topleft'
+});
+
+title_control.onAdd = function (map) {
+    let div = document.createElement('div');
+    div.setAttribute('style', 'background-color: white; padding: 2px;');
+    div.innerHTML = map_title;
+    return div;
+};
+
 map.addControl(layer_control);
+map.addControl(title_control);
 
 map.setView([39.656674, -77.934194], 9);
 

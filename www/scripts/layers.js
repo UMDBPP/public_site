@@ -70,7 +70,8 @@ let overlay_layers = {
 /* add Leaflet map to 'map' div with grouped layer control */
 let map = L.map('map', {
     'layers': [base_layers['OSM Road']],
-    'zoomSnap': 0
+    'zoomSnap': 0,
+    'zoomControl': false
 });
 
 map.on('layeradd', bringReferenceLayersToBack);
