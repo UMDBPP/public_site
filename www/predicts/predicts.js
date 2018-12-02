@@ -1,99 +1,94 @@
 let global_run_id = 0;
 
-// asynchronously load polygons of controlled airspace from GeoJSON file
-let controlled_airspace = L.geoJson.ajax('../data/controlled_airspace.geojson', {
-    onEachFeature: popupProperties,
-    style: function (feature) {
-        let local_type = feature.properties['LOCAL_TYPE'];
+let API_URLS = {
+    'CUSF': 'http://predict.cusf.co.uk/api/v1/',
+    'lukerenegar': 'https://predict.lukerenegar.com/api/v1.1/'
+};
 
-        switch (local_type) {
-            case 'R':
-                return {color: '#EA2027'};
-            case 'CLASS_B':
-                return {color: '#0652DD'};
-            case 'CLASS_C':
-                return {color: '#6F1E51'};
-            case 'CLASS_D':
-                return {color: '#0652DD', dashArray: '4'};
-            default:
-                return {color: '#6F1E51', dashArray: '4'};
-        }
+// dictionary to contain toggleable layers
+let overlay_layers = {
+    'reference': {
+        'Controlled Airspace': controlled_airspace,
+        'Uncontrolled Airspace': uncontrolled_airspace,
+        'McDonald\'s Locations': mcdonalds_locations,
+        'Launch Locations': launch_locations
+    },
+    'predicts': {}
+};
+
+// add Leaflet map to 'map' div with grouped layer control
+let map = L.map('map', {
+    'layers': [base_layers['OSM Road'], controlled_airspace],
+    'zoomSnap': 0
+}).setView([39.656674, -77.934194], 9);
+
+let layer_control = L.control.groupedLayers(base_layers, overlay_layers);
+
+map.addControl(layer_control);
+map.addControl(L.control.scale());
+
+/* add date picker to input box */
+$(function () {
+    $('#launch_date_textbox').datepicker({
+        'beforeShow': function () {
+            setTimeout(function () {
+                $('.ui-datepicker').css('z-index', 99999999999999);
+            }, 0);
+        },
+        'minDate': +1,
+        'maxDate': +8,
+        'showOtherMonths': true,
+        'selectOtherMonths': true,
+        'dateFormat': 'yy-mm-dd'
+    });
+});
+
+window.onload = function () {
+    let today = new Date();
+    let days_to_next_saturday = (1 + 5 - today.getDay()) % 7;
+    if (days_to_next_saturday == 0) {
+        days_to_next_saturday = 7;
     }
-});
 
-// asynchronously load polygons of uncontrolled airspace from GeoJSON file
-let uncontrolled_airspace = L.geoJson.ajax('../data/uncontrolled_airspace.geojson', {
-    onEachFeature: popupProperties,
-    style: function (feature) {
-        return {color: '#6F1E51', dashArray: '4'};
-    }
-});
-
-// asynchronously load McDonald's locations from GeoJSON file
-let mcdonalds_locations = L.geoJson.ajax('../data/mcdonalds.geojson', {
-    onEachFeature: popupProperties,
-    pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, {
-            radius: 4,
-            fillColor: '#EE5A24',
-            color: '#000000',
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.8
-        });
-    }
-});
-
-// asynchronously load launch locations from GeoJSON file
-let launch_locations = L.geoJson.ajax('../data/launch_locations.geojson', {
-    onEachFeature: popupProperties
-});
-
-// fit map to launch locations as soon as it loads
-launch_locations.on('data:loaded', function () {
-    map.fitBounds(launch_locations.getBounds());
-}.bind(this));
+    $('#launch_date_textbox').datepicker('setDate', 'today +' + days_to_next_saturday);
+    updatePredictLayers();
+};
 
 // retrieve a single predict from the given API and convert to a GeoJSON Feature (LineString)
-function getPredictLineString(api_url, launch_location_name, launch_latitude, launch_longitude, launch_altitude, launch_datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate) {
+function getPredictLineString(api_url, name, longitude, latitude, datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate) {
     return new Promise(function (resolve, reject) {
         $.ajax({
-            url: api_url,
-            data: {
-                launch_latitude: launch_latitude,
-                launch_longitude: launch_longitude,
-                launch_altitude: launch_altitude,
-                launch_datetime: launch_datetime_utc,
-                ascent_rate: ascent_rate,
-                burst_altitude: burst_altitude,
-                descent_rate: sea_level_descent_rate
+            'url': api_url,
+            'data': {
+                'launch_longitude': longitude,
+                'launch_latitude': latitude,
+                'launch_datetime': datetime_utc,
+                'ascent_rate': ascent_rate,
+                'burst_altitude': burst_altitude,
+                'descent_rate': sea_level_descent_rate
             },
-            type: 'GET',
-            dataType: 'json',
-            error: function (response, status, error) {
+            'type': 'GET',
+            'dataType': 'json',
+            'error': function (response, status, error) {
                 reject(response);
             },
-            success: function (response) {
+            'success': function (response) {
                 let output_feature = {
-                    type: 'Feature',
-                    geometry: {
-                        type: 'LineString',
-                        coordinates: []
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'LineString',
+                        'coordinates': []
                     },
-                    properties: {
-                        name: launch_location_name,
-                        launch_datetime: launch_datetime_utc + ' UTC',
-                        launch_longitude: launch_longitude - 360,
-                        launch_latitude: launch_latitude,
-                        launch_altitude: launch_altitude,
-                        dataset: response['request']['dataset'] + ' UTC'
+                    'properties': {
+                        'name': name,
+                        'model_run': response['request']['dataset'] + ' UTC'
                     }
                 };
 
-                for (stage_index in response['prediction']) {
+                for (let stage_index in response['prediction']) {
                     let stage = response['prediction'][stage_index];
 
-                    for (trajectory_index in stage['trajectory']) {
+                    for (let trajectory_index in stage['trajectory']) {
                         let entry = stage['trajectory'][trajectory_index];
                         output_feature['geometry']['coordinates'].push([entry['longitude'] - 360, entry['latitude'], entry['altitude']]);
                     }
@@ -105,38 +100,37 @@ function getPredictLineString(api_url, launch_location_name, launch_latitude, la
     });
 }
 
-// retrieve predicts for every launch location, and put them into a GeoJSON FeatureCollection
-async function getPredictGeoJSON(api_url, launch_locations_layer, launch_datetime, ascent_rate, burst_altitude, sea_level_descent_rate) {
-    let features_geojson = {type: 'FeatureCollection', features: []};
+// retrieve predict for a single launch location as a GeoJSON FeatureCollection
+async function getPredictLayer(api_url, launch_location_name, launch_longitude, launch_latitude, launch_datetime, ascent_rate, burst_altitude, sea_level_descent_rate) {
+    let predict_geojson = {'type': 'FeatureCollection', 'features': []};
 
-    for (launch_location_index in launch_locations_layer) {
-        let launch_location_name = launch_locations_layer[launch_location_index].feature.properties['name'];
-        let launch_location = launch_locations_layer[launch_location_index].getLatLng();
-        let launch_longitude = launch_location['lng'];
-        let launch_latitude = launch_location['lat'];
-        let launch_altitude = launch_location['alt'];
-
-        // CUSF API requires longitude in 0-360 format
-        if (launch_longitude < 0) {
-            launch_longitude = launch_longitude + 360;
-        }
-
-        await getPredictLineString(api_url, launch_location_name, launch_latitude, launch_longitude, launch_altitude, launch_datetime, ascent_rate, burst_altitude, sea_level_descent_rate).then(function (feature) {
-            features_geojson['features'].push(feature);
-        }).catch(function (response) {
-                console.log('Prediction error: ' + response.status + ' ' + response.error);
-            }
-        )
+    // CUSF API requires longitude in 0-360 format
+    if (launch_longitude < 0) {
+        launch_longitude = launch_longitude + 360;
     }
 
-    return features_geojson;
+    await getPredictLineString(api_url, launch_location_name, launch_longitude, launch_latitude, launch_datetime, ascent_rate, burst_altitude, sea_level_descent_rate).then(function (feature) {
+        predict_geojson['features'].push(feature);
+    }).catch(function (response) {
+            console.log('Prediction error: ' + response.status + ' ' + response.error);
+        }
+    );
+
+    let predict_layer = L.geoJSON(predict_geojson, {
+        'onEachFeature': popupProperties,
+        'style': function (feature) {
+            return {'color': '#1B1464', 'weight': 5};
+        }
+    });
+
+    return predict_layer;
 }
 
 // remove all predict layers from the map
 function removePredictLayers() {
-    for (layer_group in overlay_layers) {
+    for (let layer_group in overlay_layers) {
         if (layer_group == 'predicts') {
-            for (layer_name in overlay_layers[layer_group]) {
+            for (let layer_name in overlay_layers[layer_group]) {
                 layer_control.removeLayer(overlay_layers[layer_group][layer_name]);
                 map.removeLayer(overlay_layers[layer_group][layer_name]);
                 delete overlay_layers[layer_group][layer_name];
@@ -146,12 +140,11 @@ function removePredictLayers() {
 }
 
 // refresh map with new predicts using given parameters
-async function changePredictLayers() {
+async function updatePredictLayers() {
     let run_id = ++global_run_id;
     let utc_offset_minutes = (new Date()).getTimezoneOffset();
 
-    let cusf_api_url = 'http://predict.cusf.co.uk/api/v1/';
-    let lukerenegar_api_url = 'https://predict.lukerenegar.com/api/v1.1/';
+    let api_url = API_URLS['CUSF'];
 
     let launch_locations_features = launch_locations.getLayers();
 
@@ -166,44 +159,63 @@ async function changePredictLayers() {
     }
 
     let launch_datetime_utc = document.getElementById('launch_date_textbox').value + 'T' + hour + ':' + minute + ':00Z';
-    let launch_datetime_local = document.getElementById('launch_date_textbox').value + 'T' +
-        document.getElementById('launch_time_hour_box').value + ':' + document.getElementById('launch_time_minute_box').value + ':00Z';
+    // let launch_datetime_local = document.getElementById('launch_date_textbox').value + 'T' +
+    //     document.getElementById('launch_time_hour_box').value + ':' + document.getElementById('launch_time_minute_box').value + ':00Z';
     let ascent_rate = document.getElementById('ascent_rate_textbox').value;
     let burst_altitude = document.getElementById('burst_altitude_textbox').value;
     let sea_level_descent_rate = document.getElementById('sea_level_descent_rate_textbox').value;
 
+    let starting_active_predict_layers = layer_control.getActiveOverlayLayers()['predicts'];
+
     removePredictLayers();
 
-    let cusf_predicts_geojson = await getPredictGeoJSON(cusf_api_url, launch_locations_features, launch_datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate);
-    let cusf_predicts_layer = L.geoJSON(cusf_predicts_geojson, {
-        onEachFeature: popupProperties,
-        style: function (feature) {
-            return {color: '#1B1464', weight: 5};
-        }
-    });
+    let predict_layers = {};
 
-    // let lukerenegar_predicts_geojson = await getPredictGeoJSON(lukerenegar_api_url, launch_locations_features, launch_datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate);
-    // let lukerenegar_predicts_layer = L.geoJSON(lukerenegar_predicts_geojson, {
-    //     onEachFeature: popupProperties,
-    //     style: {color: 'red'}
-    // });
+    for (let launch_location_index in launch_locations_features) {
+        let launch_location_feature = launch_locations_features[launch_location_index];
+        let launch_location_name = launch_location_feature.feature.properties['name'];
+        let launch_location = launch_location_feature.getLatLng();
+
+        let predict_layer = await getPredictLayer(api_url, launch_location_name, launch_location['lng'], launch_location['lat'], launch_datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate);
+
+        predict_layers[launch_location_name] = predict_layer;
+    }
 
     // check if user has changed options since
     if (run_id == global_run_id) {
-        overlay_layers['predicts'][launch_datetime_local] = cusf_predicts_layer;
-        layer_control.addOverlay(cusf_predicts_layer, launch_datetime_local, 'predicts');
+        let layer_index = 1;
 
-        // overlay_layers['predicts'][launch_datetime_local + '_lukerenegar'] = lukerenegar_predicts_layer;
-        // layer_control.addOverlay(lukerenegar_predicts_layer, launch_datetime_local + '_lukerenegar', 'predicts');
+        let ending_active_predict_layers = {};
 
-        cusf_predicts_layer.addTo(map);
-        map.fitBounds(cusf_predicts_layer.getBounds());
+        for (let launch_location_name in predict_layers) {
+            let predict_layer = predict_layers[launch_location_name];
+
+            overlay_layers['predicts'][launch_location_name] = predict_layer;
+            layer_control.addOverlay(predict_layer, launch_location_name, 'predicts');
+
+            if (starting_active_predict_layers != null) {
+                if (starting_active_predict_layers[launch_location_name] != null) {
+                    map.addLayer(predict_layer);
+                    ending_active_predict_layers[launch_location_name] = predict_layer;
+                }
+            } else {
+                // if starting from nothing, only add the first four layers
+                if (layer_index <= 4) {
+                    map.addLayer(predict_layer);
+                    ending_active_predict_layers[launch_location_name] = predict_layer;
+                }
+
+                layer_index++;
+            }
+        }
+
+        map.fitBounds(getOverallBounds(Object.values(ending_active_predict_layers)), {'padding': [50, 50]});
     }
 }
 
 function downloadPredictsKML() {
     if (Object.keys(overlay_layers['predicts']).length > 0) {
-        for (predict_layer_index in overlay_layers['predicts']) {
+        for (let predict_layer_index in overlay_layers['predicts']) {
             let predict_geojson = overlay_layers['predicts'][predict_layer_index].toGeoJSON();
 
             if (predict_geojson['features'].length > 0) {
@@ -213,7 +225,7 @@ function downloadPredictsKML() {
 
                 let download_filename = 'predicts_' + predict_layer_index.replace(/-|_|:|Z|T/g, '') + '.kml';
                 let download_link = document.createElement('a');
-                let xml_blob = new Blob([output_kml], {type: 'text/xml'});
+                let xml_blob = new Blob([output_kml], {'type': 'text/xml'});
 
                 download_link.setAttribute('href', window.URL.createObjectURL(xml_blob));
                 download_link.setAttribute('download', download_filename);
@@ -229,53 +241,8 @@ function downloadPredictsKML() {
 }
 
 function downloadURI(uri, name) {
-    var download_link = document.createElement('a');
+    let download_link = document.createElement('a');
     download_link.download = name;
     download_link.href = uri;
     download_link.click();
 }
-
-// dictionary to contain toggleable layers
-let overlay_layers = {
-    'reference': {
-        'Controlled Airspace': controlled_airspace,
-        'Uncontrolled Airspace': uncontrolled_airspace,
-        'McDonald\'s Locations': mcdonalds_locations,
-        'Launch Locations': launch_locations
-    },
-    'predicts': {}
-};
-
-// add Leaflet map to 'map' div with grouped layer control
-let map = L.map('map', {layers: [base_layers['OSM Road'], controlled_airspace], zoomSnap: 0});
-let layer_control = L.control.groupedLayers(base_layers, overlay_layers);
-layer_control.addTo(map);
-
-L.control.scale().addTo(map);
-
-/* add date picker to input box */
-$(function () {
-    $('#launch_date_textbox').datepicker({
-        beforeShow: function () {
-            setTimeout(function () {
-                $('.ui-datepicker').css('z-index', 99999999999999);
-            }, 0);
-        },
-        minDate: +1,
-        maxDate: +8,
-        showOtherMonths: true,
-        selectOtherMonths: true,
-        dateFormat: 'yy-mm-dd'
-    });
-});
-
-let today = new Date();
-let days_to_next_saturday = (1 + 5 - today.getDay()) % 7;
-if (days_to_next_saturday == 0) {
-    days_to_next_saturday = 7;
-}
-
-window.onload = function () {
-    $('#launch_date_textbox').datepicker('setDate', 'today +' + days_to_next_saturday);
-    changePredictLayers();
-};

@@ -1,32 +1,65 @@
-let selected_feature;
-let selected_feature_style;
+let data_dir = '/develop/data/';
 
-var base_layers = {
+let base_layers = {
     'OSM Road': L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        'maxZoom': 19,
+        'attribution': '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }),
     'ESRI Imagery': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        'attribution': 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
     })
 };
 
-function popupProperties(feature, layer) {
-    layer.bindPopup('<pre>' + JSON.stringify(feature.properties, null, ' ').replace(/[\{\}"]/g, '') + '</pre>');
+// asynchronously load polygons of controlled airspace from GeoJSON file
+let controlled_airspace = L.geoJson.ajax(data_dir + 'controlled_airspace.geojson', {
+    'onEachFeature': popupProperties,
+    'style': function (feature) {
+        let local_type = feature.properties['LOCAL_TYPE'];
 
-    layer.on('click', function (click_event) {
-        if (selected_feature != null) {
-            selected_feature.setStyle(selected_feature_style);
+        switch (local_type) {
+            case 'R':
+                return {'color': '#EA2027'};
+            case 'CLASS_B':
+                return {'color': '#0652DD'};
+            case 'CLASS_C':
+                return {'color': '#6F1E51'};
+            case 'CLASS_D':
+                return {'color': '#0652DD', 'dashArray': '4'};
+            default:
+                return {'color': '#6F1E51', 'dashArray': '4'};
         }
+    }
+});
 
-        selected_feature = click_event.target;
+// asynchronously load polygons of uncontrolled airspace from GeoJSON file
+let uncontrolled_airspace = L.geoJson.ajax(data_dir + 'uncontrolled_airspace.geojson', {
+    'onEachFeature': popupProperties,
+    'style': function (feature) {
+        return {'color': '#6F1E51', 'dashArray': '4'};
+    }
+});
 
-        if (selected_feature.setStyle != null) {
-            selected_feature_style = {color: selected_feature.options.color};
-            selected_feature.setStyle({color: '#12CBC4'});
-        } else {
-            selected_feature = null;
-            selected_feature_style = null;
-        }
-    });
-}
+// asynchronously load launch locations from GeoJSON file
+let launch_locations = L.geoJson.ajax(data_dir + 'launch_locations.geojson', {
+    'onEachFeature': popupProperties
+});
+
+// fit map to launch locations as soon as it loads
+launch_locations.on('data:loaded', function () {
+    map.fitBounds(launch_locations.getBounds());
+}.bind(this));
+
+// asynchronously load McDonald's locations from GeoJSON file
+let mcdonalds_locations = L.geoJson.ajax(data_dir + 'mcdonalds.geojson', {
+    'onEachFeature': popupProperties,
+    'pointToLayer': function (feature, latlng) {
+        return L.circleMarker(latlng, {
+            'radius': 4,
+            'fillColor': '#EE5A24',
+            'color': '#000000',
+            'weight': 1,
+            'opacity': 1,
+            'fillOpacity': 0.8
+        });
+    }
+});

@@ -19,15 +19,13 @@
         "zip": 21722,
         "url": "<a href='http:\/\/wcpsmd.com\/schools\/elementary-schools\/clear-spring-elementary'>link<\/a>",
         "x": -77.934144,
-        "y": 39.657178,
-        "z": 174.1
+        "y": 39.657178
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
           -77.934144,
-          39.657178,
-          174.1
+          39.657178
         ]
       }
     },
@@ -42,15 +40,13 @@
         "zip": 21742,
         "url": "<a href='http:\/\/www.hagerstowncc.edu'>link<\/a>",
         "x": -77.672274,
-        "y": 39.629549,
-        "z": 166.0
+        "y": 39.629549
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
           -77.672274,
-          39.629549,
-          166.0
+          39.629549
         ]
       }
     },
@@ -65,176 +61,13 @@
         "zip": 21755,
         "url": "<a href='https:\/\/education.fcps.org\/ves\/home'>link<\/a>",
         "x": -77.547824,
-        "y": 39.359031,
-        "z": 161.0
+        "y": 39.359031
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
           -77.547824,
-          39.359031,
-          161.0
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Waverly Elementary School",
-        "phone": 4103132819,
-        "street": "10220 Wetherburn Road",
-        "city": "Ellicott City",
-        "state": "MD",
-        "zip": 21042,
-        "url": "<a href='https:\/\/waves.hcpss.org'>link<\/a>",
-        "x": -77.462469,
-        "y": 39.427118,
-        "z": 120.0
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -77.462469,
-          39.427118,
-          120.0
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Hancock Elementary School",
-        "phone": 3017668178,
-        "street": "289 West Main Street",
-        "city": "Hancock",
-        "state": "MD",
-        "zip": 21750,
-        "url": "<a href='http:\/\/wcpsmd.com\/schools\/high-schools\/hancock-high'>link<\/a>",
-        "x": -78.196810,
-        "y": 39.696802,
-        "z": 172.0
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -78.196810,
-          39.696802,
-          172.0
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Emittsburg Elementary School",
-        "phone": 2402361750,
-        "street": "300 South Seton Avenue",
-        "city": "Emmitsburg",
-        "state": "MD",
-        "zip": 21727,
-        "url": "<a href='https:\/\/education.fcps.org\/ees'>link<\/a>",
-        "x": -77.329201,
-        "y": 39.703497,
-        "z": 128.0
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -77.329201,
-          39.703497,
-          128.0
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "James Buchanan Middle School",
-        "phone": 7173285221,
-        "street": "5191 Fort Loudon Road",
-        "city": "Mercersburg",
-        "state": "PA",
-        "zip": 17236,
-        "url": null,
-        "x": -77.897955,
-        "y": 39.850029,
-        "z": 178.0
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -77.897955,
-          39.850029,
-          178.0
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Benjamin Chambers Elementary School",
-        "phone": 7172613442,
-        "street": "481 North Franklin Street",
-        "city": "Chambersburg",
-        "state": "PA",
-        "zip": 17201,
-        "url": "<a href='https:\/\/www.casdonline.org\/BenjaminChambers'>link<\/a>",
-        "x": -77.667712,
-        "y": 39.94419,
-        "z": 203.0
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -77.667712,
-          39.94419,
-          203.0
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Everett Area Elementary Schools",
-        "phone": 8146529114,
-        "street": "165 E 1st Avenue",
-        "city": "Everett",
-        "state": "PA",
-        "zip": 15537,
-        "url": "<a href='https:\/\/www.everettasd.org'>link<\/a>",
-        "x": -78.358934,
-        "y": 40.004937,
-        "z": 314.0
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -78.358934,
-          40.004937,
-          314.0
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Westminster Elementary School",
-        "phone": 4107513222,
-        "street": "​​811 Uniontown Road",
-        "city": "Westminster",
-        "state": "MD",
-        "zip": 21158,
-        "url": "<a href='https:\/\/www.carrollk12.org\/schools\/elementary\/wes\/Pages\/default.asp'>link<\/a>",
-        "x": -77.025882,
-        "y": 39.579275,
-        "z": 213.0
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -77.025882,
-          39.579275,
-          213.0
+          39.359031
         ]
       }
     },
@@ -249,15 +82,160 @@
         "zip": 25425,
         "url": "<a href='https:\/\/hfms.jeff.k12.wv.us'>link<\/a>",
         "x": -77.756622,
-        "y": 39.323833,
-        "z": 162.0
+        "y": 39.323833
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
           -77.756622,
-          39.323833,
-          162.0
+          39.323833
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Waverly Elementary School",
+        "phone": 4103132819,
+        "street": "201 Waverley Drive",
+        "city": "Frederick",
+        "state": "MD",
+        "zip": 21702,
+        "url": "<a href='https:\/\/education.fcps.org/waves'>link<\/a>",
+        "x": -77.462469,
+        "y": 39.427118
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.462469,
+          39.427118
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hancock Elementary School",
+        "phone": 3017668178,
+        "street": "289 West Main Street",
+        "city": "Hancock",
+        "state": "MD",
+        "zip": 21750,
+        "url": "<a href='http:\/\/wcpsmd.com\/schools\/high-schools\/hancock-high'>link<\/a>",
+        "x": -78.19681,
+        "y": 39.696802
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.19681,
+          39.696802
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Emittsburg Elementary School",
+        "phone": 2402361750,
+        "street": "300 South Seton Avenue",
+        "city": "Emmitsburg",
+        "state": "MD",
+        "zip": 21727,
+        "url": "<a href='https:\/\/education.fcps.org\/ees'>link<\/a>",
+        "x": -77.329201,
+        "y": 39.703497
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.329201,
+          39.703497
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "James Buchanan Middle School",
+        "phone": 7173285221,
+        "street": "5191 Fort Loudon Road",
+        "city": "Mercersburg",
+        "state": "PA",
+        "zip": 17236,
+        "url": null,
+        "x": -77.897955,
+        "y": 39.850029
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.897955,
+          39.850029
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Benjamin Chambers Elementary School",
+        "phone": 7172613442,
+        "street": "481 North Franklin Street",
+        "city": "Chambersburg",
+        "state": "PA",
+        "zip": 17201,
+        "url": "<a href='https:\/\/www.casdonline.org\/BenjaminChambers'>link<\/a>",
+        "x": -77.667712,
+        "y": 39.94419
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.667712,
+          39.94419
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Everett Area Elementary Schools",
+        "phone": 8146529114,
+        "street": "165 E 1st Avenue",
+        "city": "Everett",
+        "state": "PA",
+        "zip": 15537,
+        "url": "<a href='https:\/\/www.everettasd.org'>link<\/a>",
+        "x": -78.358934,
+        "y": 40.004937
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.358934,
+          40.004937
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Westminster Elementary School",
+        "phone": 4107513222,
+        "street": "​​811 Uniontown Road",
+        "city": "Westminster",
+        "state": "MD",
+        "zip": 21158,
+        "url": "<a href='https:\/\/www.carrollk12.org\/schools\/elementary\/wes\/Pages\/default.asp'>link<\/a>",
+        "x": -77.025882,
+        "y": 39.579275
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.025882,
+          39.579275
         ]
       }
     },
@@ -272,15 +250,13 @@
         "zip": 25414,
         "url": "<a href='https:\/\/whs.jeff.k12.wv.us'>link<\/a>",
         "x": -77.880121,
-        "y": 39.259932,
-        "z": 213.0
+        "y": 39.259932
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
           -77.880121,
-          39.259932,
-          213.0
+          39.259932
         ]
       }
     },
@@ -294,16 +270,14 @@
         "state": "VA",
         "zip": 22603,
         "url": "<a href='https:\/\/jwh.frederick.k12.va.us'>link<\/a>",
-        "x": -78.183070,
-        "y": 39.212050,
-        "z": 282.0
+        "x": -78.18307,
+        "y": 39.21205
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -78.183070,
-          39.212050,
-          282.0
+          -78.18307,
+          39.21205
         ]
       }
     },
@@ -316,15 +290,14 @@
         "city": "Martinsburg",
         "state": "WV",
         "zip": 25401,
-        "url": "https:\/\/www.berkeleycountyschools.org\/martinsburghigh",
-        "x": -77.968370,
-        "y": 39.448438,
-        "z": 148.0
+        "url": "<a href='https:\/\/www.berkeleycountyschools.org\/martinsburghigh'>link<\/a>",
+        "x": -77.96837,
+        "y": 39.448438
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -77.968370,
+          -77.96837,
           39.448438
         ]
       }

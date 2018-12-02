@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-          charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>UMD Nearspace - Predicts</title>
     <link rel="stylesheet" href="../content.css">
@@ -34,14 +33,14 @@
         <div class="top_pane_div">
             <label for="launch_date_textbox">Date</label>
             <input type="text" title="Date" id="launch_date_textbox"
-                   onchange="changePredictLayers()" style="width: 10ch;">
+                   onchange="updatePredictLayers()" style="width: 10ch;">
             <label for="launch_time_hour_box">Time</label>
             <input type="number" title="Time"
                    id="launch_time_hour_box"
                    value=9
                    min=0
                    max=23
-                   onchange="changePredictLayers()"
+                   onchange="updatePredictLayers()"
                    style="width: 4ch;">
             :
             <input type="number" title="Time"
@@ -49,7 +48,7 @@
                    value=00
                    min=0
                    max=59
-                   onchange="changePredictLayers()"
+                   onchange="updatePredictLayers()"
                    style="width: 4ch;">
         </div>
 
@@ -59,7 +58,7 @@
             <label for="ascent_rate_textbox">Ascent Rate (m/s)</label>
             <input type="text" title="Ascent Rate (m/s)"
                    id="ascent_rate_textbox" value=5.5
-                   onchange="changePredictLayers()"
+                   onchange="updatePredictLayers()"
                    style="width: 4ch;">
         </div>
 
@@ -71,7 +70,7 @@
                    title="Burst Altitude (m)"
                    id="burst_altitude_textbox"
                    value=28000
-                   onchange="changePredictLayers()"
+                   onchange="updatePredictLayers()"
                    style="width: 5ch;">
         </div>
 
@@ -83,7 +82,7 @@
                    title="Sea Level Descent Rate (m/s)"
                    id="sea_level_descent_rate_textbox"
                    value=9
-                   onchange="changePredictLayers()"
+                   onchange="updatePredictLayers()"
                    style="width: 4ch;">
         </div>
     </div>
