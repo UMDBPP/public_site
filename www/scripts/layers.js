@@ -1,13 +1,8 @@
 let data_dir = '/data/';
 
 let base_layers = {
-    'OSM Road': L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        'maxZoom': 19,
-        'attribution': '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }),
-    'ESRI Imagery': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        'attribution': 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-    })
+    'OSM Road': L.tileLayer.provider('OpenStreetMap.Mapnik'),
+    'ESRI Imagery': L.tileLayer.provider('Esri.WorldImagery')
 };
 
 /* asynchronously load polygons of controlled airspace from GeoJSON file */
@@ -28,7 +23,8 @@ let controlled_airspace = L.geoJson.ajax(data_dir + 'controlled_airspace.geojson
             default:
                 return {'color': '#6F1E51', 'dashArray': '4'};
         }
-    }
+    },
+    'attribution': 'Airspace - FAA'
 });
 
 /* asynchronously load polygons of uncontrolled airspace from GeoJSON file */
@@ -36,7 +32,8 @@ let uncontrolled_airspace = L.geoJson.ajax(data_dir + 'uncontrolled_airspace.geo
     'onEachFeature': featureProperties,
     'style': function (feature) {
         return {'color': '#6F1E51', 'dashArray': '4'};
-    }
+    },
+    'attribution': 'Airspace &copy; FAA'
 });
 
 /* asynchronously load launch locations from GeoJSON file */

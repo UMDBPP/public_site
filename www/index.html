@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
     <script type="text/javascript" src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
     <script type="text/javascript" src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/leaflet-providers@1.4.0/leaflet-providers.js" async></script>
 
     <link rel="stylesheet" href="scripts/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css"/>
     <script type="text/javascript"
@@ -23,7 +24,7 @@
 </head>
 <body onresize="resizeBottomPane()">
 <div id="top_pane">
-    <div class="top_pane_div">
+    <div class="top_pane_div" style="height: 4ch; overflow: auto">
         The <b>University of Maryland Balloon Payload Program</b> offers a platform for students to build and send
         research payloads into the upper atmosphere via helium weather balloons. Below is a map of previous balloon
         flights conducted by the program.

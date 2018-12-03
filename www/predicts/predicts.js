@@ -123,7 +123,8 @@ async function getPredictLayer(api_url, launch_location_name, launch_longitude, 
         'onEachFeature': popupHighlight,
         'style': function (feature) {
             return {'color': '#1B1464', 'weight': 5};
-        }
+        },
+        'attribution': 'Prediction - ' + api_url
     });
 
     return predict_layer;
