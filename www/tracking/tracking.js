@@ -105,6 +105,8 @@ async function updateAPRSLayers(resize = true) {
     let flight_callsigns = document.getElementById('flight_callsigns_input').value;
     let ground_callsigns = document.getElementById('ground_callsigns_input').value;
 
+    let layers_valid = true;
+
     if (flight_callsigns != null) {
         flight_callsigns = flight_callsigns.split(',');
 

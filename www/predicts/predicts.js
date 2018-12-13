@@ -119,15 +119,13 @@ async function getPredictLayer(api_url, launch_location_name, launch_longitude, 
         }
     );
 
-    let predict_layer = L.geoJSON(predict_geojson, {
+    return L.geoJSON(predict_geojson, {
         'onEachFeature': popupHighlight,
         'style': function (feature) {
             return {'color': '#1B1464', 'weight': 5};
         },
         'attribution': 'Prediction - ' + api_url
     });
-
-    return predict_layer;
 }
 
 /* remove all predict layers from the map */
@@ -180,9 +178,7 @@ async function updatePredictLayers(resize = true) {
         let launch_location_name = launch_location_feature.feature.properties['name'];
         let launch_location = launch_location_feature.getLatLng();
 
-        let predict_layer = await getPredictLayer(api_url, launch_location_name, launch_location['lng'], launch_location['lat'], launch_datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate);
-
-        predict_layers[launch_location_name] = predict_layer;
+        predict_layers[launch_location_name] = await getPredictLayer(api_url, launch_location_name, launch_location['lng'], launch_location['lat'], launch_datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate);
     }
 
     /* check if user has changed options in the meantime */
