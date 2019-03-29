@@ -1,7 +1,7 @@
 let selected_feature;
 let selected_feature_previous_style;
 
-function featureProperties(feature, layer) {
+function popupFeatureProperties(feature, layer) {
     layer.bindPopup('<pre>' + JSON.stringify(feature.properties, null, ' ').replace(/[\{\}"]/g, '') + '</pre>');
 }
 
@@ -13,7 +13,7 @@ function highlightFeature(feature) {
     return starting_style;
 }
 
-function featureHighlight(feature, layer) {
+function highlightFeatureOnClick(feature, layer) {
     layer.on('click', function (click_event) {
         if (selected_feature != null) {
             selected_feature.setStyle(selected_feature_previous_style(selected_feature));
@@ -31,8 +31,8 @@ function featureHighlight(feature, layer) {
 }
 
 function popupHighlight(feature, layer) {
-    featureProperties(feature, layer);
-    featureHighlight(feature, layer);
+    popupFeatureProperties(feature, layer);
+    highlightFeatureOnClick(feature, layer);
 }
 
 /* return the overall bounds of multiple layers */
@@ -132,7 +132,7 @@ async function resizeToOverlayLayers() {
     }
 }
 
-function bringReferenceLayersToBack(add_event) {
+function sendReferenceLayersToBack(add_event) {
     if (add_event.overlay) {
         if (add_event.group.name == 'reference') {
             let added_layer = add_event.layer;

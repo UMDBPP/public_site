@@ -7,7 +7,7 @@ let base_layers = {
 
 /* asynchronously load polygons of controlled airspace from GeoJSON file */
 let controlled_airspace = L.geoJson.ajax(data_dir + 'controlled_airspace.geojson', {
-    'onEachFeature': featureProperties,
+    'onEachFeature': popupFeatureProperties,
     'style': function (feature) {
         let local_type = feature.properties['LOCAL_TYPE'];
 
@@ -29,7 +29,7 @@ let controlled_airspace = L.geoJson.ajax(data_dir + 'controlled_airspace.geojson
 
 /* asynchronously load polygons of uncontrolled airspace from GeoJSON file */
 let uncontrolled_airspace = L.geoJson.ajax(data_dir + 'uncontrolled_airspace.geojson', {
-    'onEachFeature': featureProperties,
+    'onEachFeature': popupFeatureProperties,
     'style': function (feature) {
         return {'color': '#6F1E51', 'dashArray': '4'};
     },
@@ -38,12 +38,12 @@ let uncontrolled_airspace = L.geoJson.ajax(data_dir + 'uncontrolled_airspace.geo
 
 /* asynchronously load launch locations from GeoJSON file */
 let launch_locations = L.geoJson.ajax(data_dir + 'launch_locations.geojson', {
-    'onEachFeature': featureProperties
+    'onEachFeature': popupFeatureProperties
 });
 
 /* asynchronously load McDonald's locations from GeoJSON file */
 let mcdonalds_locations = L.geoJson.ajax(data_dir + 'mcdonalds.geojson', {
-    'onEachFeature': featureProperties,
+    'onEachFeature': popupFeatureProperties,
     'pointToLayer': function (feature, latlng) {
         return L.circleMarker(latlng, {
             'radius': 4,
@@ -71,6 +71,6 @@ let map = L.map('map', {
     'zoomControl': false
 });
 
-map.on('layeradd', bringReferenceLayersToBack);
+map.on('layeradd', sendReferenceLayersToBack);
 
 map.addControl(L.control.scale());

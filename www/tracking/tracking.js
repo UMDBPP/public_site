@@ -114,7 +114,7 @@ async function updateAPRSLayers(resize = true) {
 
         if (flight_aprs_geojson.features.length > 0) {
             let flight_aprs_point_layer = L.geoJSON(flight_aprs_geojson, {
-                'onEachFeature': featureProperties,
+                'onEachFeature': popupFeatureProperties,
                 'pointToLayer': function (feature, latlng) {
                     return L.marker(latlng, {
                         icon: new L.Icon({
@@ -143,7 +143,7 @@ async function updateAPRSLayers(resize = true) {
 
         if (ground_aprs_geojson.features.length > 0) {
             let ground_aprs_point_layer = L.geoJSON(ground_aprs_geojson, {
-                'onEachFeature': featureProperties,
+                'onEachFeature': popupFeatureProperties,
                 'pointToLayer': function (feature, latlng) {
                     return L.marker(latlng, {
                         'icon': new L.Icon({
