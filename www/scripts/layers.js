@@ -1,9 +1,9 @@
 let data_dir = '/data/';
 
 let base_layers = {
-    'ESRI Gray': L.tileLayer.provider('Esri.WorldGrayCanvas'),
-    'ESRI Road': L.tileLayer.provider('Esri.WorldStreetMap'),
-    'ESRI Imagery': L.tileLayer.provider('Esri.WorldImagery')
+    'Esri Gray': L.tileLayer.provider('Esri.WorldGrayCanvas'),
+    'Esri Road': L.tileLayer.provider('Esri.WorldStreetMap'),
+    'Esri Imagery': L.tileLayer.provider('Esri.WorldImagery')
 };
 
 /* asynchronously load polygons of controlled airspace from GeoJSON file */
@@ -67,7 +67,7 @@ let overlay_layers = {
 
 /* add Leaflet map to 'map' div with grouped layer control */
 let map = L.map('map', {
-    'layers': [base_layers['ESRI Gray']],
+    'layers': [base_layers['Esri Gray']],
     'zoomSnap': 0,
     'zoomControl': false
 });
