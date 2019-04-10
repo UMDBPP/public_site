@@ -1,7 +1,8 @@
 let data_dir = '/data/';
 
 let base_layers = {
-    'OSM Road': L.tileLayer.provider('OpenStreetMap.Mapnik'),
+    'ESRI Gray': L.tileLayer.provider('Esri.WorldGrayCanvas'),
+    'ESRI Road': L.tileLayer.provider('Esri.WorldStreetMap'),
     'ESRI Imagery': L.tileLayer.provider('Esri.WorldImagery')
 };
 
@@ -66,7 +67,7 @@ let overlay_layers = {
 
 /* add Leaflet map to 'map' div with grouped layer control */
 let map = L.map('map', {
-    'layers': [base_layers['OSM Road']],
+    'layers': [base_layers['ESRI Gray']],
     'zoomSnap': 0,
     'zoomControl': false
 });
