@@ -1,7 +1,7 @@
 let map_title = '<strong>UMDBPP Balloon Flights</strong>';
 
 let flights = L.geoJson.ajax(data_dir + 'flights.geojson', {
-    'onEachFeature': popupHighlight,
+    'onEachFeature': highlightAndPopupOnClick,
     'style': function (feature) {
         return {'color': '#1B1464', 'weight': 5};
     }

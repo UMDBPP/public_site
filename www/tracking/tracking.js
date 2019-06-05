@@ -72,9 +72,7 @@ async function getAPRSPoint(station_callsign) {
 async function getAPRSGeoJSON(station_names) {
     let features_geojson = {'type': 'FeatureCollection', 'features': []};
 
-    for (let station_index in station_names) {
-        let station_name = station_names[station_index];
-
+    for (let station_name of station_names) {
         await getAPRSPoint(station_name).then(function (feature) {
             features_geojson['features'].push(feature);
         }).catch(function (response) {
@@ -114,7 +112,7 @@ async function updateAPRSLayers(resize = true) {
 
         if (flight_aprs_geojson.features.length > 0) {
             let flight_aprs_point_layer = L.geoJSON(flight_aprs_geojson, {
-                'onEachFeature': popupFeatureProperties,
+                'onEachFeature': popupFeaturePropertiesOnClick,
                 'pointToLayer': function (feature, latlng) {
                     return L.marker(latlng, {
                         icon: new L.Icon({
@@ -143,7 +141,7 @@ async function updateAPRSLayers(resize = true) {
 
         if (ground_aprs_geojson.features.length > 0) {
             let ground_aprs_point_layer = L.geoJSON(ground_aprs_geojson, {
-                'onEachFeature': popupFeatureProperties,
+                'onEachFeature': popupFeaturePropertiesOnClick,
                 'pointToLayer': function (feature, latlng) {
                     return L.marker(latlng, {
                         'icon': new L.Icon({

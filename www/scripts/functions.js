@@ -1,47 +1,51 @@
 let selected_feature;
-let selected_feature_previous_style;
+let selected_feature_original_style;
 
-function popupFeatureProperties(feature, layer) {
-    layer.bindPopup('<pre>' + JSON.stringify(feature.properties, null, ' ').replace(/[\{\}"]/g, '') + '</pre>');
+
+function featurePropertiesHTML(feature) {
+    return JSON.stringify(feature.properties, null, ' ').replace(/[\{\}"]/g, '')
+}
+
+function popupFeaturePropertiesOnClick(feature, layer) {
+    layer.bindPopup('<pre>' + featurePropertiesHTML(feature) + '</pre>');
 }
 
 function highlightFeature(feature) {
-    let starting_style = feature.options.style;
+    let original_style = feature.options.style;
     feature.setStyle({'color': '#12CBC4', 'weight': feature.options.weight + 3});
     feature.bringToFront();
-
-    return starting_style;
+    return original_style;
 }
 
 function highlightFeatureOnClick(feature, layer) {
     layer.on('click', function (click_event) {
         if (selected_feature != null) {
-            selected_feature.setStyle(selected_feature_previous_style(selected_feature));
+            selected_feature.setStyle(selected_feature_original_style(selected_feature));
         }
 
         selected_feature = click_event.target;
 
         if (selected_feature.setStyle != null) {
-            selected_feature_previous_style = highlightFeature(selected_feature);
+            selected_feature_original_style = highlightFeature(selected_feature);
         } else {
             selected_feature = null;
-            selected_feature_previous_style = null;
+            selected_feature_original_style = null;
         }
     });
 }
 
-function popupHighlight(feature, layer) {
-    popupFeatureProperties(feature, layer);
+function highlightAndPopupOnClick(feature, layer) {
     highlightFeatureOnClick(feature, layer);
+    popupFeaturePropertiesOnClick(feature, layer);
 }
 
 /* return the overall bounds of multiple layers */
-function getOverallBounds(layers) {
+function bounds(layers) {
     let northeast = layers[0].getBounds()._northEast;
     let southwest = layers[0].getBounds()._southWest;
 
-    for (let layer_index in layers) {
-        let bounds = layers[layer_index].getBounds();
+    for (let layer of layers) {
+        let bounds = layer.getBounds();
         if (bounds._northEast.lat > northeast.lat) {
             northeast.lat = bounds._northEast.lat;
         }
@@ -66,17 +70,13 @@ L.Control.GroupedLayers.include({
         let map = this._map;
         let layer_groups = this._groupList;
 
-        for (let layer_group_index in layer_groups) {
-            let layer_group = layer_groups[layer_group_index];
-
+        for (let layer_group of layer_groups) {
             if (active_layers[layer_group] == null) {
                 active_layers[layer_group] = {}
             }
         }
 
-        for (let layer_index in layers) {
-            let layer = layers[layer_index];
-
+        for (let layer of layers) {
             if (layer.overlay && map.hasLayer(layer.layer)) {
                 let layer_group = layer.group.name;
 
@@ -128,7 +128,7 @@ async function resizeToOverlayLayers() {
     }
 
     if (layers.length > 0) {
-        map.fitBounds(getOverallBounds(layers), {'padding': [50, 50]});
+        map.fitBounds(bounds(layers), {'padding': [50, 50]});
     }
 }
 

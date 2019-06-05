@@ -88,11 +88,8 @@ function getPredictLineString(api_url, name, longitude, latitude, datetime_utc, 
                     }
                 };
 
-                for (let stage_index in response['prediction']) {
-                    let stage = response['prediction'][stage_index];
-
-                    for (let trajectory_index in stage['trajectory']) {
-                        let entry = stage['trajectory'][trajectory_index];
+                for (let stage of response['prediction']) {
+                    for (let entry of stage['trajectory']) {
                         output_feature['geometry']['coordinates'].push([entry['longitude'] - 360, entry['latitude'], entry['altitude']]);
                     }
                 }
@@ -120,7 +117,7 @@ async function getPredictLayer(api_url, launch_location_name, launch_longitude, 
     );
 
     return L.geoJSON(predict_geojson, {
-        'onEachFeature': popupHighlight,
+        'onEachFeature': highlightAndPopupOnClick,
         'style': function (feature) {
             return {'color': '#1B1464', 'weight': 5};
         },
@@ -173,8 +170,7 @@ async function updatePredictLayers(resize = true) {
 
     let predict_layers = {};
 
-    for (let launch_location_index in launch_locations_features) {
-        let launch_location_feature = launch_locations_features[launch_location_index];
+    for (let launch_location_feature of launch_locations_features) {
         let launch_location_name = launch_location_feature.feature.properties['name'];
         let launch_location = launch_location_feature.getLatLng();
 
@@ -209,12 +205,10 @@ async function updatePredictLayers(resize = true) {
             }
 
             if (selected_feature != null) {
-                for (let feature_index in predict_layer._layers) {
-                    let feature = predict_layer._layers[feature_index];
-
+                for (let feature of predict_layer._layers) {
                     if (JSON.stringify(feature.feature.properties) === JSON.stringify(selected_feature.feature.properties)) {
                         selected_feature = feature;
-                        selected_feature_previous_style = highlightFeature(selected_feature);
+                        selected_feature_original_style = highlightFeature(selected_feature);
                     }
                 }
             }
