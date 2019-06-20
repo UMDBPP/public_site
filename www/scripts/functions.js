@@ -132,7 +132,8 @@ async function resizeToOverlayLayers() {
     }
 }
 
-function sendReferenceLayersToBack(add_event) {
+/* send reference layers to the back, to be overlapped by all other layers */
+function sinkReferenceLayers(add_event) {
     if (add_event.overlay) {
         if (add_event.group.name == 'reference') {
             let added_layer = add_event.layer;

@@ -39,7 +39,7 @@ date_picker.datepicker({
             $('.ui-datepicker').css('z-index', 99999999999999);
         }, 0);
     },
-    'minDate': +1,
+    'minDate': 0,
     'maxDate': +8,
     'showOtherMonths': true,
     'selectOtherMonths': true,
@@ -125,6 +125,7 @@ async function getPredictLayer(api_url, launch_location_name, launch_longitude, 
     });
 }
 
+
 /* remove all predict layers from the map */
 function removePredictLayers() {
     for (let layer_group in overlay_layers) {
@@ -133,6 +134,17 @@ function removePredictLayers() {
                 layer_control.removeLayer(overlay_layers[layer_group][layer_name]);
                 map.removeLayer(overlay_layers[layer_group][layer_name]);
                 delete overlay_layers[layer_group][layer_name];
+            }
+        }
+    }
+}
+
+/* deselect all predict layers from the map, but keep them in the layer control */
+function hidePredictLayers() {
+    for (let layer_group in overlay_layers) {
+        if (layer_group == 'predicts') {
+            for (let layer_name in overlay_layers[layer_group]) {
+                map.removeLayer(overlay_layers[layer_group][layer_name]);
             }
         }
     }
@@ -164,7 +176,7 @@ async function updatePredictLayers(resize = true) {
     let burst_altitude = document.getElementById('burst_altitude_textbox').value;
     let sea_level_descent_rate = document.getElementById('sea_level_descent_rate_textbox').value;
 
-    let starting_active_predict_layers = layer_control.getActiveOverlayLayers()['predicts'];
+    let active_predict_layers = layer_control.getActiveOverlayLayers()['predicts'];
 
     removePredictLayers();
 
@@ -181,24 +193,21 @@ async function updatePredictLayers(resize = true) {
     if (run_id == global_run_id) {
         let layer_index = 1;
 
-        let ending_active_predict_layers = {};
-
         for (let launch_location_name in predict_layers) {
             let predict_layer = predict_layers[launch_location_name];
 
             overlay_layers['predicts'][launch_location_name] = predict_layer;
             layer_control.addOverlay(predict_layer, launch_location_name, 'predicts');
 
-            if (starting_active_predict_layers != null) {
-                if (starting_active_predict_layers[launch_location_name] != null) {
+            if (active_predict_layers != null) {
+                /* add predict layers to map if they were already selected previously */
+                if (active_predict_layers[launch_location_name] != null) {
                     map.addLayer(predict_layer);
-                    ending_active_predict_layers[launch_location_name] = predict_layer;
                 }
             } else {
-                // if starting from nothing, only add the first few layers
+                /* if no layers were selected previously, add the first few layers */
                 if (layer_index <= 5) {
                     map.addLayer(predict_layer);
-                    ending_active_predict_layers[launch_location_name] = predict_layer;
                 }
 
                 layer_index++;

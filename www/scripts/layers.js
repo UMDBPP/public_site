@@ -72,6 +72,6 @@ let map = L.map('map', {
     'zoomControl': false
 });
 
-map.on('layeradd', sendReferenceLayersToBack);
+map.on('layeradd', sinkReferenceLayers);
 
 map.addControl(L.control.scale());
