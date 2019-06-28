@@ -119,7 +119,7 @@ async function getPredictLayer(api_url, launch_location_name, launch_longitude, 
     return L.geoJSON(predict_geojson, {
         'onEachFeature': highlightAndPopupOnClick,
         'style': function (feature) {
-            return {'color': '#1B1464', 'weight': 5};
+            return {'color': '#0000ff', 'weight': 10};
         },
         'attribution': 'Prediction - ' + api_url
     });
@@ -262,3 +262,4 @@ function downloadURI(uri, name) {
     download_link.href = uri;
     download_link.click();
 }
+

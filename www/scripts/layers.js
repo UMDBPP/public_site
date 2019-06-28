@@ -67,7 +67,7 @@ let overlay_layers = {
 
 /* add Leaflet map to 'map' div with grouped layer control */
 let map = L.map('map', {
-    'layers': [base_layers['Esri Gray']],
+    'layers': [base_layers['Esri Road']],
     'zoomSnap': 0,
     'zoomControl': false
 });
@@ -75,3 +75,5 @@ let map = L.map('map', {
 map.on('layeradd', sinkReferenceLayers);
 
 map.addControl(L.control.scale());
+
+map.on('click', mapClick);
