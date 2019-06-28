@@ -150,7 +150,4 @@ let CLICK_LOCATION = {
 function mapClick(click_event) {
     CLICK_LOCATION['lng'] = click_event.latlng.lng;
     CLICK_LOCATION['lat'] = click_event.latlng.lat;
-
-    updateClickMarkers();
-    updateControls();
 }
