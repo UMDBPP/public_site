@@ -84,23 +84,15 @@
     </div>
     <span class="stretch"></span>
     <div class="top_pane_div">
-        <div class="control">
-            <button id="custom_location_button" onclick="customLaunchLocationOnNextClick();">Set Custom Launch
-                Location
-            </button>
-        </div>
-    </div>
-    <span class="stretch"></span>
-    <div class="top_pane_div">
-        <button id="download_predicts_button" onclick="downloadPredictsKML()">Download Predicts</button>
-        <button id="download_airspace_button"
-                onclick="downloadURI('../data/controlled_airspace.kmz', 'CONTROLLED_AIRSPACE_LAYER.kmz')">Download
-            Airspace
-        </button>
-    </div>
-    <span class="stretch"></span>
-    <div class="top_pane_div">
         <button id="resize_button" onclick="resizeToOverlayLayers()">Resize</button>
+    </div>
+    <span class="stretch"></span>
+    <div class="top_pane_div">
+        Download:
+        <button id="download_predicts_button" onclick="downloadPredictsKML()">Predicts</button>
+        <button id="download_airspace_button"
+                onclick="downloadURI('../data/controlled_airspace.kmz', 'CONTROLLED_AIRSPACE_LAYER.kmz')">Airspace
+        </button>
     </div>
 </div>
 <div id="bottom_pane">
@@ -113,15 +105,34 @@
         <script async type="text/javascript">
             MAP.setView([39.4, -77.4], 10);
             MAP.addLayer(CONTROLLED_AIRSPACE_LAYER);
+        </script>
+        <script async type="text/javascript">
+            let today = new Date();
+            let days_to_next_saturday = (1 + 5 - today.getDay()) % 7;
 
+            if (days_to_next_saturday === 0) {
+                days_to_next_saturday = 7;
+            }
+
+            /* add date picker to input box */
+            let date_picker = $('#launch_date_textbox');
+            date_picker.datepicker({
+                'beforeShow': function () {
+                    setTimeout(function () {
+                        $('.ui-datepicker').css('z-index', 99999999999999);
+                    }, 0);
+                },
+                'minDate': 0,
+                'maxDate': +8,
+                'showOtherMonths': true,
+                'selectOtherMonths': true,
+                'dateFormat': 'yy-mm-dd'
+            });
+            date_picker.datepicker('setDate', 'today +' + days_to_next_saturday);
+        </script>
+        <script async type="text/javascript">
             window.onload = function () {
-                let today = new Date();
-                let days_to_next_saturday = (1 + 5 - today.getDay()) % 7;
-                if (days_to_next_saturday === 0) {
-                    days_to_next_saturday = 7;
-                }
-                date_picker.datepicker('setDate', 'today +' + days_to_next_saturday);
-
+                MAP.on('contextmenu', setCustomLaunchLocation);
                 updatePredictLayers();
             };
         </script>

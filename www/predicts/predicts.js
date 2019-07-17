@@ -14,21 +14,6 @@ OVERLAY_LAYERS['predicts'] = {};
 let LAYER_CONTROL = L.control.groupedLayers(BASE_LAYERS, OVERLAY_LAYERS);
 MAP.addControl(LAYER_CONTROL);
 
-/* add date picker to input box */
-let date_picker = $('#launch_date_textbox');
-date_picker.datepicker({
-    'beforeShow': function () {
-        setTimeout(function () {
-            $('.ui-datepicker').css('z-index', 99999999999999);
-        }, 0);
-    },
-    'minDate': 0,
-    'maxDate': +8,
-    'showOtherMonths': true,
-    'selectOtherMonths': true,
-    'dateFormat': 'yy-mm-dd'
-});
-
 /* retrieve a single predict from the given API and convert to a GeoJSON Feature (LineString) */
 function getPredictLineString(api_url, name, longitude, latitude, datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate) {
     return new Promise(function (resolve, reject) {
@@ -131,9 +116,8 @@ function hidePredictLayers() {
 /* refresh map with new predicts using given parameters */
 async function updatePredictLayers(resize = false) {
     let run_id = ++GLOBAL_RUN_ID;
-    let utc_offset_minutes = (new Date()).getTimezoneOffset();
-
     let api_url = API_URLS['CUSF'];
+    let utc_offset_minutes = (new Date()).getTimezoneOffset();
 
     let launch_locations_features = LAUNCH_LOCATIONS_LAYER.getLayers();
 
@@ -182,10 +166,7 @@ async function updatePredictLayers(resize = false) {
             OVERLAY_LAYERS['predicts'][launch_location_name] = predict_layer;
             LAYER_CONTROL.addOverlay(predict_layer, launch_location_name, 'predicts');
 
-            if (launch_location_name === CUSTOM_LAUNCH_LOCATION_NAME) {
-                /* add current layer to the map if it is from a user-defined launch location */
-                MAP.addLayer(predict_layer);
-            } else if (active_predict_layers != null) {
+            if (active_predict_layers != null) {
                 /* add predict layers to map if they were already selected previously */
                 if (active_predict_layers[launch_location_name] != null) {
                     MAP.addLayer(predict_layer);
@@ -219,8 +200,18 @@ async function updatePredictLayers(resize = false) {
 }
 
 
-function setCustomLaunchLocation(click_event) {
-    MAP.off('click', setCustomLaunchLocation);
+async function setCustomLaunchLocation(click_event) {
+    if (CUSTOM_LAUNCH_LOCATION_LAYER != null) {
+        LAYER_CONTROL.removeLayer(CUSTOM_LAUNCH_LOCATION_LAYER);
+        MAP.removeLayer(CUSTOM_LAUNCH_LOCATION_LAYER);
+
+        let active_predict_layers = LAYER_CONTROL.getActiveOverlayLayers()['predicts'];
+
+        if (active_predict_layers[CUSTOM_LAUNCH_LOCATION_NAME] != null) {
+            LAYER_CONTROL.removeLayer(active_predict_layers[CUSTOM_LAUNCH_LOCATION_NAME]);
+            MAP.removeLayer(active_predict_layers[CUSTOM_LAUNCH_LOCATION_NAME]);
+        }
+    }
 
     let click_longitude = click_event.latlng.lng;
     let click_latitude = click_event.latlng.lat;
@@ -236,28 +227,33 @@ function setCustomLaunchLocation(click_event) {
         }]
     };
 
-    CUSTOM_LAUNCH_LOCATION_LAYER = L.geoJson(custom_launch_location_geojson, {'onEachFeature': popupFeaturePropertiesOnClick});
+    let api_url = API_URLS['CUSF'];
+    let utc_offset_minutes = (new Date()).getTimezoneOffset();
 
-    LAYER_CONTROL.addOverlay(CUSTOM_LAUNCH_LOCATION_LAYER, CUSTOM_LAUNCH_LOCATION_NAME, 'reference');
-    MAP.addLayer(CUSTOM_LAUNCH_LOCATION_LAYER);
-
-    updatePredictLayers();
-}
-
-function customLaunchLocationOnNextClick() {
-    if (CUSTOM_LAUNCH_LOCATION_LAYER != null) {
-        LAYER_CONTROL.removeLayer(CUSTOM_LAUNCH_LOCATION_LAYER);
-        MAP.removeLayer(CUSTOM_LAUNCH_LOCATION_LAYER);
-
-        let active_predict_layers = LAYER_CONTROL.getActiveOverlayLayers()['predicts'];
-
-        if (active_predict_layers[CUSTOM_LAUNCH_LOCATION_NAME] != null) {
-            LAYER_CONTROL.removeLayer(active_predict_layers[CUSTOM_LAUNCH_LOCATION_NAME]);
-            MAP.removeLayer(active_predict_layers[CUSTOM_LAUNCH_LOCATION_NAME]);
-        }
+    let hour = (parseInt(document.getElementById('launch_time_hour_box').value) + (utc_offset_minutes / 60));
+    if (hour < 10) {
+        hour = '0' + hour
     }
 
-    MAP.on('click', setCustomLaunchLocation);
+    let minute = (parseInt(document.getElementById('launch_time_minute_box').value) + (utc_offset_minutes % 60));
+    if (minute < 10) {
+        minute = '0' + minute
+    }
+
+    let launch_datetime_utc = document.getElementById('launch_date_textbox').value + 'T' + hour + ':' + minute + ':00Z';
+    // let launch_datetime_local = document.getElementById('launch_date_textbox').value + 'T' +
+    //     document.getElementById('launch_time_hour_box').value + ':' + document.getElementById('launch_time_minute_box').value + ':00Z';
+    let ascent_rate = document.getElementById('ascent_rate_textbox').value;
+    let burst_altitude = document.getElementById('burst_altitude_textbox').value;
+    let sea_level_descent_rate = document.getElementById('sea_level_descent_rate_textbox').value;
+
+    let custom_launch_location_predict_layer = await getPredictLayer(api_url, CUSTOM_LAUNCH_LOCATION_NAME, click_longitude, click_latitude, launch_datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate);
+    MAP.addLayer(custom_launch_location_predict_layer);
+    LAYER_CONTROL.addOverlay(custom_launch_location_predict_layer, CUSTOM_LAUNCH_LOCATION_NAME, 'predicts');
+    OVERLAY_LAYERS['predicts'][CUSTOM_LAUNCH_LOCATION_NAME] = custom_launch_location_predict_layer;
+
+    CUSTOM_LAUNCH_LOCATION_LAYER = L.geoJson(custom_launch_location_geojson, {'onEachFeature': popupFeaturePropertiesOnClick});
+    LAYER_CONTROL.addOverlay(CUSTOM_LAUNCH_LOCATION_LAYER, CUSTOM_LAUNCH_LOCATION_NAME, 'reference');
 }
 
 function downloadPredictsKML() {
