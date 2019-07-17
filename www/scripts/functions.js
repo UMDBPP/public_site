@@ -1,5 +1,5 @@
-let selected_feature;
-let selected_feature_original_style;
+let SELECTED_FEATURE;
+let SELECTED_FEATURE_ORIGINAL_STYLE;
 
 
 function featurePropertiesHTML(feature) {
@@ -19,17 +19,17 @@ function highlightFeature(feature) {
 
 function highlightFeatureOnClick(feature, layer) {
     layer.on('click', function (click_event) {
-        if (selected_feature != null) {
-            selected_feature.setStyle(selected_feature_original_style(selected_feature));
+        if (SELECTED_FEATURE != null) {
+            SELECTED_FEATURE.setStyle(SELECTED_FEATURE_ORIGINAL_STYLE(SELECTED_FEATURE));
         }
 
-        selected_feature = click_event.target;
+        SELECTED_FEATURE = click_event.target;
 
-        if (selected_feature.setStyle != null) {
-            selected_feature_original_style = highlightFeature(selected_feature);
+        if (SELECTED_FEATURE.setStyle != null) {
+            SELECTED_FEATURE_ORIGINAL_STYLE = highlightFeature(SELECTED_FEATURE);
         } else {
-            selected_feature = null;
-            selected_feature_original_style = null;
+            SELECTED_FEATURE = null;
+            SELECTED_FEATURE_ORIGINAL_STYLE = null;
         }
     });
 }
@@ -111,7 +111,7 @@ L.Control.GroupedLayers.include({
 });
 
 async function resizeToOverlayLayers() {
-    let active_overlay_layers = layer_control.getActiveOverlayLayers();
+    let active_overlay_layers = LAYER_CONTROL.getActiveOverlayLayers();
 
     let layers = [];
 
@@ -128,7 +128,7 @@ async function resizeToOverlayLayers() {
     }
 
     if (layers.length > 0) {
-        map.fitBounds(bounds(layers), {'padding': [50, 50]});
+        MAP.fitBounds(bounds(layers), {'padding': [50, 50]});
     }
 }
 

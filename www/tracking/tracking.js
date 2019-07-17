@@ -1,9 +1,9 @@
 let map_title = '<strong>APRS Balloon Tracking</strong>';
 
-overlay_layers['ground'] = {};
-overlay_layers['flight'] = {};
+OVERLAY_LAYERS['ground'] = {};
+OVERLAY_LAYERS['flight'] = {};
 
-let layer_control = L.control.groupedLayers(base_layers, overlay_layers);
+let layer_control = L.control.groupedLayers(BASE_LAYERS, OVERLAY_LAYERS);
 
 let title_control = L.control({
     position: 'topleft'
@@ -16,12 +16,12 @@ title_control.onAdd = function (map) {
     return div;
 };
 
-map.addControl(layer_control);
-map.addControl(title_control);
+MAP.addControl(layer_control);
+MAP.addControl(title_control);
 
-map.setView([39.656674, -77.934194], 9);
+MAP.setView([39.656674, -77.934194], 9);
 
-map.addLayer(controlled_airspace);
+MAP.addLayer(CONTROLLED_AIRSPACE_LAYER);
 
 window.onload = function () {
     updateAPRSLayers();
@@ -86,12 +86,12 @@ async function getAPRSGeoJSON(station_names) {
 
 /* remove all layers from the map */
 function removeAPRSLayers() {
-    for (let layer_group in overlay_layers) {
+    for (let layer_group in OVERLAY_LAYERS) {
         if (layer_group != 'reference') {
-            for (let layer_name in overlay_layers[layer_group]) {
-                layer_control.removeLayer(overlay_layers[layer_group][layer_name]);
-                map.removeLayer(overlay_layers[layer_group][layer_name]);
-                delete overlay_layers[layer_group][layer_name];
+            for (let layer_name in OVERLAY_LAYERS[layer_group]) {
+                layer_control.removeLayer(OVERLAY_LAYERS[layer_group][layer_name]);
+                MAP.removeLayer(OVERLAY_LAYERS[layer_group][layer_name]);
+                delete OVERLAY_LAYERS[layer_group][layer_name];
             }
         }
     }
@@ -117,7 +117,7 @@ async function updateAPRSLayers(resize = true) {
                     return L.marker(latlng, {
                         icon: new L.Icon({
                             iconSize: [33, 42],
-                            iconUrl: data_dir + 'icons/balloon.png'
+                            iconUrl: DATA_DIR + 'icons/balloon.png'
                         })
                     });
                 },
@@ -125,9 +125,9 @@ async function updateAPRSLayers(resize = true) {
             });
 
             if (flight_aprs_point_layer != null) {
-                overlay_layers['flight']['balloon'] = flight_aprs_point_layer;
+                OVERLAY_LAYERS['flight']['balloon'] = flight_aprs_point_layer;
                 layer_control.addOverlay(flight_aprs_point_layer, 'balloon', 'flight');
-                map.addLayer(flight_aprs_point_layer);
+                MAP.addLayer(flight_aprs_point_layer);
             } else {
                 layers_valid = false;
             }
@@ -146,7 +146,7 @@ async function updateAPRSLayers(resize = true) {
                     return L.marker(latlng, {
                         'icon': new L.Icon({
                             'iconSize': [41, 20],
-                            'iconUrl': data_dir + 'icons/van.png'
+                            'iconUrl': DATA_DIR + 'icons/van.png'
                         })
                     });
                 },
@@ -154,9 +154,9 @@ async function updateAPRSLayers(resize = true) {
             });
 
             if (ground_aprs_point_layer != null) {
-                overlay_layers['ground']['vans'] = ground_aprs_point_layer;
+                OVERLAY_LAYERS['ground']['vans'] = ground_aprs_point_layer;
                 layer_control.addOverlay(ground_aprs_point_layer, 'vans', 'ground');
-                map.addLayer(ground_aprs_point_layer);
+                MAP.addLayer(ground_aprs_point_layer);
             } else {
                 layers_valid = false;
             }

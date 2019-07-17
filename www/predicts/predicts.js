@@ -1,35 +1,35 @@
-let map_title = '<strong>CUSF Balloon Predictions</strong>';
+let MAP_TITLE = '<strong>CUSF Balloon Predictions</strong>';
 
-let global_run_id = 0;
+let GLOBAL_RUN_ID = 0;
 
 let API_URLS = {
     'CUSF': 'http://predict.cusf.co.uk/api/v1/',
     'lukerenegar': 'https://predict.lukerenegar.com/api/v1.1/'
 };
 
-overlay_layers['reference']['McDonald\'s Locations'] = mcdonalds_locations;
-overlay_layers['reference']['Launch Locations'] = launch_locations;
-overlay_layers['predicts'] = {};
+OVERLAY_LAYERS['reference']['McDonald\'s Locations'] = MCDONALDS_LOCATIONS_LAYER;
+OVERLAY_LAYERS['reference']['Launch Locations'] = LAUNCH_LOCATIONS_LAYER;
+OVERLAY_LAYERS['predicts'] = {};
 
-let layer_control = L.control.groupedLayers(base_layers, overlay_layers);
+let LAYER_CONTROL = L.control.groupedLayers(BASE_LAYERS, OVERLAY_LAYERS);
 
-let title_control = L.control({
+let TITLE_CONTROL = L.control({
     position: 'topleft'
 });
 
-title_control.onAdd = function (map) {
+TITLE_CONTROL.onAdd = function (map) {
     let div = document.createElement('div');
     div.setAttribute('style', 'background-color: white; padding: 2px;');
-    div.innerHTML = map_title;
+    div.innerHTML = MAP_TITLE;
     return div;
 };
 
-map.addControl(layer_control);
-map.addControl(title_control);
+MAP.addControl(LAYER_CONTROL);
+MAP.addControl(TITLE_CONTROL);
 
-map.setView([39.656674, -77.934194], 9);
+MAP.setView([39.656674, -77.934194], 9);
 
-map.addLayer(controlled_airspace);
+MAP.addLayer(CONTROLLED_AIRSPACE_LAYER);
 
 /* add date picker to input box */
 let date_picker = $('#launch_date_textbox');
@@ -128,12 +128,12 @@ async function getPredictLayer(api_url, launch_location_name, launch_longitude, 
 
 /* remove all predict layers from the map */
 function removePredictLayers() {
-    for (let layer_group in overlay_layers) {
+    for (let layer_group in OVERLAY_LAYERS) {
         if (layer_group == 'predicts') {
-            for (let layer_name in overlay_layers[layer_group]) {
-                layer_control.removeLayer(overlay_layers[layer_group][layer_name]);
-                map.removeLayer(overlay_layers[layer_group][layer_name]);
-                delete overlay_layers[layer_group][layer_name];
+            for (let layer_name in OVERLAY_LAYERS[layer_group]) {
+                LAYER_CONTROL.removeLayer(OVERLAY_LAYERS[layer_group][layer_name]);
+                MAP.removeLayer(OVERLAY_LAYERS[layer_group][layer_name]);
+                delete OVERLAY_LAYERS[layer_group][layer_name];
             }
         }
     }
@@ -141,10 +141,10 @@ function removePredictLayers() {
 
 /* deselect all predict layers from the map, but keep them in the layer control */
 function hidePredictLayers() {
-    for (let layer_group in overlay_layers) {
+    for (let layer_group in OVERLAY_LAYERS) {
         if (layer_group == 'predicts') {
-            for (let layer_name in overlay_layers[layer_group]) {
-                map.removeLayer(overlay_layers[layer_group][layer_name]);
+            for (let layer_name in OVERLAY_LAYERS[layer_group]) {
+                MAP.removeLayer(OVERLAY_LAYERS[layer_group][layer_name]);
             }
         }
     }
@@ -152,12 +152,12 @@ function hidePredictLayers() {
 
 /* refresh map with new predicts using given parameters */
 async function updatePredictLayers(resize = true) {
-    let run_id = ++global_run_id;
+    let run_id = ++GLOBAL_RUN_ID;
     let utc_offset_minutes = (new Date()).getTimezoneOffset();
 
     let api_url = API_URLS['CUSF'];
 
-    let launch_locations_features = launch_locations.getLayers();
+    let launch_locations_features = LAUNCH_LOCATIONS_LAYER.getLayers();
 
     let hour = (parseInt(document.getElementById('launch_time_hour_box').value) + (utc_offset_minutes / 60));
     if (hour < 10) {
@@ -176,7 +176,7 @@ async function updatePredictLayers(resize = true) {
     let burst_altitude = document.getElementById('burst_altitude_textbox').value;
     let sea_level_descent_rate = document.getElementById('sea_level_descent_rate_textbox').value;
 
-    let active_predict_layers = layer_control.getActiveOverlayLayers()['predicts'];
+    let active_predict_layers = LAYER_CONTROL.getActiveOverlayLayers()['predicts'];
 
     removePredictLayers();
 
@@ -190,34 +190,36 @@ async function updatePredictLayers(resize = true) {
     }
 
     /* check if user has changed options in the meantime */
-    if (run_id == global_run_id) {
+    if (run_id == GLOBAL_RUN_ID) {
         let layer_index = 1;
 
         for (let launch_location_name in predict_layers) {
             let predict_layer = predict_layers[launch_location_name];
 
-            overlay_layers['predicts'][launch_location_name] = predict_layer;
-            layer_control.addOverlay(predict_layer, launch_location_name, 'predicts');
+            OVERLAY_LAYERS['predicts'][launch_location_name] = predict_layer;
+            LAYER_CONTROL.addOverlay(predict_layer, launch_location_name, 'predicts');
 
             if (active_predict_layers != null) {
                 /* add predict layers to map if they were already selected previously */
                 if (active_predict_layers[launch_location_name] != null) {
-                    map.addLayer(predict_layer);
+                    MAP.addLayer(predict_layer);
                 }
             } else {
                 /* if no layers were selected previously, add the first few layers */
                 if (layer_index <= 5) {
-                    map.addLayer(predict_layer);
+                    MAP.addLayer(predict_layer);
                 }
 
                 layer_index++;
             }
 
-            if (selected_feature != null) {
-                for (let feature of predict_layer._layers) {
-                    if (JSON.stringify(feature.feature.properties) === JSON.stringify(selected_feature.feature.properties)) {
-                        selected_feature = feature;
-                        selected_feature_original_style = highlightFeature(selected_feature);
+            if (SELECTED_FEATURE != null && predict_layer._layers != null) {
+                for (let feature_index in predict_layer._layers) {
+                    let feature = predict_layer._layers[feature_index];
+
+                    if (JSON.stringify(feature.feature.properties) === JSON.stringify(SELECTED_FEATURE.feature.properties)) {
+                        SELECTED_FEATURE = feature;
+                        SELECTED_FEATURE_ORIGINAL_STYLE = highlightFeature(SELECTED_FEATURE);
                     }
                 }
             }
@@ -230,9 +232,9 @@ async function updatePredictLayers(resize = true) {
 }
 
 function downloadPredictsKML() {
-    if (Object.keys(overlay_layers['predicts']).length > 0) {
-        for (let predict_layer_index in overlay_layers['predicts']) {
-            let predict_geojson = overlay_layers['predicts'][predict_layer_index].toGeoJSON();
+    if (Object.keys(OVERLAY_LAYERS['predicts']).length > 0) {
+        for (let predict_layer_index in OVERLAY_LAYERS['predicts']) {
+            let predict_geojson = OVERLAY_LAYERS['predicts'][predict_layer_index].toGeoJSON();
 
             if (predict_geojson['features'].length > 0) {
                 let output_kml = tokml(predict_geojson);

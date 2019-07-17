@@ -1,6 +1,6 @@
-let data_dir = '/data/';
+let DATA_DIR = '/data/';
 
-let base_layers = {
+let BASE_LAYERS = {
     'Esri Gray': L.tileLayer.provider('Esri.WorldGrayCanvas'),
     'Esri Topography': L.tileLayer.provider('Esri.WorldTopoMap'),
     'Esri Road': L.tileLayer.provider('Esri.WorldStreetMap'),
@@ -8,7 +8,7 @@ let base_layers = {
 };
 
 /* asynchronously load polygons of controlled airspace from GeoJSON file */
-let controlled_airspace = L.geoJson.ajax(data_dir + 'controlled_airspace.geojson', {
+let CONTROLLED_AIRSPACE_LAYER = L.geoJson.ajax(DATA_DIR + 'controlled_airspace.geojson', {
     'onEachFeature': popupFeaturePropertiesOnClick,
     'style': function (feature) {
         let local_type = feature.properties['LOCAL_TYPE'];
@@ -30,7 +30,7 @@ let controlled_airspace = L.geoJson.ajax(data_dir + 'controlled_airspace.geojson
 });
 
 /* asynchronously load polygons of uncontrolled airspace from GeoJSON file */
-let uncontrolled_airspace = L.geoJson.ajax(data_dir + 'uncontrolled_airspace.geojson', {
+let UNCONTROLLED_AIRSPACE_LAYER = L.geoJson.ajax(DATA_DIR + 'uncontrolled_airspace.geojson', {
     'onEachFeature': popupFeaturePropertiesOnClick,
     'style': function (feature) {
         return {'color': '#6F1E51', 'dashArray': '4'};
@@ -39,12 +39,12 @@ let uncontrolled_airspace = L.geoJson.ajax(data_dir + 'uncontrolled_airspace.geo
 });
 
 /* asynchronously load launch locations from GeoJSON file */
-let launch_locations = L.geoJson.ajax(data_dir + 'launch_locations.geojson', {
+let LAUNCH_LOCATIONS_LAYER = L.geoJson.ajax(DATA_DIR + 'launch_locations.geojson', {
     'onEachFeature': popupFeaturePropertiesOnClick
 });
 
 /* asynchronously load McDonald's locations from GeoJSON file */
-let mcdonalds_locations = L.geoJson.ajax(data_dir + 'mcdonalds.geojson', {
+let MCDONALDS_LOCATIONS_LAYER = L.geoJson.ajax(DATA_DIR + 'mcdonalds_locations.geojson', {
     'onEachFeature': popupFeaturePropertiesOnClick,
     'pointToLayer': function (feature, latlng) {
         return L.circleMarker(latlng, {
@@ -59,22 +59,22 @@ let mcdonalds_locations = L.geoJson.ajax(data_dir + 'mcdonalds.geojson', {
 });
 
 /* dictionary to contain toggleable layers */
-let overlay_layers = {
+let OVERLAY_LAYERS = {
     'reference': {
-        'Controlled Airspace': controlled_airspace,
-        'Uncontrolled Airspace': uncontrolled_airspace
+        'Controlled Airspace': CONTROLLED_AIRSPACE_LAYER,
+        'Uncontrolled Airspace': UNCONTROLLED_AIRSPACE_LAYER
     }
 };
 
 /* add Leaflet map to 'map' div with grouped layer control */
-let map = L.map('map', {
-    'layers': [base_layers['Esri Topography']],
+let MAP = L.map('map', {
+    'layers': [BASE_LAYERS['Esri Topography']],
     'zoomSnap': 0,
     'zoomControl': false
 });
 
-map.on('layeradd', sinkReferenceLayers);
+MAP.on('layeradd', sinkReferenceLayers);
 
-map.addControl(L.control.scale());
+MAP.addControl(L.control.scale());
 
-map.on('click', mapClick);
+MAP.on('click', mapClick);
