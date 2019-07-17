@@ -49,7 +49,7 @@ date_picker.datepicker({
 window.onload = function () {
     let today = new Date();
     let days_to_next_saturday = (1 + 5 - today.getDay()) % 7;
-    if (days_to_next_saturday == 0) {
+    if (days_to_next_saturday === 0) {
         days_to_next_saturday = 7;
     }
     date_picker.datepicker('setDate', 'today +' + days_to_next_saturday);
@@ -129,7 +129,7 @@ async function getPredictLayer(api_url, launch_location_name, launch_longitude, 
 /* remove all predict layers from the map */
 function removePredictLayers() {
     for (let layer_group in OVERLAY_LAYERS) {
-        if (layer_group == 'predicts') {
+        if (layer_group === 'predicts') {
             for (let layer_name in OVERLAY_LAYERS[layer_group]) {
                 LAYER_CONTROL.removeLayer(OVERLAY_LAYERS[layer_group][layer_name]);
                 MAP.removeLayer(OVERLAY_LAYERS[layer_group][layer_name]);
@@ -142,7 +142,7 @@ function removePredictLayers() {
 /* deselect all predict layers from the map, but keep them in the layer control */
 function hidePredictLayers() {
     for (let layer_group in OVERLAY_LAYERS) {
-        if (layer_group == 'predicts') {
+        if (layer_group === 'predicts') {
             for (let layer_name in OVERLAY_LAYERS[layer_group]) {
                 MAP.removeLayer(OVERLAY_LAYERS[layer_group][layer_name]);
             }
@@ -190,7 +190,7 @@ async function updatePredictLayers(resize = true) {
     }
 
     /* check if user has changed options in the meantime */
-    if (run_id == GLOBAL_RUN_ID) {
+    if (run_id === GLOBAL_RUN_ID) {
         let layer_index = 1;
 
         for (let launch_location_name in predict_layers) {
@@ -241,7 +241,7 @@ function downloadPredictsKML() {
 
                 output_kml = output_kml.replace(/<LineString>/g, '<LineString><extrude>1</extrude><tesselate>1</tesselate><altitudeMode>absolute</altitudeMode>');
 
-                let download_filename = 'predicts_' + predict_layer_index.replace(/-|_|:|Z|T/g, '') + '.kml';
+                let download_filename = 'predicts_' + predict_layer_index.replace(/[-_:ZT]/g, '') + '.kml';
                 let download_link = document.createElement('a');
                 let xml_blob = new Blob([output_kml], {'type': 'text/xml'});
 

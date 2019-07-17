@@ -87,7 +87,7 @@ async function getAPRSGeoJSON(station_names) {
 /* remove all layers from the map */
 function removeAPRSLayers() {
     for (let layer_group in OVERLAY_LAYERS) {
-        if (layer_group != 'reference') {
+        if (layer_group !== 'reference') {
             for (let layer_name in OVERLAY_LAYERS[layer_group]) {
                 LAYER_CONTROL.removeLayer(OVERLAY_LAYERS[layer_group][layer_name]);
                 MAP.removeLayer(OVERLAY_LAYERS[layer_group][layer_name]);

@@ -2,7 +2,7 @@ let SELECTED_FEATURE;
 let SELECTED_FEATURE_ORIGINAL_STYLE;
 
 function featurePropertiesHTML(feature) {
-    return JSON.stringify(feature.properties, null, ' ').replace(/[\{\}"]/g, '')
+    return JSON.stringify(feature.properties, null, ' ').replace(/[{}]/g, '')
 }
 
 function popupFeaturePropertiesOnClick(feature, layer) {
@@ -115,7 +115,7 @@ async function resizeToOverlayLayers() {
     let layers = [];
 
     for (let layer_group_name in active_overlay_layers) {
-        if (layer_group_name != 'reference' && layer_group_name != '') {
+        if (layer_group_name !== 'reference' && layer_group_name !== '') {
             let layer_group = active_overlay_layers[layer_group_name];
 
             if (layer_group != null) {
@@ -134,7 +134,7 @@ async function resizeToOverlayLayers() {
 /* send reference layers to the back, to be overlapped by all other layers */
 function sinkReferenceLayers(add_event) {
     if (add_event.overlay) {
-        if (add_event.group.name == 'reference') {
+        if (add_event.group.name === 'reference') {
             let added_layer = add_event.layer;
             added_layer.bringToBack();
         }
