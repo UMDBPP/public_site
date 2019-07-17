@@ -76,12 +76,12 @@ async function getPredictLayer(api_url, launch_location_name, launch_longitude, 
         }
     );
 
-    let predict_layer_style = {'weight': 10};
+    let predict_layer_style = {'weight': 5};
 
     if (launch_location_name === CUSTOM_LAUNCH_LOCATION_NAME) {
         predict_layer_style['color'] = '#ff0000';
     } else {
-        predict_layer_style['color'] = '#0000ff';
+        predict_layer_style['color'] = '#ff00ff';
     }
 
     return L.geoJSON(predict_geojson, {
