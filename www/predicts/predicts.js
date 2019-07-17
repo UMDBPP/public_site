@@ -1,5 +1,3 @@
-let MAP_TITLE = '<strong>CUSF Balloon Predictions</strong>';
-
 let GLOBAL_RUN_ID = 0;
 
 let API_URLS = {
@@ -13,19 +11,7 @@ OVERLAY_LAYERS['predicts'] = {};
 
 let LAYER_CONTROL = L.control.groupedLayers(BASE_LAYERS, OVERLAY_LAYERS);
 
-let TITLE_CONTROL = L.control({
-    position: 'topleft'
-});
-
-TITLE_CONTROL.onAdd = function (map) {
-    let div = document.createElement('div');
-    div.setAttribute('style', 'background-color: white; padding: 2px;');
-    div.innerHTML = MAP_TITLE;
-    return div;
-};
-
 MAP.addControl(LAYER_CONTROL);
-MAP.addControl(TITLE_CONTROL);
 
 MAP.setView([39.656674, -77.934194], 9);
 
@@ -241,7 +227,7 @@ function downloadPredictsKML() {
 
                 output_kml = output_kml.replace(/<LineString>/g, '<LineString><extrude>1</extrude><tesselate>1</tesselate><altitudeMode>absolute</altitudeMode>');
 
-                let download_filename = 'predicts_' + predict_layer_index.replace(/[-_:ZT]/g, '') + '.kml';
+                let download_filename = 'predicts_' + predict_layer_index.replace(/[-_:ZT ]/g, '') + '.kml';
                 let download_link = document.createElement('a');
                 let xml_blob = new Blob([output_kml], {'type': 'text/xml'});
 

@@ -1,23 +1,9 @@
-let MAP_TITLE = '<strong>APRS Balloon Tracking</strong>';
-
 OVERLAY_LAYERS['ground'] = {};
 OVERLAY_LAYERS['flight'] = {};
 
 let LAYER_CONTROL = L.control.groupedLayers(BASE_LAYERS, OVERLAY_LAYERS);
 
-let TITLE_CONTROL = L.control({
-    position: 'topleft'
-});
-
-TITLE_CONTROL.onAdd = function (map) {
-    let div = document.createElement('div');
-    div.setAttribute('style', 'background-color: white; padding: 2px;');
-    div.innerHTML = MAP_TITLE;
-    return div;
-};
-
 MAP.addControl(LAYER_CONTROL);
-MAP.addControl(TITLE_CONTROL);
 
 MAP.setView([39.656674, -77.934194], 9);
 
