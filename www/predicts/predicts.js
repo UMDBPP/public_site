@@ -1,4 +1,7 @@
 let GLOBAL_RUN_ID = 0;
+let RUN_INTERRUPTED = false;
+let ACTIVE_PREDICT_LAYERS;
+
 let CUSTOM_LAUNCH_LOCATION_LAYER;
 let CUSTOM_LAUNCH_LOCATION_NAME = 'custom launch location';
 
@@ -116,6 +119,13 @@ function hidePredictLayers() {
 /* refresh map with new predicts using given parameters */
 async function updatePredictLayers(resize = false) {
     let run_id = ++GLOBAL_RUN_ID;
+
+    let previous_active_predict_layers = ACTIVE_PREDICT_LAYERS;
+
+    if (!RUN_INTERRUPTED) {
+        ACTIVE_PREDICT_LAYERS = LAYER_CONTROL.getActiveOverlayLayers()['predicts'];
+    }
+
     let api_url = API_URLS['CUSF'];
     let utc_offset_minutes = (new Date()).getTimezoneOffset();
 
@@ -123,7 +133,7 @@ async function updatePredictLayers(resize = false) {
 
     /* add custom launch location if it exists */
     if (CUSTOM_LAUNCH_LOCATION_LAYER != null) {
-        launch_locations_features.push(...CUSTOM_LAUNCH_LOCATION_LAYER.getLayers());
+        launch_locations_features.unshift(...CUSTOM_LAUNCH_LOCATION_LAYER.getLayers());
     }
 
     let hour = (parseInt(document.getElementById('launch_time_hour_box').value) + (utc_offset_minutes / 60));
@@ -143,32 +153,26 @@ async function updatePredictLayers(resize = false) {
     let burst_altitude = document.getElementById('burst_altitude_textbox').value;
     let sea_level_descent_rate = document.getElementById('sea_level_descent_rate_textbox').value;
 
-    let active_predict_layers = LAYER_CONTROL.getActiveOverlayLayers()['predicts'];
-
     removePredictLayers();
 
     let predict_layers = {};
+    let layer_index = 1;
 
     for (let launch_location_feature of launch_locations_features) {
         let launch_location_name = launch_location_feature.feature.properties['name'];
         let launch_location = launch_location_feature.getLatLng();
 
-        predict_layers[launch_location_name] = await getPredictLayer(api_url, launch_location_name, launch_location['lng'], launch_location['lat'], launch_datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate);
-    }
+        let predict_layer = await getPredictLayer(api_url, launch_location_name, launch_location['lng'], launch_location['lat'], launch_datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate);
+        predict_layers[launch_location_name] = predict_layer;
 
-    /* check if user has changed options in the meantime */
-    if (run_id === GLOBAL_RUN_ID) {
-        let layer_index = 1;
-
-        for (let launch_location_name in predict_layers) {
-            let predict_layer = predict_layers[launch_location_name];
-
+        /* check if user has changed options in the meantime */
+        if (run_id === GLOBAL_RUN_ID) {
             OVERLAY_LAYERS['predicts'][launch_location_name] = predict_layer;
             LAYER_CONTROL.addOverlay(predict_layer, launch_location_name, 'predicts');
 
-            if (active_predict_layers != null) {
+            if (ACTIVE_PREDICT_LAYERS != null) {
                 /* add predict layers to map if they were already selected previously */
-                if (active_predict_layers[launch_location_name] != null) {
+                if (ACTIVE_PREDICT_LAYERS[launch_location_name] != null) {
                     MAP.addLayer(predict_layer);
                 }
             } else {
@@ -191,8 +195,14 @@ async function updatePredictLayers(resize = false) {
                     }
                 }
             }
+        } else {
+            RUN_INTERRUPTED = true;
+            ACTIVE_PREDICT_LAYERS = previous_active_predict_layers;
+            return;
         }
     }
+
+    RUN_INTERRUPTED = false;
 
     if (resize) {
         resizeToOverlayLayers();
