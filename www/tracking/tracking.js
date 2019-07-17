@@ -2,17 +2,7 @@ OVERLAY_LAYERS['ground'] = {};
 OVERLAY_LAYERS['flight'] = {};
 
 let LAYER_CONTROL = L.control.groupedLayers(BASE_LAYERS, OVERLAY_LAYERS);
-
 MAP.addControl(LAYER_CONTROL);
-
-MAP.setView([39.656674, -77.934194], 9);
-
-MAP.addLayer(CONTROLLED_AIRSPACE_LAYER);
-
-window.onload = function () {
-    updateAPRSLayers();
-    window.setInterval(updateAPRSLayers(), 10000);
-};
 
 // let last_packets = {};
 

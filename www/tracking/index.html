@@ -55,6 +55,15 @@
         <script src="../scripts/functions.js" type="text/javascript"></script>
         <script src="../scripts/layers.js" type="text/javascript"></script>
         <script src="tracking.js" type="text/javascript"></script>
+        <script async type="text/javascript">
+            MAP.setView([39.4, -77.4], 10);
+            MAP.addLayer(CONTROLLED_AIRSPACE_LAYER);
+
+            window.onload = function () {
+                updateAPRSLayers();
+                window.setInterval(updateAPRSLayers(), 10000);
+            };
+        </script>
     </div>
 </div>
 </body>

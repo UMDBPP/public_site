@@ -10,22 +10,21 @@ function popupFeaturePropertiesOnClick(feature, layer) {
 }
 
 function highlightFeature(feature) {
-    let original_style = feature.options.style;
     feature.setStyle({'color': '#12CBC4', 'weight': feature.options.weight + 3});
     feature.bringToFront();
-    return original_style;
 }
 
 function highlightFeatureOnClick(feature, layer) {
     layer.on('click', function (click_event) {
         if (SELECTED_FEATURE != null) {
-            SELECTED_FEATURE.setStyle(SELECTED_FEATURE_ORIGINAL_STYLE(SELECTED_FEATURE));
+            SELECTED_FEATURE.setStyle(SELECTED_FEATURE_ORIGINAL_STYLE);
         }
 
         SELECTED_FEATURE = click_event.target;
 
         if (SELECTED_FEATURE.setStyle != null) {
-            SELECTED_FEATURE_ORIGINAL_STYLE = highlightFeature(SELECTED_FEATURE);
+            SELECTED_FEATURE_ORIGINAL_STYLE = SELECTED_FEATURE.options.style;
+            highlightFeature(SELECTED_FEATURE);
         } else {
             SELECTED_FEATURE = null;
             SELECTED_FEATURE_ORIGINAL_STYLE = null;

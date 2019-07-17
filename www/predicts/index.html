@@ -84,6 +84,14 @@
     </div>
     <span class="stretch"></span>
     <div class="top_pane_div">
+        <div class="control">
+            <button id="custom_location_button" onclick="customLaunchLocationOnNextClick();">Set Custom Launch
+                Location
+            </button>
+        </div>
+    </div>
+    <span class="stretch"></span>
+    <div class="top_pane_div">
         <button id="download_predicts_button" onclick="downloadPredictsKML()">Download Predicts</button>
         <button id="download_airspace_button"
                 onclick="downloadURI('../data/controlled_airspace.kmz', 'CONTROLLED_AIRSPACE_LAYER.kmz')">Download
@@ -101,7 +109,22 @@
     <div id="map">
         <script src="../scripts/functions.js" type="text/javascript"></script>
         <script src="../scripts/layers.js" type="text/javascript"></script>
-        <script src="predicts.js" type="text/javascript"></script>
+        <script async src="predicts.js" type="text/javascript"></script>
+        <script async type="text/javascript">
+            MAP.setView([39.4, -77.4], 10);
+            MAP.addLayer(CONTROLLED_AIRSPACE_LAYER);
+
+            window.onload = function () {
+                let today = new Date();
+                let days_to_next_saturday = (1 + 5 - today.getDay()) % 7;
+                if (days_to_next_saturday === 0) {
+                    days_to_next_saturday = 7;
+                }
+                date_picker.datepicker('setDate', 'today +' + days_to_next_saturday);
+
+                updatePredictLayers();
+            };
+        </script>
     </div>
 </div>
 </body>
