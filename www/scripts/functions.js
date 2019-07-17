@@ -1,7 +1,6 @@
 let SELECTED_FEATURE;
 let SELECTED_FEATURE_ORIGINAL_STYLE;
 
-
 function featurePropertiesHTML(feature) {
     return JSON.stringify(feature.properties, null, ' ').replace(/[\{\}"]/g, '')
 }

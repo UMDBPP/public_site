@@ -117,7 +117,7 @@ async function updateAPRSLayers(resize = true) {
                     return L.marker(latlng, {
                         icon: new L.Icon({
                             iconSize: [33, 42],
-                            iconUrl: DATA_DIR + 'icons/balloon.png'
+                            iconUrl: DATA_DIRECTORY + 'icons/balloon.png'
                         })
                     });
                 },
@@ -146,7 +146,7 @@ async function updateAPRSLayers(resize = true) {
                     return L.marker(latlng, {
                         'icon': new L.Icon({
                             'iconSize': [41, 20],
-                            'iconUrl': DATA_DIR + 'icons/van.png'
+                            'iconUrl': DATA_DIRECTORY + 'icons/van.png'
                         })
                     });
                 },

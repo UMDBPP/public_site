@@ -1,4 +1,4 @@
-let DATA_DIR = '/data/';
+let DATA_DIRECTORY = '/data/';
 
 let BASE_LAYERS = {
     'Esri Gray': L.tileLayer.provider('Esri.WorldGrayCanvas'),
@@ -8,7 +8,7 @@ let BASE_LAYERS = {
 };
 
 /* asynchronously load polygons of controlled airspace from GeoJSON file */
-let CONTROLLED_AIRSPACE_LAYER = L.geoJson.ajax(DATA_DIR + 'controlled_airspace.geojson', {
+let CONTROLLED_AIRSPACE_LAYER = L.geoJson.ajax(DATA_DIRECTORY + 'controlled_airspace.geojson', {
     'onEachFeature': popupFeaturePropertiesOnClick,
     'style': function (feature) {
         let local_type = feature.properties['LOCAL_TYPE'];
@@ -30,7 +30,7 @@ let CONTROLLED_AIRSPACE_LAYER = L.geoJson.ajax(DATA_DIR + 'controlled_airspace.g
 });
 
 /* asynchronously load polygons of uncontrolled airspace from GeoJSON file */
-let UNCONTROLLED_AIRSPACE_LAYER = L.geoJson.ajax(DATA_DIR + 'uncontrolled_airspace.geojson', {
+let UNCONTROLLED_AIRSPACE_LAYER = L.geoJson.ajax(DATA_DIRECTORY + 'uncontrolled_airspace.geojson', {
     'onEachFeature': popupFeaturePropertiesOnClick,
     'style': function (feature) {
         return {'color': '#6F1E51', 'dashArray': '4'};
@@ -39,12 +39,12 @@ let UNCONTROLLED_AIRSPACE_LAYER = L.geoJson.ajax(DATA_DIR + 'uncontrolled_airspa
 });
 
 /* asynchronously load launch locations from GeoJSON file */
-let LAUNCH_LOCATIONS_LAYER = L.geoJson.ajax(DATA_DIR + 'launch_locations.geojson', {
+let LAUNCH_LOCATIONS_LAYER = L.geoJson.ajax(DATA_DIRECTORY + 'launch_locations.geojson', {
     'onEachFeature': popupFeaturePropertiesOnClick
 });
 
 /* asynchronously load McDonald's locations from GeoJSON file */
-let MCDONALDS_LOCATIONS_LAYER = L.geoJson.ajax(DATA_DIR + 'mcdonalds_locations.geojson', {
+let MCDONALDS_LOCATIONS_LAYER = L.geoJson.ajax(DATA_DIRECTORY + 'mcdonalds_locations.geojson', {
     'onEachFeature': popupFeaturePropertiesOnClick,
     'pointToLayer': function (feature, latlng) {
         return L.circleMarker(latlng, {
