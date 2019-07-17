@@ -1,23 +1,23 @@
-let map_title = '<strong>APRS Balloon Tracking</strong>';
+let MAP_TITLE = '<strong>APRS Balloon Tracking</strong>';
 
 OVERLAY_LAYERS['ground'] = {};
 OVERLAY_LAYERS['flight'] = {};
 
-let layer_control = L.control.groupedLayers(BASE_LAYERS, OVERLAY_LAYERS);
+let LAYER_CONTROL = L.control.groupedLayers(BASE_LAYERS, OVERLAY_LAYERS);
 
-let title_control = L.control({
+let TITLE_CONTROL = L.control({
     position: 'topleft'
 });
 
-title_control.onAdd = function (map) {
+TITLE_CONTROL.onAdd = function (map) {
     let div = document.createElement('div');
     div.setAttribute('style', 'background-color: white; padding: 2px;');
-    div.innerHTML = map_title;
+    div.innerHTML = MAP_TITLE;
     return div;
 };
 
-MAP.addControl(layer_control);
-MAP.addControl(title_control);
+MAP.addControl(LAYER_CONTROL);
+MAP.addControl(TITLE_CONTROL);
 
 MAP.setView([39.656674, -77.934194], 9);
 
@@ -89,7 +89,7 @@ function removeAPRSLayers() {
     for (let layer_group in OVERLAY_LAYERS) {
         if (layer_group != 'reference') {
             for (let layer_name in OVERLAY_LAYERS[layer_group]) {
-                layer_control.removeLayer(OVERLAY_LAYERS[layer_group][layer_name]);
+                LAYER_CONTROL.removeLayer(OVERLAY_LAYERS[layer_group][layer_name]);
                 MAP.removeLayer(OVERLAY_LAYERS[layer_group][layer_name]);
                 delete OVERLAY_LAYERS[layer_group][layer_name];
             }
@@ -126,7 +126,7 @@ async function updateAPRSLayers(resize = true) {
 
             if (flight_aprs_point_layer != null) {
                 OVERLAY_LAYERS['flight']['balloon'] = flight_aprs_point_layer;
-                layer_control.addOverlay(flight_aprs_point_layer, 'balloon', 'flight');
+                LAYER_CONTROL.addOverlay(flight_aprs_point_layer, 'balloon', 'flight');
                 MAP.addLayer(flight_aprs_point_layer);
             } else {
                 layers_valid = false;
@@ -155,7 +155,7 @@ async function updateAPRSLayers(resize = true) {
 
             if (ground_aprs_point_layer != null) {
                 OVERLAY_LAYERS['ground']['vans'] = ground_aprs_point_layer;
-                layer_control.addOverlay(ground_aprs_point_layer, 'vans', 'ground');
+                LAYER_CONTROL.addOverlay(ground_aprs_point_layer, 'vans', 'ground');
                 MAP.addLayer(ground_aprs_point_layer);
             } else {
                 layers_valid = false;
