@@ -104,6 +104,8 @@
         <script async src="predicts.js" type="text/javascript"></script>
         <script async type="text/javascript">
             MAP.setView([39.4, -77.4], 10);
+            MAP.removeLayer(BASE_LAYERS['Esri Topography']);
+            MAP.addLayer(BASE_LAYERS['Esri Gray']);
             MAP.addLayer(CONTROLLED_AIRSPACE_LAYER);
         </script>
         <script async type="text/javascript">

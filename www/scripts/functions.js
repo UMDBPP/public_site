@@ -17,7 +17,7 @@ function highlightFeature(feature) {
 function highlightFeatureOnClick(feature, layer) {
     layer.on('click', function (click_event) {
         if (SELECTED_FEATURE != null) {
-            SELECTED_FEATURE.setStyle(SELECTED_FEATURE_ORIGINAL_STYLE);
+            SELECTED_FEATURE.setStyle(SELECTED_FEATURE_ORIGINAL_STYLE(SELECTED_FEATURE));
         }
 
         SELECTED_FEATURE = click_event.target;
@@ -138,14 +138,4 @@ function sinkReferenceLayers(add_event) {
             added_layer.bringToBack();
         }
     }
-}
-
-let CLICK_LOCATION = {
-    lng: null,
-    lat: null
-};
-
-function mapClick(click_event) {
-    CLICK_LOCATION['lng'] = click_event.latlng.lng;
-    CLICK_LOCATION['lat'] = click_event.latlng.lat;
 }

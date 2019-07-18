@@ -76,13 +76,16 @@ async function getPredictLayer(api_url, launch_location_name, launch_longitude, 
         }
     );
 
-    let predict_layer_style = {'weight': 5};
+    let predict_layer_style = function (feature) {
+        if (feature.feature != null) {
+            feature = feature.feature;
+        }
 
-    if (launch_location_name === CUSTOM_LAUNCH_LOCATION_NAME) {
-        predict_layer_style['color'] = '#ff0000';
-    } else {
-        predict_layer_style['color'] = '#ff00ff';
-    }
+        return {
+            'weight': 5,
+            'color': feature.properties['name'] === CUSTOM_LAUNCH_LOCATION_NAME ? '#ff0000' : '#ff00ff'
+        };
+    };
 
     return L.geoJSON(predict_geojson, {
         'onEachFeature': highlightAndPopupOnClick,

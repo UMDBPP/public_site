@@ -68,13 +68,9 @@ let OVERLAY_LAYERS = {
 
 /* add Leaflet map to 'map' div with grouped layer control */
 let MAP = L.map('map', {
-    'layers': [BASE_LAYERS['Esri Topography']],
+    'layers': [BASE_LAYERS['Esri Gray']],
     'zoomSnap': 0,
     'zoomControl': false
 });
-
 MAP.on('layeradd', sinkReferenceLayers);
-
 MAP.addControl(L.control.scale());
-
-MAP.on('click', mapClick);
