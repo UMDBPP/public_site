@@ -180,7 +180,7 @@ async function updatePredictLayers(resize = false) {
                 }
             } else {
                 /* if no layers were selected previously, add the first few layers */
-                if (layer_index <= 5) {
+                if (layer_index <= 7) {
                     MAP.addLayer(predict_layer);
                 }
 

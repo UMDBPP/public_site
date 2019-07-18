@@ -11,42 +11,6 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Clear Spring Elementary School",
-        "phone": 3017668074,
-        "address": "12627 Broadfording Road, Clear Spring, MD 21722",
-        "url": "<a href='http:\/\/wcpsmd.com\/schools\/elementary-schools\/clear-spring-elementary'>link<\/a>",
-        "x": -77.934144,
-        "y": 39.657178
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -77.934144,
-          39.657178
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Hagerstown Community College",
-        "phone": 2405002238,
-        "address": "11400 Robinwood Drive, Hagerstown, MD 21742",
-        "url": "<a href='http:\/\/www.hagerstowncc.edu'>link<\/a>",
-        "x": -77.672274,
-        "y": 39.629549
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -77.672274,
-          39.629549
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "Valley Elementary School",
         "phone": 2402363000,
         "address": "3519 Jefferson Pike, Jefferson, MD 21755",
@@ -83,18 +47,107 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Waverly Elementary School",
-        "phone": 4103132819,
-        "address": "201 Waverley Drive, Frederick, MD 21702",
-        "url": "<a href='https:\/\/education.fcps.org/waves'>link<\/a>",
-        "x": -77.462469,
-        "y": 39.427118
+        "name": "Elmer Wolfe Elementary School",
+        "phone": 4107513000,
+        "address": "125 North Court Street, Union Bridge, MD 21157",
+        "url": "<a href='https:\/\/www.carrollk12.org\/schools\/elementary\/ewe\/Pages\/default.aspx'>link<\/a>",
+        "x": -77.17722,
+        "y": 39.57615
+      }, "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.17722,
+          39.57615
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Westminster Elementary School",
+        "phone": 4107513222,
+        "address": "​​811 Uniontown Road, Westminster, MD 21158",
+        "url": "<a href='https:\/\/www.carrollk12.org\/schools\/elementary\/wes\/Pages\/default.asp'>link<\/a>",
+        "x": -77.025882,
+        "y": 39.579275
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -77.462469,
-          39.427118
+          -77.025882,
+          39.579275
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Emittsburg Elementary School",
+        "phone": 2402361750,
+        "address": "300 South Seton Avenue, Emmitsburg, MD 21727",
+        "url": "<a href='https:\/\/education.fcps.org\/ees'>link<\/a>",
+        "x": -77.329201,
+        "y": 39.703497
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.329201,
+          39.703497
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hagerstown Community College",
+        "phone": 2405002238,
+        "address": "11400 Robinwood Drive, Hagerstown, MD 21742",
+        "url": "<a href='http:\/\/www.hagerstowncc.edu'>link<\/a>",
+        "x": -77.672274,
+        "y": 39.629549
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.672274,
+          39.629549
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Clear Spring Elementary School",
+        "phone": 3017668074,
+        "address": "12627 Broadfording Road, Clear Spring, MD 21722",
+        "url": "<a href='http:\/\/wcpsmd.com\/schools\/elementary-schools\/clear-spring-elementary'>link<\/a>",
+        "x": -77.934144,
+        "y": 39.657178
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.934144,
+          39.657178
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "James Wood High School",
+        "phone": 5406675226,
+        "address": "161 Apple Pie Ridge Road, Winchester, VA 22603",
+        "url": "<a href='https:\/\/jwh.frederick.k12.va.us'>link<\/a>",
+        "x": -78.18307,
+        "y": 39.21205
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.18307,
+          39.21205
         ]
       }
     },
@@ -119,18 +172,18 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Emittsburg Elementary School",
-        "phone": 2402361750,
-        "address": "300 South Seton Avenue, Emmitsburg, MD 21727",
-        "url": "<a href='https:\/\/education.fcps.org\/ees'>link<\/a>",
-        "x": -77.329201,
-        "y": 39.703497
+        "name": "Washington High School",
+        "phone": 3048855110,
+        "address": "300 Washington Patriot Drive, Charles Town, WV 25414",
+        "url": "<a href='https:\/\/whs.jeff.k12.wv.us'>link<\/a>",
+        "x": -77.880121,
+        "y": 39.259932
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -77.329201,
-          39.703497
+          -77.880121,
+          39.259932
         ]
       }
     },
@@ -191,54 +244,18 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Westminster Elementary School",
-        "phone": 4107513222,
-        "address": "​​811 Uniontown Road, Westminster, MD 21158",
-        "url": "<a href='https:\/\/www.carrollk12.org\/schools\/elementary\/wes\/Pages\/default.asp'>link<\/a>",
-        "x": -77.025882,
-        "y": 39.579275
+        "name": "Waverly Elementary School",
+        "phone": 4103132819,
+        "address": "201 Waverley Drive, Frederick, MD 21702",
+        "url": "<a href='https:\/\/education.fcps.org/waves'>link<\/a>",
+        "x": -77.462469,
+        "y": 39.427118
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -77.025882,
-          39.579275
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Washington High School",
-        "phone": 3048855110,
-        "address": "300 Washington Patriot Drive, Charles Town, WV 25414",
-        "url": "<a href='https:\/\/whs.jeff.k12.wv.us'>link<\/a>",
-        "x": -77.880121,
-        "y": 39.259932
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -77.880121,
-          39.259932
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "James Wood High School",
-        "phone": 5406675226,
-        "address": "161 Apple Pie Ridge Road, Winchester, VA 22603",
-        "url": "<a href='https:\/\/jwh.frederick.k12.va.us'>link<\/a>",
-        "x": -78.18307,
-        "y": 39.21205
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -78.18307,
-          39.21205
+          -77.462469,
+          39.427118
         ]
       }
     },
@@ -257,23 +274,6 @@
         "coordinates": [
           -77.96837,
           39.448438
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Elmer Wolfe Elementary School",
-        "phone": 4107513000,
-        "address": "125 North Court Street, Union Bridge, MD 21157",
-        "url": "<a href='https:\/\/www.carrollk12.org\/schools\/elementary\/ewe\/Pages\/default.aspx'>link<\/a>",
-        "x": -77.17722,
-        "y": 39.57615
-      }, "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -77.17722,
-          39.57615
         ]
       }
     }
