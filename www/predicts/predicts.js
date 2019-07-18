@@ -162,7 +162,7 @@ async function updatePredictLayers(resize = false) {
     let layer_index = 1;
 
     for (let launch_location_feature of launch_locations_features) {
-        let launch_location_name = launch_location_feature.feature.properties['name'];
+        let launch_location_name = launch_location_feature.feature.properties['address'].match(/(,\s)(.*?)(,\s)/g)[0].replaceAll(', ', '');
         let launch_location = launch_location_feature.getLatLng();
 
         let predict_layer = await getPredictLayer(api_url, launch_location_name, launch_location['lng'], launch_location['lat'], launch_datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate);

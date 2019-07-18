@@ -1,6 +1,14 @@
 let SELECTED_FEATURE;
 let SELECTED_FEATURE_ORIGINAL_STYLE;
 
+String.prototype.replaceAll = function (search, replacement) {
+    if (typeof search == 'string') {
+        return this.replace(new RegExp(search, 'g'), replacement);
+    } else {
+        return this.replace(search, replacement);
+    }
+};
+
 function featurePropertiesHTML(feature) {
     return JSON.stringify(feature.properties, null, ' ').replace(/[{}]/g, '')
 }
