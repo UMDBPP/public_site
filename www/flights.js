@@ -1,9 +1,14 @@
 let COLOR_RAMP = chroma.scale('Spectral').mode('lab');
 
-let FLIGHT_NUMBER_RANGE = [45, 86];
+let COLOR_VALUE_MIN = dateToTimestamp('2014-11-08');
+let COLOR_VALUE_MAX = dateToTimestamp(new Date().toDateString());
 
-function color(value, min, max) {
+function spectral_color_ramp(value, min, max) {
     return COLOR_RAMP((value - min) / (max - min));
+}
+
+function dateToTimestamp(date) {
+    return parseInt((new Date(date).getTime() / 1000).toFixed(0));
 }
 
 let FLIGHTS = L.geoJson.ajax(DATA_DIRECTORY + 'flights.geojson', {
@@ -13,8 +18,10 @@ let FLIGHTS = L.geoJson.ajax(DATA_DIRECTORY + 'flights.geojson', {
             feature = feature.feature;
         }
 
-        let flight_number = parseInt(feature.properties['Flight'].substring(2, 4));
-        return {'color': color(flight_number, ...FLIGHT_NUMBER_RANGE), 'weight': 5};
+        return {
+            'color': spectral_color_ramp(dateToTimestamp(feature.properties['Date']), COLOR_VALUE_MIN, COLOR_VALUE_MAX),
+            'weight': 5
+        };
     }
 });
 MAP.addLayer(FLIGHTS);
