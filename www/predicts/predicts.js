@@ -18,7 +18,7 @@ let LAYER_CONTROL = L.control.groupedLayers(BASE_LAYERS, OVERLAY_LAYERS);
 MAP.addControl(LAYER_CONTROL);
 
 /* retrieve a single predict from the given API and convert to a GeoJSON Feature (LineString) */
-function getPredictLineString(api_url, name, longitude, latitude, datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate) {
+function getPredictLineString(api_url, name, address, longitude, latitude, datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate) {
     return new Promise(function (resolve, reject) {
         $.ajax({
             'url': api_url,
@@ -44,7 +44,9 @@ function getPredictLineString(api_url, name, longitude, latitude, datetime_utc, 
                     },
                     'properties': {
                         'name': name,
-                        'model_run': response['request']['dataset'] + ' UTC'
+                        'model_run': response['request']['dataset'] + ' UTC',
+                        'address': address,
+                        'location': '(' + (longitude - 360).toFixed(5) + ', ' + latitude.toFixed(5) + ')'
                     }
                 };
 
@@ -61,7 +63,7 @@ function getPredictLineString(api_url, name, longitude, latitude, datetime_utc, 
 }
 
 /* retrieve predict for a single launch location as a GeoJSON FeatureCollection */
-async function getPredictLayer(api_url, launch_location_name, launch_longitude, launch_latitude, launch_datetime, ascent_rate, burst_altitude, sea_level_descent_rate) {
+async function getPredictLayer(api_url, launch_location_name, address, launch_longitude, launch_latitude, launch_datetime, ascent_rate, burst_altitude, sea_level_descent_rate) {
     let predict_geojson = {'type': 'FeatureCollection', 'features': []};
 
     /* CUSF API requires longitude in 0-360 format */
@@ -69,7 +71,7 @@ async function getPredictLayer(api_url, launch_location_name, launch_longitude, 
         launch_longitude = launch_longitude + 360;
     }
 
-    await getPredictLineString(api_url, launch_location_name, launch_longitude, launch_latitude, launch_datetime, ascent_rate, burst_altitude, sea_level_descent_rate).then(function (feature) {
+    await getPredictLineString(api_url, launch_location_name, address, launch_longitude, launch_latitude, launch_datetime, ascent_rate, burst_altitude, sea_level_descent_rate).then(function (feature) {
         predict_geojson['features'].push(feature);
     }).catch(function (response) {
             console.log('Prediction error: ' + response.status + ' ' + response.error);
@@ -162,10 +164,11 @@ async function updatePredictLayers(resize = false) {
     let layer_index = 1;
 
     for (let launch_location_feature of launch_locations_features) {
-        let launch_location_name = launch_location_feature.feature.properties['address'].match(/(,\s)(.*?)(,\s)/g)[0].replaceAll(', ', '');
+        let address = launch_location_feature.feature.properties['address'];
+        let launch_location_name = launch_location_feature.feature.properties['name'] === CUSTOM_LAUNCH_LOCATION_NAME ? CUSTOM_LAUNCH_LOCATION_NAME : address.match(/(,\s)(.*?)(,\s)/g)[0].replaceAll(', ', '');
         let launch_location = launch_location_feature.getLatLng();
 
-        let predict_layer = await getPredictLayer(api_url, launch_location_name, launch_location['lng'], launch_location['lat'], launch_datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate);
+        let predict_layer = await getPredictLayer(api_url, launch_location_name, address, launch_location['lng'], launch_location['lat'], launch_datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate);
         predict_layers[launch_location_name] = predict_layer;
 
         /* check if user has changed options in the meantime */
@@ -180,7 +183,7 @@ async function updatePredictLayers(resize = false) {
                 }
             } else {
                 /* if no layers were selected previously, add the first few layers */
-                if (layer_index <= 7) {
+                if (layer_index <= 5) {
                     MAP.addLayer(predict_layer);
                 }
 
@@ -229,13 +232,18 @@ async function setCustomLaunchLocation(click_event) {
     let click_longitude = click_event.latlng.lng;
     let click_latitude = click_event.latlng.lat;
 
+    let coordinates_string = '(' + click_longitude.toFixed(5) + ', ' + click_latitude.toFixed(5) + ')';
+
     let custom_launch_location_geojson = {
         "type": "FeatureCollection", "name": "custom_launch_location", "crs": {
             "type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}
         },
         "features": [{
             "type": "Feature",
-            "properties": {"name": CUSTOM_LAUNCH_LOCATION_NAME},
+            "properties": {
+                "name": CUSTOM_LAUNCH_LOCATION_NAME,
+                'address': coordinates_string
+            },
             "geometry": {"type": "Point", "coordinates": [click_longitude, click_latitude]}
         }]
     };
@@ -260,7 +268,7 @@ async function setCustomLaunchLocation(click_event) {
     let burst_altitude = document.getElementById('burst_altitude_textbox').value;
     let sea_level_descent_rate = document.getElementById('sea_level_descent_rate_textbox').value;
 
-    let custom_launch_location_predict_layer = await getPredictLayer(api_url, CUSTOM_LAUNCH_LOCATION_NAME, click_longitude, click_latitude, launch_datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate);
+    let custom_launch_location_predict_layer = await getPredictLayer(api_url, CUSTOM_LAUNCH_LOCATION_NAME, null, click_longitude, click_latitude, launch_datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate);
     MAP.addLayer(custom_launch_location_predict_layer);
     LAYER_CONTROL.addOverlay(custom_launch_location_predict_layer, CUSTOM_LAUNCH_LOCATION_NAME, 'predicts');
     OVERLAY_LAYERS['predicts'][CUSTOM_LAUNCH_LOCATION_NAME] = custom_launch_location_predict_layer;

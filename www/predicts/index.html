@@ -36,63 +36,53 @@
             <label for="launch_date_textbox">Date</label>
             <input id="launch_date_textbox" onchange="updatePredictLayers()" style="width: 10ch;"
                    title="Date" type="text">
+        </div>
+        <div class="top_pane_div">
             <label for="launch_time_hour_box">Time</label>
-            <input id="launch_time_hour_box" max=23
-                   min=0
-                   onchange="updatePredictLayers()"
-                   style="width: 4ch;"
-                   title="Time"
-                   type="number"
-                   value=9>
+            <input id="launch_time_hour_box" max=23 min=0 onchange="updatePredictLayers()" style="width: 4ch;"
+                   title="Time" type="number" value=8>
             <label for="launch_time_minute_box">:</label>
-            <input id="launch_time_minute_box" max=59
-                   min=0
-                   onchange="updatePredictLayers()"
-                   style="width: 4ch;"
-                   title="Time"
-                   type="number"
-                   value=00>
+            <input id="launch_time_minute_box" max=59 min=0 onchange="updatePredictLayers()" style="width: 4ch;"
+                   title="Time" type="number" value=00>
         </div>
         <span class="stretch"></span>
         <div class="top_pane_div">
             <label for="ascent_rate_textbox">Ascent Rate (m/s)</label>
-            <input id="ascent_rate_textbox" onchange="updatePredictLayers()"
-                   style="width: 4ch;" title="Ascent Rate (m/s)"
-                   type="text"
-                   value=5.5>
+            <input id="ascent_rate_textbox" onchange="updatePredictLayers()" style="width: 4ch;"
+                   title="Ascent Rate (m/s)" type="text" value=5.5>
         </div>
         <span class="stretch"></span>
         <div class="top_pane_div">
             <label for="burst_altitude_textbox">Burst Altitude (m)</label>
-            <input id="burst_altitude_textbox"
-                   onchange="updatePredictLayers()"
-                   style="width: 5ch;"
-                   title="Burst Altitude (m)"
-                   type="text"
-                   value=28000>
+            <input id="burst_altitude_textbox" onchange="updatePredictLayers()" style="width: 5ch;"
+                   title="Burst Altitude (m)" type="text" value=28000>
         </div>
         <span class="stretch"></span>
         <div class="top_pane_div">
             <label for="sea_level_descent_rate_textbox">Descent Rate at S.L. (m/s)</label>
-            <input id="sea_level_descent_rate_textbox"
-                   onchange="updatePredictLayers()"
-                   style="width: 4ch;"
-                   title="Sea Level Descent Rate (m/s)"
-                   type="text"
-                   value=9>
+            <input id="sea_level_descent_rate_textbox" onchange="updatePredictLayers()" style="width: 4ch;"
+                   title="Sea Level Descent Rate (m/s)" type="text" value=9>
+        </div>
+        <span class="stretch"></span>
+        <div class="top_pane_div">
+            <button id="reload_APRS_button" onclick="updatePredictLayers()">Reload</button>
         </div>
     </div>
+    <hr>
     <span class="stretch"></span>
     <div class="top_pane_div">
-        <button id="resize_button" onclick="resizeToOverlayLayers()">Resize</button>
-    </div>
-    <span class="stretch"></span>
-    <div class="top_pane_div">
-        Download:
-        <button id="download_predicts_button" onclick="downloadPredictsKML()">Predicts</button>
-        <button id="download_airspace_button"
-                onclick="downloadURI('../data/controlled_airspace.kmz', 'CONTROLLED_AIRSPACE_LAYER.kmz')">Airspace
-        </button>
+        <div class="top_pane_div">
+            Resize:
+            <button id="resize_button" onclick="resizeToOverlayLayers()">Extent</button>
+        </div>
+        <span class="stretch"></span>
+        <div class="top_pane_div">
+            Download:
+            <button id="download_predicts_button" onclick="downloadPredictsKML()">Predicts</button>
+            <button id="download_airspace_button"
+                    onclick="downloadURI('../data/controlled_airspace.kmz', 'CONTROLLED_AIRSPACE_LAYER.kmz')">Airspace
+            </button>
+        </div>
     </div>
 </div>
 <div id="bottom_pane">
