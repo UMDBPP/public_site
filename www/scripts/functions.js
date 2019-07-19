@@ -10,7 +10,9 @@ String.prototype.replaceAll = function (search, replacement) {
 };
 
 function featurePropertiesHTML(feature) {
-    return JSON.stringify(feature.properties, null, ' ').replace(/[{}]/g, '')
+    return JSON.stringify(feature.properties, function (key, value) {
+        return key !== 'fid' ? value : undefined
+    }, ' ').replace(/[{}]/g, '')
 }
 
 function popupFeaturePropertiesOnClick(feature, layer) {
