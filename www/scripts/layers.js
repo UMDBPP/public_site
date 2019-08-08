@@ -11,9 +11,7 @@ let BASE_LAYERS = {
 let CONTROLLED_AIRSPACE_LAYER = L.geoJson.ajax(DATA_DIRECTORY + 'controlled_airspace.geojson', {
     'onEachFeature': popupFeaturePropertiesOnClick,
     'style': function (feature) {
-        let local_type = feature.properties['LOCAL_TYPE'];
-
-        switch (local_type) {
+        switch (feature.properties['LOCAL_TYPE']) {
             case 'R':
                 return {'color': '#EA2027'};
             case 'CLASS_B':
