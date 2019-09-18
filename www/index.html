@@ -8,6 +8,7 @@
 
     <title>University of Maryland Balloon Payload Program</title>
     <link href="content.css" rel="stylesheet">
+    <link href="#" rel="shortcut icon">
 
     <script crossorigin="anonymous"
             integrity="sha384-sbXCuVHmezMFFyUyW5Igyp8ccpu94Snk8Pk+c/aN1Ufe/mAD7EO4017RwfsGIwSV"
@@ -59,8 +60,11 @@
         <script src="scripts/layers.js"></script>
         <script async>
             MAP.setView([39.7035, -77.3292], 9.5);
-
-            let COLOR_RAMP = chroma.scale('Spectral').mode('lab');
+            MAP.removeLayer(BASE_LAYERS['Esri Topography']);
+            MAP.addLayer(BASE_LAYERS['Esri Gray']);
+        </script>
+        <script async>
+            let COLOR_RAMP = chroma.scale('Viridis').mode('lab');
 
             let COLOR_VALUE_MIN = dateToTimestamp('2014-11-08');
             let COLOR_VALUE_MAX = dateToTimestamp(new Date().toDateString());
@@ -92,8 +96,7 @@
             OVERLAY_LAYERS['reference']['Launch Locations'] = LAUNCH_LOCATIONS_LAYER;
             OVERLAY_LAYERS['flights'] = {'flights': FLIGHTS};
 
-            let LAYER_CONTROL = L.control.groupedLayers(BASE_LAYERS, OVERLAY_LAYERS);
-            MAP.addControl(LAYER_CONTROL);
+            MAP.addControl(L.control.groupedLayers(BASE_LAYERS, OVERLAY_LAYERS));
         </script>
     </div>
 </div>

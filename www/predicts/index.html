@@ -6,6 +6,7 @@
 
     <title>University of Maryland Balloon Payload Program - Predicts</title>
     <link href="../content.css" rel="stylesheet">
+    <link href="#" rel="shortcut icon">
 
     <script crossorigin="anonymous"
             integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh"
@@ -103,8 +104,6 @@
         <script async src="predicts.js"></script>
         <script async>
             MAP.setView([39.4, -77.4], 10);
-            MAP.removeLayer(BASE_LAYERS['Esri Gray']);
-            MAP.addLayer(BASE_LAYERS['Esri Topography']);
             MAP.addLayer(CONTROLLED_AIRSPACE_LAYER);
         </script>
         <script async>

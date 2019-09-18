@@ -1,9 +1,9 @@
 let DATA_DIRECTORY = '/data/';
 
 let BASE_LAYERS = {
-    'Esri Gray': L.tileLayer.provider('Esri.WorldGrayCanvas'),
     'Esri Topography': L.tileLayer.provider('Esri.WorldTopoMap'),
     'Esri Road': L.tileLayer.provider('Esri.WorldStreetMap'),
+    'Esri Gray': L.tileLayer.provider('Esri.WorldGrayCanvas'),
     'Esri Imagery': L.tileLayer.provider('Esri.WorldImagery')
 };
 
@@ -66,7 +66,7 @@ let OVERLAY_LAYERS = {
 
 /* add Leaflet map to 'map' div with grouped layer control */
 let MAP = L.map('map', {
-    'layers': [BASE_LAYERS['Esri Gray']],
+    'layers': [BASE_LAYERS['Esri Topography']],
     'zoomSnap': 0,
     'zoomControl': false
 });
