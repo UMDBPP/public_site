@@ -30,75 +30,60 @@
     <link href="scripts/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css" rel="stylesheet"/>
     <script src="scripts/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js"></script>
 </head>
-<body onresize="resizeBottomPane()">
-<div id="top_pane">
-    <span class="stretch"></span>
-    <div class="top_pane_div">
-        <a href="predicts">Predicts</a>
-    </div>
-    <span class="stretch"></span>
-    <!--<div class="top_pane_div">
-        <a href="tracking">Tracking</a>
-    </div>
-    <span class="stretch"></span>-->
-    <div class="top_pane_div">
-        <a href="/archives">Archives</a>
-    </div>
-    <span class="stretch"></span>
-    <hr>
-    <div class="top_pane_div" style="height: 4ch; overflow: auto">
+<body style="display: flex; flex-direction: column;">
+<div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+    <a href="predicts">Predicts</a>
+    <!--<a href="tracking">Tracking</a>-->
+    <a href="/archives">Archives</a>
+    <div style="overflow: auto">
         The <a href="https://md.spacegrant.org/mdsgc-programs/balloon-payload-program"><b>University of Maryland Balloon
         Payload Program</b></a> offers a platform for students to build and send research payloads into the upper
         atmosphere via helium weather balloons.
     </div>
 </div>
-<div id="bottom_pane">
-    <script async src="scripts/resize.js"></script>
+<div id="map" style="flex-grow: 1;">
+    <script src="scripts/functions.js"></script>
+    <script src="scripts/layers.js"></script>
+    <script async>
+        MAP.setView([39.7035, -77.3292], 9);
+        MAP.removeLayer(BASE_LAYERS['Esri Topography']);
+        MAP.addLayer(BASE_LAYERS['Esri Gray']);
+    </script>
+    <script async>
+        let COLOR_RAMP = chroma.scale('Viridis').mode('lab');
 
-    <div id="map">
-        <script src="scripts/functions.js"></script>
-        <script src="scripts/layers.js"></script>
-        <script async>
-            MAP.setView([39.7035, -77.3292], 9.5);
-            MAP.removeLayer(BASE_LAYERS['Esri Topography']);
-            MAP.addLayer(BASE_LAYERS['Esri Gray']);
-        </script>
-        <script async>
-            let COLOR_RAMP = chroma.scale('Viridis').mode('lab');
+        let COLOR_VALUE_MIN = dateToTimestamp('2014-11-08');
+        let COLOR_VALUE_MAX = dateToTimestamp(new Date().toDateString());
 
-            let COLOR_VALUE_MIN = dateToTimestamp('2014-11-08');
-            let COLOR_VALUE_MAX = dateToTimestamp(new Date().toDateString());
+        function spectral_color_ramp(value, min, max) {
+            return COLOR_RAMP((value - min) / (max - min));
+        }
 
-            function spectral_color_ramp(value, min, max) {
-                return COLOR_RAMP((value - min) / (max - min));
-            }
+        function dateToTimestamp(date) {
+            return parseInt((new Date(date).getTime() / 1000).toFixed(0));
+        }
 
-            function dateToTimestamp(date) {
-                return parseInt((new Date(date).getTime() / 1000).toFixed(0));
-            }
-
-            let FLIGHTS = L.geoJson.ajax(DATA_DIRECTORY + 'flights.geojson', {
-                'onEachFeature': highlightAndPopupOnClick,
-                'style': function (feature) {
-                    if (feature.feature != null) {
-                        feature = feature.feature;
-                    }
-
-                    return {
-                        'color': spectral_color_ramp(dateToTimestamp(feature.properties['Date']), COLOR_VALUE_MIN, COLOR_VALUE_MAX),
-                        'weight': 5
-                    };
+        let FLIGHTS = L.geoJson.ajax(DATA_DIRECTORY + 'flights.geojson', {
+            'onEachFeature': highlightAndPopupOnClick,
+            'style': function (feature) {
+                if (feature.feature != null) {
+                    feature = feature.feature;
                 }
-            });
-            MAP.addLayer(FLIGHTS);
 
-            OVERLAY_LAYERS['reference']['McDonald\'s Locations'] = MCDONALDS_LOCATIONS_LAYER;
-            OVERLAY_LAYERS['reference']['Launch Locations'] = LAUNCH_LOCATIONS_LAYER;
-            OVERLAY_LAYERS['flights'] = {'flights': FLIGHTS};
+                return {
+                    'color': spectral_color_ramp(dateToTimestamp(feature.properties['Date']), COLOR_VALUE_MIN, COLOR_VALUE_MAX),
+                    'weight': 5
+                };
+            }
+        });
+        MAP.addLayer(FLIGHTS);
 
-            MAP.addControl(L.control.groupedLayers(BASE_LAYERS, OVERLAY_LAYERS));
-        </script>
-    </div>
+        OVERLAY_LAYERS['reference']['McDonald\'s Locations'] = MCDONALDS_LOCATIONS_LAYER;
+        OVERLAY_LAYERS['reference']['Launch Locations'] = LAUNCH_LOCATIONS_LAYER;
+        OVERLAY_LAYERS['flights'] = {'flights': FLIGHTS};
+
+        MAP.addControl(L.control.groupedLayers(BASE_LAYERS, OVERLAY_LAYERS));
+    </script>
 </div>
 </body>
 </html>

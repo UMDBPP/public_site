@@ -28,53 +28,35 @@
     <link href="../scripts/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css" rel="stylesheet"/>
     <script src="../scripts/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js"></script>
 </head>
-<body onresize="resizeBottomPane()">
-<div id="top_pane">
-    <div class="top_pane_div">
-        <a href="../">Home</a>
+<body style="display: flex; flex-direction: column;">
+<div style="display: flex; justify-content: space-between;">
+    <a href="../">Home</a>
+    <div style="display: flex;">
+        <label for="flight_callsigns">Flight Callsign(s)</label>
+        <input id="flight_callsigns" onchange="updateAPRSLayers()" type="text" value="W3EAX-12,W3EAX-14">
+        <label for="ground_callsigns">Ground Callsign(s)</label>
+        <input id="ground_callsigns" onchange="updateAPRSLayers()" type="text" value="KC3FXX-5,KC3HOB-10">
+        <button id="reload_APRS" onclick="updateAPRSLayers()">Reload</button>
     </div>
-    <hr>
-    <div class="top_pane_div">
-        <div class="top_pane_div">
-            <label for="flight_callsigns_input">Flight Callsign(s)</label>
-            <input id="flight_callsigns_input" onchange="updateAPRSLayers()" type="text" value="W3EAX-12,W3EAX-14">
-        </div>
-        <span class="stretch"></span>
-        <div class="top_pane_div">
-            <label for="ground_callsigns_input">Ground Callsign(s)</label>
-            <input id="ground_callsigns_input" onchange="updateAPRSLayers()" type="text"
-                   value="KC3FXX-5,KC3HOB-10">
-        </div>
-        <span class="stretch"></span>
-        <div class="top_pane_div">
-            <button id="reload_APRS_button" onclick="updateAPRSLayers()">Reload</button>
-        </div>
-    </div>
-    <hr>
-    <span class="stretch"></span>
-    <div class="top_pane_div">
+    <div>
         Resize:
-        <button id="resize_button" onclick="resizeToOverlayLayers()">Extent</button>
+        <button id="resize" onclick="resizeToOverlayLayers()">Extent</button>
     </div>
 </div>
-<div id="bottom_pane">
-    <script src="../scripts/resize.js" type="text/javascript"></script>
+<div id="map" style="flex-grow: 1;">
+    <script src="../scripts/api_keys.js"></script>
+    <script src="../scripts/functions.js"></script>
+    <script src="../scripts/layers.js"></script>
+    <script async src="tracking.js"></script>
+    <script async>
+        MAP.setView([39.4, -77.4], 10);
+        MAP.addLayer(CONTROLLED_AIRSPACE_LAYER);
 
-    <div id="map">
-        <script src="../scripts/api_keys.js"></script>
-        <script src="../scripts/functions.js"></script>
-        <script src="../scripts/layers.js"></script>
-        <script async src="tracking.js"></script>
-        <script async>
-            MAP.setView([39.4, -77.4], 10);
-            MAP.addLayer(CONTROLLED_AIRSPACE_LAYER);
-
-            window.onload = function () {
-                updateAPRSLayers();
-                window.setInterval(updateAPRSLayers(), 10000);
-            };
-        </script>
-    </div>
+        window.onload = function () {
+            updateAPRSLayers();
+            window.setInterval(updateAPRSLayers(), 10000);
+        };
+    </script>
 </div>
 </body>
 </html>
