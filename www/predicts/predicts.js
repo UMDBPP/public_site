@@ -20,9 +20,7 @@ MAP.addControl(LAYER_CONTROL);
 /* retrieve a single predict from the given API and convert to a GeoJSON Feature (LineString) */
 function getPredictLineString(api_url, name, address, longitude, latitude, datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate) {
     return new Promise(function (resolve, reject) {
-        $.ajax({
-            'url': api_url,
-            'data': {
+        AJAX.get(api_url, {
                 'launch_longitude': longitude,
                 'launch_latitude': latitude,
                 'launch_datetime': datetime_utc,
@@ -30,12 +28,7 @@ function getPredictLineString(api_url, name, address, longitude, latitude, datet
                 'burst_altitude': burst_altitude,
                 'descent_rate': sea_level_descent_rate
             },
-            'type': 'GET',
-            'dataType': 'json',
-            'error': function (response, status, error) {
-                reject(response);
-            },
-            'success': function (response) {
+            function (response) {
                 let output_feature = {
                     'type': 'Feature',
                     'geometry': {
@@ -58,7 +51,7 @@ function getPredictLineString(api_url, name, address, longitude, latitude, datet
 
                 resolve(output_feature);
             }
-        });
+        );
     });
 }
 

@@ -15,13 +15,12 @@ async function getAPRSPoint(station_callsign) {
     /* use Yahoo JSONP proxy to emulate CORS request, taken from https://gist.github.com/cmdcolin/1aefb766d224446341ab */
     /* TODO APRS.fi doesn't like this, figure out a way to do it server-side */
     return new Promise(function (resolve, reject) {
-        $.ajax({
-            'url': 'http://query.yahooapis.com/v1/public/yql?q=' + cors_query + '&format=json&callback=?',
-            'type': 'GET',
-            'dataType': 'jsonp',
-            success: function (data) {
-                if (data.query.results.json.found > 0) {
-                    let response_entries = data.query.results.json['entries'];
+        AJAX.get(
+            'http://query.yahooapis.com/v1/public/yql?q=' + cors_query + '&format=json&callback=?',
+            {},
+            function (response) {
+                if (response.query.results.json.found > 0) {
+                    let response_entries = response.query.results.json['entries'];
 
                     let output_feature = {
                         'type': 'Feature',
@@ -34,13 +33,10 @@ async function getAPRSPoint(station_callsign) {
 
                     resolve(output_feature);
                 } else {
-                    reject(data);
+                    reject(response);
                 }
             },
-            'error': function (response, status, error) {
-                reject(response);
-            }
-        });
+        );
     });
 }
 
