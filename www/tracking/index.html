@@ -8,17 +8,14 @@
     <link href="../content.css" rel="stylesheet">
     <link href="#" rel="shortcut icon">
 
-    <script crossorigin="anonymous"
-            integrity="sha384-bmPowDlt+owc6Mn3LwOzLPkYiVm6MuKeLMe0qN2pp7Fhmux2xtVJm5e+ekpCVv4x"
+    <script crossorigin="anonymous" integrity="sha384-bmPowDlt+owc6Mn3LwOzLPkYiVm6MuKeLMe0qN2pp7Fhmux2xtVJm5e+ekpCVv4x"
             src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
     <link crossorigin="anonymous" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
           integrity="sha384-eS4bw6aEvhCSXWGP85ANR/N8isWKzT7P36NvcuTJGkrj6wsbxLVpXslrNXYHyseD" rel="stylesheet">
 
-    <script crossorigin="anonymous"
-            integrity="sha384-sKs8ZrrxyJoElcPVznZwGpUTTXvkMYfHYxdIFzO8Hd0TA6emONMj8BwnsFf+6cZ/"
+    <script crossorigin="anonymous" integrity="sha384-sKs8ZrrxyJoElcPVznZwGpUTTXvkMYfHYxdIFzO8Hd0TA6emONMj8BwnsFf+6cZ/"
             src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.min.js"></script>
-    <script crossorigin="anonymous"
-            integrity="sha384-MBqvFhoifV/e9S1Ca7DFfXtEHZAYgSiDw5ek8a6BcgVfQdctO9SKp6ueQGC3PSiO"
+    <script crossorigin="anonymous" integrity="sha384-MBqvFhoifV/e9S1Ca7DFfXtEHZAYgSiDw5ek8a6BcgVfQdctO9SKp6ueQGC3PSiO"
             src="https://unpkg.com/leaflet-providers@1.8.0/leaflet-providers.js"></script>
 
     <link href="../scripts/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css" rel="stylesheet"/>
@@ -30,8 +27,9 @@
     <a href="../">Home</a>
     <div style="display: flex;">
         <label for="flight_callsigns">Flight Callsign(s)</label>
-        <input id="flight_callsigns" onchange="updateAPRSLayers()" type="text" value="W3EAX-12,W3EAX-14">
-        <label for="ground_callsigns">Ground Callsign(s)</label>
+
+        <input id="flight_callsigns" onchange="updateAPRSLayers()" type="text" value="W3EAX-12,W3EAX-14"> <label for="ground_callsigns">Ground Callsign(s)</label>
+
         <input id="ground_callsigns" onchange="updateAPRSLayers()" type="text" value="KC3FXX-5,KC3HOB-10">
         <button id="reload_APRS" onclick="updateAPRSLayers()">Reload</button>
     </div>
