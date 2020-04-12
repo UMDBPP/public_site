@@ -25,14 +25,7 @@
     <script src="../_/scripts/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js"></script>
 </head>
 <body style="display: flex; flex-direction: column;">
-<div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
-    <div style="overflow: auto">
-        The
-        <a href="https://md.spacegrant.org/mdsgc-programs/balloon-payload-program"><b>University of Maryland Balloon Payload Program</b></a>
-        offers a platform for students to build and send research payloads into the upper atmosphere via helium weather balloons.
-    </div>
-</div>
-<div id="map" style="flex-grow: 1;">
+<section id="map" style="min-height: 92vh; flex: 1;">
     <script src="../_/scripts/functions.js"></script>
     <script src="../_/scripts/layers.js"></script>
     <script async>
@@ -73,7 +66,7 @@
 
         MAP.addControl(L.control.groupedLayers(BASE_LAYERS, OVERLAY_LAYERS));
     </script>
-</div>
+</section>
 </body>
-<script async src="../_/scripts/add_header_and_footer.js"></script>
+<script async src="../_/scripts/add_header.js"></script>
 </html>

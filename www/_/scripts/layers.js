@@ -1,4 +1,4 @@
-let DATA_DIRECTORY = '/data/';
+let DATA_DIRECTORY = '/_/data/';
 
 let BASE_LAYERS = {
     'Esri Topography': L.tileLayer.provider('Esri.WorldTopoMap'),

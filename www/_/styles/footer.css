@@ -1,3 +1,7 @@
+footer {
+    flex: 1;
+}
+
 footer #contact {
     display:          flex;
     flex-wrap:        wrap;
