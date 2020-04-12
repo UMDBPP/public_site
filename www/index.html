@@ -1,84 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-US">
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta content="official high-altitude balloon research program of the A. James Clark School of Engineering at the University of Maryland in College Park"
           name="description">
 
-    <title>University of Maryland Balloon Payload Program</title>
-    <link href="content.css" rel="stylesheet">
-    <link href="#" rel="shortcut icon">
+    <link href="_/images/favicon.png" rel="shortcut icon" type="image/png">
+    <title>UMDBPP</title>
 
-    <script crossorigin="anonymous" integrity="sha384-bmPowDlt+owc6Mn3LwOzLPkYiVm6MuKeLMe0qN2pp7Fhmux2xtVJm5e+ekpCVv4x"
-            src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
-    <link crossorigin="anonymous" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-          integrity="sha384-eS4bw6aEvhCSXWGP85ANR/N8isWKzT7P36NvcuTJGkrj6wsbxLVpXslrNXYHyseD" rel="stylesheet">
+    <!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.-->
+    <script>var __adobewebfontsappname__ = "dreamweaver"</script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n2:default.js" type="text/javascript"></script>
 
-    <script crossorigin="anonymous" integrity="sha384-sKs8ZrrxyJoElcPVznZwGpUTTXvkMYfHYxdIFzO8Hd0TA6emONMj8BwnsFf+6cZ/"
-            src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.min.js"></script>
-    <script crossorigin="anonymous" integrity="sha384-MBqvFhoifV/e9S1Ca7DFfXtEHZAYgSiDw5ek8a6BcgVfQdctO9SKp6ueQGC3PSiO"
-            src="https://unpkg.com/leaflet-providers@1.8.0/leaflet-providers.js"></script>
-
-    <script crossorigin="anonymous" integrity="sha384-sbXCuVHmezMFFyUyW5Igyp8ccpu94Snk8Pk+c/aN1Ufe/mAD7EO4017RwfsGIwSV"
-            src="https://unpkg.com/chroma-js@2.0.4/chroma.min.js"></script>
-
-    <link href="scripts/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css" rel="stylesheet"/>
-    <script src="scripts/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js"></script>
+    <link href="_/styles/content.css" rel="stylesheet" type="text/css">
 </head>
-<body style="display: flex; flex-direction: column;">
-<div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
-    <a href="predicts">Predicts</a>
-    <!--<a href="tracking">Tracking</a>-->
-    <a href="/archives">Archives</a>
-    <div style="overflow: auto">
-        The <a href="https://md.spacegrant.org/mdsgc-programs/balloon-payload-program"><b>University of Maryland Balloon Payload Program</b></a> offers a platform for
-        students to build and send research payloads into the upper atmosphere via helium weather balloons.
+<body>
+<section class="title">
+    <h1 style="text-align: center; letter-spacing: 0.3ch; color: white;">
+        NEARSPACE
+    </h1>
+    <p style="text-align: center; letter-spacing: 0.3ch; color: white;">
+        University of Maryland Balloon Payload Program
+    </p>
+</section>
+<section class="content">
+    <p style="text-align: justify;">
+        We are the Balloon Payload Program at the University of Maryland (UMDBPP), a group for undergraduate and graduate students. We collect scientific data and test
+        engineering concepts by flying high altitude balloons with payloads attached, an average of three to four times per semester. The majority of payloads we fly
+        student-built, but we have also flown instrumentation and concepts for HAPL and a variety of outreach projects with different schools and student groups.
+    </p>
+    <div style="display: flex; justify-content: space-between; text-align: center;">
+        <div style="flex: 1;">
+            <h3>Launch</h3>
+            <img alt="" src="_/images/flights/moon.jpg" style="width: 500px;"/>
+            <p style="text-align: justify; padding: 0 2ch;">
+                Our program loves new members! Willing to learn? We're willing to teach! If you want to learn a skill like soldering, coding, building PCB boards, 3D
+                printing, etc., look at the list below and see which members are available to teach. We're all very friendly so don't be afraid to reach out!
+            </p>
+        </div>
+        <div style="flex: 1;">
+            <h3>Landing</h3>
+            <img alt="" src="_/images/flights/clouds.jpg" style="width: 500px;"/>
+            <p style="text-align: justify; padding: 0 2ch;">
+                We always have work to do on our current payloads. If you are interested in a payload or a specific task for a payload, contact the payload lead on Slack
+                listed next to the payload name (see Contact Us section below).
+            </p>
+        </div>
     </div>
-</div>
-<div id="map" style="flex-grow: 1;">
-    <script src="scripts/functions.js"></script>
-    <script src="scripts/layers.js"></script>
-    <script async>
-        MAP.setView([39.7035, -77.3292], 9);
-        MAP.removeLayer(BASE_LAYERS['Esri Topography']);
-        MAP.addLayer(BASE_LAYERS['Esri Gray']);
-    </script>
-    <script async>
-        let COLOR_RAMP = chroma.scale('Viridis').mode('lab');
-
-        let COLOR_VALUE_MIN = dateToTimestamp('2014-11-08');
-        let COLOR_VALUE_MAX = dateToTimestamp(new Date().toDateString());
-
-        function spectral_color_ramp(value, min, max) {
-            return COLOR_RAMP((value - min) / (max - min));
-        }
-
-        function dateToTimestamp(date) {
-            return parseInt((new Date(date).getTime() / 1000).toFixed(0));
-        }
-
-        let FLIGHTS = L.geoJson.ajax(DATA_DIRECTORY + 'flights.geojson', {
-            'onEachFeature': highlightAndPopupOnClick,
-            'style': function (feature) {
-                if (feature.feature != null) {
-                    feature = feature.feature;
-                }
-
-                return {
-                    'color': spectral_color_ramp(dateToTimestamp(feature.properties['Date']), COLOR_VALUE_MIN, COLOR_VALUE_MAX),
-                    'weight': 5
-                };
-            }
-        });
-        MAP.addLayer(FLIGHTS);
-
-        OVERLAY_LAYERS['reference']['McDonald\'s Locations'] = MCDONALDS_LOCATIONS_LAYER;
-        OVERLAY_LAYERS['reference']['Launch Locations'] = LAUNCH_LOCATIONS_LAYER;
-        OVERLAY_LAYERS['flights'] = {'flights': FLIGHTS};
-
-        MAP.addControl(L.control.groupedLayers(BASE_LAYERS, OVERLAY_LAYERS));
-    </script>
-</div>
+</section>
+<section id="contact" style="display: flex; justify-content: space-evenly; padding: 2ch; font-size: 20px; font-weight: bold; background-color: gold;">
+    <div>
+        <a href="mailto:nearspace.@ssl.umd.edu" style="color: black">nearspace@ssl.umd.edu</a>
+    </div>
+    <div>
+        <a href="https://goo.gl/maps/XQd34idGycP7ay1U9" style="color: black;">
+            Manufacturing Building
+            <br>
+            College Park, MD 20742
+        </a>
+    </div>
+</section>
 </body>
+<script async src="_/scripts/add_header_and_footer.js"></script>
 </html>

@@ -1,0 +1,83 @@
+@charset "UTF-8";
+body {
+    font-family: source-sans-pro, sans-serif;
+    font-weight: bold;
+    height:      100%;
+    margin:      0;
+}
+
+.title {
+    display:             flex;
+    flex-direction:      column;
+    padding-top:         150px;
+    padding-bottom:      200px;
+    background-color:    #ccc;
+    background-image:    url(/_/images/flights/sun.jpg);
+    background-repeat:   no-repeat;
+    background-position: center;
+    background-size:     cover;
+}
+
+.content {
+    padding: 0 2ch;
+}
+
+.image_list {
+    display:        flex;
+    flex-direction: column;
+}
+
+.image_list li {
+    font-size:      16px;
+    display:        flex;
+    flex-wrap:      wrap;
+    padding-bottom: 1ch;
+}
+
+.image_list p {
+    line-height:  1.1;
+    padding-left: 2ch;
+}
+
+.image_list strong {
+    font-size:   22px;
+    font-weight: bolder;
+}
+
+.image_list b {
+    font-weight: bolder;
+    color:       crimson;
+}
+
+header {
+    z-index:          auto;
+    display:          flex;
+    justify-content:  space-between;
+    border-bottom:    0.3ch solid crimson;
+    background-color: black;
+}
+
+header nav a {
+    text-decoration: none;
+    letter-spacing:  0.3ch;
+    color:           white;
+}
+
+header nav a:hover {
+    color: crimson;
+}
+
+footer {
+    padding:          2ch;
+    text-align:       center;
+    letter-spacing:   0.3ch;
+    color:            white;
+    border-top:       0.3ch solid crimson;
+    background-color: black;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-inner-spin-button {
+    margin:             0;
+    -webkit-appearance: none;
+}

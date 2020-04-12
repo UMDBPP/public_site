@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
 
-    <title>University of Maryland Balloon Payload Program - Tracking</title>
-    <link href="../content.css" rel="stylesheet">
-    <link href="#" rel="shortcut icon">
+    <title>UMDBPP - Tracking</title>
+    <link href="../_/styles/content.css" rel="stylesheet">
+    <link href="../_/images/favicon.png" rel="shortcut icon" type="image/png">
 
     <script crossorigin="anonymous" integrity="sha384-bmPowDlt+owc6Mn3LwOzLPkYiVm6MuKeLMe0qN2pp7Fhmux2xtVJm5e+ekpCVv4x"
             src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
@@ -18,9 +18,9 @@
     <script crossorigin="anonymous" integrity="sha384-MBqvFhoifV/e9S1Ca7DFfXtEHZAYgSiDw5ek8a6BcgVfQdctO9SKp6ueQGC3PSiO"
             src="https://unpkg.com/leaflet-providers@1.8.0/leaflet-providers.js"></script>
 
-    <link href="../scripts/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css" rel="stylesheet"/>
-    <script src="../scripts/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js"></script>
-    <script src="../scripts/ajax.js"></script>
+    <link href="../_/scripts/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css" rel="stylesheet"/>
+    <script src="../_/scripts/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js"></script>
+    <script src="../_/scripts/ajax.js"></script>
 </head>
 <body style="display: flex; flex-direction: column;">
 <div style="display: flex; justify-content: space-between;">
@@ -39,9 +39,9 @@
     </div>
 </div>
 <div id="map" style="flex-grow: 1;">
-    <script src="../scripts/api_keys.js"></script>
-    <script src="../scripts/functions.js"></script>
-    <script src="../scripts/layers.js"></script>
+    <script src="../_/scripts/api_keys.js"></script>
+    <script src="../_/scripts/functions.js"></script>
+    <script src="../_/scripts/layers.js"></script>
     <script async src="tracking.js"></script>
     <script async>
         MAP.setView([39.4, -77.4], 10);
@@ -54,4 +54,5 @@
     </script>
 </div>
 </body>
+<script async src="../_/scripts/add_header_and_footer.js"></script>
 </html>
