@@ -46,34 +46,7 @@ body {
 
 .image_list b {
     font-weight: bolder;
-    color:       crimson;
-}
-
-header {
-    z-index:          auto;
-    display:          flex;
-    justify-content:  space-between;
-    border-bottom:    0.3ch solid crimson;
-    background-color: black;
-}
-
-header nav a {
-    text-decoration: none;
-    letter-spacing:  0.3ch;
-    color:           white;
-}
-
-header nav a:hover {
-    color: crimson;
-}
-
-footer {
-    padding:          2ch;
-    text-align:       center;
-    letter-spacing:   0.3ch;
-    color:            white;
-    border-top:       0.3ch solid crimson;
-    background-color: black;
+    color:       #e21833;
 }
 
 input[type="number"]::-webkit-inner-spin-button,

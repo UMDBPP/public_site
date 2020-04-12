@@ -6,18 +6,16 @@ const AJAX = {
             query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
         }
 
-        AJAX.send(url + (query.length > 0 ? '?' + query.join('&') : ''), callback, 'GET', null, async)
-    },
-    post: function (url, data, callback, async) {
+        AJAX.send(url + (query.length > 0 ? '?' + query.join('&') : ''), callback, 'GET', null, async);
+    }, post: function (url, data, callback, async) {
         let query = [];
 
         for (let key in data) {
             query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
         }
 
-        AJAX.send(url, callback, 'POST', query.join('&'), async)
-    },
-    send: function (url, callback, method, data, async) {
+        AJAX.send(url, callback, 'POST', query.join('&'), async);
+    }, send: function (url, callback, method, data, async) {
         if (async === undefined) {
             async = true;
         }
@@ -40,7 +38,7 @@ const AJAX = {
         xml_http_request.open(method, url, async);
         xml_http_request.onreadystatechange = function () {
             if (xml_http_request.readyState === 4) {
-                callback(JSON.parse(xml_http_request.responseText))
+                callback(JSON.parse(xml_http_request.responseText));
             }
         };
 
@@ -48,6 +46,6 @@ const AJAX = {
             xml_http_request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         }
 
-        xml_http_request.send(data)
+        xml_http_request.send(data);
     }
 };

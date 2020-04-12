@@ -8,6 +8,10 @@
     <link href="../_/styles/content.css" rel="stylesheet">
     <link href="../_/images/favicon.png" rel="shortcut icon" type="image/png">
 
+    <script src="http://use.edgefonts.net/source-sans-pro:n2:default.js" type="text/javascript">
+        var __adobewebfontsappname__ = 'dreamweaver';
+    </script>
+
     <script crossorigin="anonymous" integrity="sha384-bmPowDlt+owc6Mn3LwOzLPkYiVm6MuKeLMe0qN2pp7Fhmux2xtVJm5e+ekpCVv4x"
             src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
     <link crossorigin="anonymous" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
@@ -23,8 +27,7 @@
     <script src="../_/scripts/ajax.js"></script>
 </head>
 <body style="display: flex; flex-direction: column;">
-<div style="display: flex; justify-content: space-between;">
-    <a href="../">Home</a>
+<section style="display: flex; justify-content: space-between;">
     <div style="display: flex;">
         <label for="flight_callsigns">Flight Callsign(s)</label>
 
@@ -37,8 +40,8 @@
         Resize:
         <button id="resize" onclick="resizeToOverlayLayers()">Extent</button>
     </div>
-</div>
-<div id="map" style="flex-grow: 1;">
+</section>
+<section id="map" style="flex-grow: 1;">
     <script src="../_/scripts/api_keys.js"></script>
     <script src="../_/scripts/functions.js"></script>
     <script src="../_/scripts/layers.js"></script>
@@ -52,7 +55,7 @@
             window.setInterval(updateAPRSLayers(), 10000);
         };
     </script>
-</div>
+</section>
 </body>
 <script async src="../_/scripts/add_header_and_footer.js"></script>
 </html>

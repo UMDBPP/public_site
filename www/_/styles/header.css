@@ -1,0 +1,36 @@
+header {
+    z-index:          auto;
+    display:          flex;
+    flex-wrap:        wrap;
+    justify-content:  space-between;
+    padding:          2ch;
+    border-bottom:    0.3ch solid #e21833;
+    background-color: black;
+}
+
+header a {
+    font-weight:     bold;
+    flex:            1;
+    text-decoration: none;
+    letter-spacing:  0.3ch;
+    color:           white;
+}
+
+header nav {
+    font-size:       14px;
+    font-weight:     bold;
+    display:         flex;
+    flex:            1;
+    flex-wrap:       wrap;
+    justify-content: space-between;
+}
+
+header nav a {
+    text-decoration: none;
+    letter-spacing:  0.3ch;
+    color:           white;
+}
+
+header nav a:hover {
+    color: #e21833;
+}

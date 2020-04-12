@@ -8,6 +8,10 @@
     <link href="../_/styles/content.css" rel="stylesheet">
     <link href="../_/images/favicon.png" rel="shortcut icon" type="image/png">
 
+    <script src="http://use.edgefonts.net/source-sans-pro:n2:default.js" type="text/javascript">
+        var __adobewebfontsappname__ = 'dreamweaver';
+    </script>
+
     <script crossorigin="anonymous" integrity="sha384-bmPowDlt+owc6Mn3LwOzLPkYiVm6MuKeLMe0qN2pp7Fhmux2xtVJm5e+ekpCVv4x"
             src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
     <link crossorigin="anonymous" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
@@ -24,45 +28,42 @@
     <script src="../_/scripts/ajax.js"></script>
 </head>
 <body style="display: flex; flex-direction: column;">
-<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-    <div style="flex-grow: 1;">
-        <a href="../">Home</a>
-    </div>
-    <div style="display: flex; flex-grow: 3; justify-content: space-evenly;">
-        <div style="display: flex; flex-wrap: wrap;">
+<section style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+    <section style="display: flex; flex-grow: 3; justify-content: space-evenly;">
+        <section style="display: flex; flex-wrap: wrap;">
             <input id="launch_date" onchange="updatePredictLayers()" required="required" title="launch date" type="date">
 
             <input id="launch_time" onchange="updatePredictLayers()" required="required" title="launch time" type="time" value="08:00">
-        </div>
-        <div>
+        </section>
+        <section>
             <label for="ascent_rate">Ascent Rate (m/s)</label>
 
             <input id="ascent_rate" onchange="updatePredictLayers()" style="width: 4ch;" title="expected average ascent rate" type="number" value="5.5">
-        </div>
-        <div>
+        </section>
+        <section>
             <label for="burst_altitude">Burst Altitude (m)</label>
 
             <input id="burst_altitude" onchange="updatePredictLayers()" style="width: 5ch;" title="expected burst altitude" type="number" value="28000">
-        </div>
-        <div>
+        </section>
+        <section>
             <label for="sea_level_descent_rate">Descent Rate (m/s)</label>
 
             <input id="sea_level_descent_rate" onchange="updatePredictLayers()" style="width: 4ch;" title="expected descent rate (at sea level)" type="number" value="9">
-        </div>
+        </section>
         <button id="reload_APRS_button" onclick="updatePredictLayers()">Reload</button>
-    </div>
-    <div style="flex-grow: 1;">
+    </section>
+    <section style="flex-grow: 1;">
         Resize:
         <button id="resize" onclick="resizeToOverlayLayers()">Extent</button>
-    </div>
-    <div style="flex-grow: 1;">
+    </section>
+    <section style="flex-grow: 1;">
         Download:
         <button id="download_predicts" onclick="downloadPredictsKML()">Predicts</button>
         <button id="download_airspace" onclick="downloadURI('../data/controlled_airspace.kmz', 'CONTROLLED_AIRSPACE_LAYER.kmz')">Airspace
         </button>
-    </div>
-</div>
-<div id="map" style="flex-grow: 1;">
+    </section>
+</section>
+<section id="map" style="flex-grow: 1;">
     <script src="../_/scripts/functions.js"></script>
     <script src="../_/scripts/layers.js"></script>
     <script async src="predicts.js"></script>
@@ -88,7 +89,7 @@
             updatePredictLayers();
         };
     </script>
-</div>
+</section>
 </body>
 <script async src="../_/scripts/add_header_and_footer.js"></script>
 </html>

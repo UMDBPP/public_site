@@ -6,7 +6,11 @@
 
     <link href="../_/styles/content.css" rel="stylesheet">
     <link href="../_/images/favicon.png" rel="shortcut icon" type="image/png">
-    <title>UMDBPP</title>
+    <title>UMDBPP - Flights</title>
+
+    <script src="http://use.edgefonts.net/source-sans-pro:n2:default.js" type="text/javascript">
+        var __adobewebfontsappname__ = 'dreamweaver';
+    </script>
 
     <script crossorigin="anonymous" integrity="sha384-bmPowDlt+owc6Mn3LwOzLPkYiVm6MuKeLMe0qN2pp7Fhmux2xtVJm5e+ekpCVv4x"
             src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
@@ -26,9 +30,6 @@
 </head>
 <body style="display: flex; flex-direction: column;">
 <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
-    <a href="../predicts">Predicts</a>
-    <!--<a href="tracking">Tracking</a>-->
-    <a href="/archives">Archives</a>
     <div style="overflow: auto">
         The
         <a href="https://md.spacegrant.org/mdsgc-programs/balloon-payload-program"><b>University of Maryland Balloon Payload Program</b></a>
@@ -58,15 +59,13 @@
         }
 
         let FLIGHTS = L.geoJson.ajax(DATA_DIRECTORY + 'flights.geojson', {
-            'onEachFeature': highlightAndPopupOnClick,
-            'style': function (feature) {
+            'onEachFeature': highlightAndPopupOnClick, 'style': function (feature) {
                 if (feature.feature != null) {
                     feature = feature.feature;
                 }
 
                 return {
-                    'color': spectral_color_ramp(dateToTimestamp(feature.properties['Date']), COLOR_VALUE_MIN, COLOR_VALUE_MAX),
-                    'weight': 5
+                    'color': spectral_color_ramp(dateToTimestamp(feature.properties['Date']), COLOR_VALUE_MIN, COLOR_VALUE_MAX), 'weight': 5
                 };
             }
         });

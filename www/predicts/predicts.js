@@ -8,8 +8,7 @@ let CUSTOM_LAUNCH_LOCATION_LAYER;
 const CUSTOM_LAUNCH_LOCATION_NAME = 'custom launch location';
 
 const API_URLS = {
-    'CUSF': 'http://predict.cusf.co.uk/api/v1/',
-    'lukerenegar': 'https://predict.lukerenegar.com/api/v1.1/'
+    'CUSF': 'http://predict.cusf.co.uk/api/v1/', 'lukerenegar': 'https://predict.lukerenegar.com/api/v1.1/'
 };
 
 OVERLAY_LAYERS['reference']['McDonald\'s Locations'] = MCDONALDS_LOCATIONS_LAYER;
@@ -23,37 +22,32 @@ MAP.addControl(LAYER_CONTROL);
 function getPredictLineString(api_url, name, address, longitude, latitude, datetime_utc, ascent_rate, burst_altitude, sea_level_descent_rate) {
     return new Promise(function (resolve, reject) {
         AJAX.get(api_url, {
-                'launch_longitude': longitude,
-                'launch_latitude': latitude,
-                'launch_datetime': datetime_utc,
-                'ascent_rate': ascent_rate,
-                'burst_altitude': burst_altitude,
-                'descent_rate': sea_level_descent_rate
-            },
-            function (response) {
-                let output_feature = {
-                    'type': 'Feature',
-                    'geometry': {
-                        'type': 'LineString',
-                        'coordinates': []
-                    },
-                    'properties': {
-                        'name': name,
-                        'model_run': response['request']['dataset'] + ' UTC',
-                        'address': address,
-                        'location': '(' + (longitude - 360).toFixed(5) + ', ' + latitude.toFixed(5) + ')'
-                    }
-                };
-
-                for (let stage of response['prediction']) {
-                    for (let entry of stage['trajectory']) {
-                        output_feature['geometry']['coordinates'].push([entry['longitude'] - 360, entry['latitude'], entry['altitude']]);
-                    }
+            'launch_longitude': longitude,
+            'launch_latitude': latitude,
+            'launch_datetime': datetime_utc,
+            'ascent_rate': ascent_rate,
+            'burst_altitude': burst_altitude,
+            'descent_rate': sea_level_descent_rate
+        }, function (response) {
+            let output_feature = {
+                'type': 'Feature', 'geometry': {
+                    'type': 'LineString', 'coordinates': []
+                }, 'properties': {
+                    'name': name,
+                    'model_run': response['request']['dataset'] + ' UTC',
+                    'address': address,
+                    'location': '(' + (longitude - 360).toFixed(5) + ', ' + latitude.toFixed(5) + ')'
                 }
+            };
 
-                resolve(output_feature);
+            for (let stage of response['prediction']) {
+                for (let entry of stage['trajectory']) {
+                    output_feature['geometry']['coordinates'].push([entry['longitude'] - 360, entry['latitude'], entry['altitude']]);
+                }
             }
-        );
+
+            resolve(output_feature);
+        });
     });
 }
 
@@ -66,12 +60,12 @@ async function getPredictLayer(api_url, launch_location_name, address, launch_lo
 
         let hour = (parseInt(time[0]) + (UTC_OFFSET_MINUTES / 60));
         if (hour < 10) {
-            hour = '0' + hour
+            hour = '0' + hour;
         }
 
         let minute = (parseInt(time[1]) + (UTC_OFFSET_MINUTES % 60));
         if (minute < 10) {
-            minute = '0' + minute
+            minute = '0' + minute;
         }
 
         launch_datetime = document.getElementById('launch_date').value + 'T' + hour + ':' + minute + ':00Z';
@@ -97,9 +91,8 @@ async function getPredictLayer(api_url, launch_location_name, address, launch_lo
     await getPredictLineString(api_url, launch_location_name, address, launch_longitude, launch_latitude, launch_datetime, ascent_rate, burst_altitude, sea_level_descent_rate).then(function (feature) {
         predict_geojson['features'].push(feature);
     }).catch(function (response) {
-            console.log('Prediction error: ' + response.status + ' ' + response.error);
-        }
-    );
+        console.log('Prediction error: ' + response.status + ' ' + response.error);
+    });
 
     let predict_layer_style = function (feature) {
         if (feature.feature != null) {
@@ -107,8 +100,7 @@ async function getPredictLayer(api_url, launch_location_name, address, launch_lo
         }
 
         return {
-            'weight': 5,
-            'color': feature.properties['name'] === CUSTOM_LAUNCH_LOCATION_NAME ? '#ff0000' : '#ff00ff'
+            'weight': 5, 'color': feature.properties['name'] === CUSTOM_LAUNCH_LOCATION_NAME ? '#f00' : '#f0f'
         };
     };
 
@@ -166,12 +158,12 @@ async function updatePredictLayers(resize = false) {
 
     let hour = (parseInt(time[0]) + (UTC_OFFSET_MINUTES / 60));
     if (hour < 10) {
-        hour = '0' + hour
+        hour = '0' + hour;
     }
 
     let minute = (parseInt(time[1]) + (UTC_OFFSET_MINUTES % 60));
     if (minute < 10) {
-        minute = '0' + minute
+        minute = '0' + minute;
     }
 
     let launch_datetime_utc = document.getElementById('launch_date').value + 'T' + hour + ':' + minute + ':00Z';
@@ -256,16 +248,12 @@ async function setCustomLaunchLocation(click_event) {
     let coordinates_string = '(' + click_longitude.toFixed(5) + ', ' + click_latitude.toFixed(5) + ')';
 
     let custom_launch_location_geojson = {
-        "type": "FeatureCollection", "name": "custom_launch_location", "crs": {
-            "type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}
-        },
-        "features": [{
-            "type": "Feature",
-            "properties": {
-                "name": CUSTOM_LAUNCH_LOCATION_NAME,
-                'address': coordinates_string
-            },
-            "geometry": {"type": "Point", "coordinates": [click_longitude, click_latitude]}
+        'type': 'FeatureCollection', 'name': 'custom_launch_location', 'crs': {
+            'type': 'name', 'properties': {'name': 'urn:ogc:def:crs:OGC:1.3:CRS84'}
+        }, 'features': [{
+            'type': 'Feature', 'properties': {
+                'name': CUSTOM_LAUNCH_LOCATION_NAME, 'address': coordinates_string
+            }, 'geometry': {'type': 'Point', 'coordinates': [click_longitude, click_latitude]}
         }]
     };
 

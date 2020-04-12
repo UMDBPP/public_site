@@ -15,28 +15,21 @@ async function getAPRSPoint(station_callsign) {
     /* use Yahoo JSONP proxy to emulate CORS request, taken from https://gist.github.com/cmdcolin/1aefb766d224446341ab */
     /* TODO APRS.fi doesn't like this, figure out a way to do it server-side */
     return new Promise(function (resolve, reject) {
-        AJAX.get(
-            'http://query.yahooapis.com/v1/public/yql?q=' + cors_query + '&format=json&callback=?',
-            {},
-            function (response) {
-                if (response.query.results.json.found > 0) {
-                    let response_entries = response.query.results.json['entries'];
+        AJAX.get('http://query.yahooapis.com/v1/public/yql?q=' + cors_query + '&format=json&callback=?', {}, function (response) {
+            if (response.query.results.json.found > 0) {
+                let response_entries = response.query.results.json['entries'];
 
-                    let output_feature = {
-                        'type': 'Feature',
-                        'geometry': {
-                            'type': 'Point',
-                            'coordinates': [response_entries['lng'], response_entries['lat']]
-                        },
-                        'properties': response_entries
-                    };
+                let output_feature = {
+                    'type': 'Feature', 'geometry': {
+                        'type': 'Point', 'coordinates': [response_entries['lng'], response_entries['lat']]
+                    }, 'properties': response_entries
+                };
 
-                    resolve(output_feature);
-                } else {
-                    reject(response);
-                }
-            },
-        );
+                resolve(output_feature);
+            } else {
+                reject(response);
+            }
+        },);
     });
 }
 
@@ -48,9 +41,8 @@ async function getAPRSGeoJSON(station_names) {
         await getAPRSPoint(station_name).then(function (feature) {
             features_geojson['features'].push(feature);
         }).catch(function (response) {
-                console.log('APRS API error: ' + response.query.results.json.found + ' results found on ' + response.query.created);
-            }
-        )
+            console.log('APRS API error: ' + response.query.results.json.found + ' results found on ' + response.query.created);
+        });
     }
 
     return features_geojson;
@@ -84,16 +76,13 @@ async function updateAPRSLayers(resize = true) {
 
         if (flight_aprs_geojson.features.length > 0) {
             let flight_aprs_point_layer = L.geoJSON(flight_aprs_geojson, {
-                'onEachFeature': popupFeaturePropertiesOnClick,
-                'pointToLayer': function (feature, latlng) {
+                'onEachFeature': popupFeaturePropertiesOnClick, 'pointToLayer': function (feature, latlng) {
                     return L.marker(latlng, {
                         icon: new L.Icon({
-                            iconSize: [33, 42],
-                            iconUrl: DATA_DIRECTORY + 'icons/balloon.png'
+                            iconSize: [33, 42], iconUrl: DATA_DIRECTORY + 'icons/balloon.png'
                         })
                     });
-                },
-                'attribution': '&copy; https://aprs.fi'
+                }, 'attribution': '&copy; https://aprs.fi'
             });
 
             if (flight_aprs_point_layer != null) {
@@ -113,16 +102,13 @@ async function updateAPRSLayers(resize = true) {
 
         if (ground_aprs_geojson.features.length > 0) {
             let ground_aprs_point_layer = L.geoJSON(ground_aprs_geojson, {
-                'onEachFeature': popupFeaturePropertiesOnClick,
-                'pointToLayer': function (feature, latlng) {
+                'onEachFeature': popupFeaturePropertiesOnClick, 'pointToLayer': function (feature, latlng) {
                     return L.marker(latlng, {
                         'icon': new L.Icon({
-                            'iconSize': [41, 20],
-                            'iconUrl': DATA_DIRECTORY + 'icons/van.png'
+                            'iconSize': [41, 20], 'iconUrl': DATA_DIRECTORY + 'icons/van.png'
                         })
                     });
-                },
-                'attribution': '&copy; https://aprs.fi'
+                }, 'attribution': '&copy; https://aprs.fi'
             });
 
             if (ground_aprs_point_layer != null) {

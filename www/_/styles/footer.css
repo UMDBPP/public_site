@@ -1,0 +1,23 @@
+footer #contact {
+    font-size:        20px;
+    font-weight:      bold;
+    display:          flex;
+    justify-content:  space-evenly;
+    padding:          2ch;
+    background-color: #ffd200;
+}
+
+footer #contact a {
+    text-decoration: none;
+    color:           black;
+}
+
+footer #copyright {
+    padding:          2ch;
+    text-align:       center;
+    letter-spacing:   0.3ch;
+    text-transform:   uppercase;
+    color:            white;
+    border-top:       0.3ch solid #e21833;
+    background-color: black;
+}

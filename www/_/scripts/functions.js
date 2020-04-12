@@ -11,8 +11,8 @@ String.prototype.replaceAll = function (search, replacement) {
 
 function featurePropertiesHTML(feature) {
     return JSON.stringify(feature.properties, function (key, value) {
-        return key !== 'fid' ? value : undefined
-    }, ' ').replace(/[{}]/g, '')
+        return key !== 'fid' ? value : undefined;
+    }, ' ').replace(/[{}]/g, '');
 }
 
 function popupFeaturePropertiesOnClick(feature, layer) {
@@ -80,7 +80,7 @@ L.Control.GroupedLayers.include({
 
         for (let layer_group of layer_groups) {
             if (active_layers[layer_group] == null) {
-                active_layers[layer_group] = {}
+                active_layers[layer_group] = {};
             }
         }
 
@@ -89,7 +89,7 @@ L.Control.GroupedLayers.include({
                 let layer_group = layer.group.name;
 
                 if (active_layers[layer_group] == null) {
-                    active_layers[layer_group] = {}
+                    active_layers[layer_group] = {};
                 }
 
                 active_layers[layer_group][layer.name] = layer.layer;
@@ -97,8 +97,7 @@ L.Control.GroupedLayers.include({
         }
 
         return active_layers;
-    },
-    'getOverlayLayers': function () {
+    }, 'getOverlayLayers': function () {
         let overlay_layer_names = {};
         let layers = this._layers;
 
@@ -107,7 +106,7 @@ L.Control.GroupedLayers.include({
                 let layer_group = layer.group.name;
 
                 if (!overlay_layer_names[layer_group]) {
-                    overlay_layer_names[layer_group] = {}
+                    overlay_layer_names[layer_group] = {};
                 }
 
                 overlay_layer_names[layer_group][layer.name] = layer.layer;
