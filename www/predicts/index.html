@@ -24,7 +24,7 @@
     <script src="../_/scripts/ajax.js"></script>
 </head>
 <body style="display: flex; flex-direction: column;">
-<section style="flex: 3; min-height: 92vh;">
+<section style="flex: 3; height: 100vh; max-height: 100vh;">
     <section style="flex: 1; display: flex; justify-content: space-between; flex-wrap: wrap;">
         <section style="display: flex; flex-grow: 3; justify-content: space-evenly;">
             <section style="display: flex; flex-wrap: wrap;">
@@ -61,7 +61,7 @@
             </button>
         </section>
     </section>
-    <section id="map" style="flex-grow: 1; min-height: 92vh;">
+    <section id="map" style="flex-grow: 1; height: 100vh; max-height: 100vh;">
         <script src="../_/scripts/functions.js"></script>
         <script src="../_/scripts/layers.js"></script>
         <script async src="predicts.js"></script>
@@ -90,5 +90,6 @@
     </section>
 </section>
 </body>
-<script async src="../_/scripts/add_header_and_footer.js"></script>
+<!-- TODO figure out how to add header on top of map container -->
+<!--<script async src="../_/scripts/add_header.js"></script>-->
 </html>
