@@ -20,11 +20,11 @@ body {
 }
 
 .content {
-    padding: 0 2ch;
+    padding: 0 1.5ch;
 }
 
 img {
-    max-width: 30%;
+    max-width: 100%;
 }
 
 .image_list {
@@ -33,9 +33,9 @@ img {
 }
 
 .image_list li {
-    font-size:      16px;
     display:        flex;
     flex-wrap:      wrap;
+    margin-left:    auto;
     padding-bottom: 1ch;
 }
 
@@ -45,12 +45,12 @@ img {
 }
 
 .image_list strong {
-    font-size:   22px;
+    font-size:   16pt;
     font-weight: bolder;
 }
 
 .image_list b {
-    font-weight: bolder;
+    font-weight: bold;
     color:       #e21833;
 }
 

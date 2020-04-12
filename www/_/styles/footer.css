@@ -1,15 +1,21 @@
 footer #contact {
-    font-size:        20px;
-    font-weight:      bold;
     display:          flex;
+    flex-wrap:        wrap;
     justify-content:  space-evenly;
-    padding:          2ch;
+    padding:          1ch 0;
+    text-align:       center;
     background-color: #ffd200;
 }
 
 footer #contact a {
+    flex:            1;
+    padding:         0 2ch;
     text-decoration: none;
     color:           black;
+}
+
+footer #contact a:hover {
+    color: #e21833;
 }
 
 footer #copyright {
