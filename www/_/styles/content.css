@@ -35,7 +35,6 @@ img {
 .image_list li {
     display:        flex;
     flex-wrap:      wrap;
-    margin-left:    auto;
     padding-bottom: 1ch;
 }
 
