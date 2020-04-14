@@ -8,10 +8,12 @@ body {
 }
 
 .title {
-    display:             flex;
-    flex-direction:      column;
     padding-top:         150px;
     padding-bottom:      200px;
+    text-align:          center;
+    vertical-align:      center;
+    letter-spacing:      0.3ch;
+    color:               white;
     background-color:    #ccc;
     background-image:    url(/_/images/flights/sun.jpg);
     background-repeat:   no-repeat;

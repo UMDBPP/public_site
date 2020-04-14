@@ -1,37 +1,82 @@
 header {
+    font-weight:      bold;
     z-index:          auto;
     display:          flex;
-    flex:             1;
-    flex-wrap:        wrap;
     justify-content:  space-between;
     padding:          2ch;
+    color:            white;
     border-bottom:    0.3ch solid #e21833;
     background-color: black;
 }
 
 header a {
-    font-weight:     bold;
-    flex:            1;
     text-decoration: none;
-    letter-spacing:  0.3ch;
+    letter-spacing:  0.1ch;
     color:           white;
 }
 
-header nav {
-    font-size:       14px;
-    font-weight:     bold;
-    display:         flex;
-    flex:            1;
-    flex-wrap:       wrap;
-    justify-content: space-between;
+nav {
+    display: flex;
 }
 
-header nav a {
-    text-decoration: none;
-    letter-spacing:  0.3ch;
-    color:           white;
-}
-
-header nav a:hover {
+nav a:hover {
     color: #e21833;
+}
+
+@media (max-width: 60em) {
+    .dropdown {
+        flex-direction: column;
+    }
+
+    .dropdown .dropdown_button {
+        font-family:      inherit;
+        font-size:        inherit;
+        font-weight:      inherit;
+        z-index:          2;
+        color:            white;
+        border:           none;
+        outline:          none;
+        background-color: inherit;
+    }
+
+    .dropdown:hover .dropdown_button {
+        position: absolute;
+    }
+
+    .dropdown_content {
+        display: none;
+    }
+
+    .dropdown:hover .dropdown_content {
+        position:         relative;
+        z-index:          10;
+        display:          flex;
+        flex-direction:   column;
+        min-width:        10ch;
+        background-color: #f9f9f9;
+        box-shadow:       0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .dropdown_content a {
+        text-decoration: none;
+        color:           black;
+    }
+
+    .dropdown_content a:hover {
+        background-color: #ddd;
+    }
+}
+
+@media (min-width: 60em) {
+    .dropdown {
+        flex-wrap: wrap;
+    }
+
+    .dropdown .dropdown_button {
+        display: none;
+    }
+
+    nav a {
+        margin-left: 1ch;
+    }
 }
