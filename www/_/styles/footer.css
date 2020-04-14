@@ -1,5 +1,6 @@
 footer #contact {
     display:          flex;
+    flex:             1;
     flex-wrap:        wrap;
     justify-content:  space-evenly;
     padding:          1ch 0;

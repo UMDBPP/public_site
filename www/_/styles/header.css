@@ -2,6 +2,7 @@ header {
     font-weight:      bold;
     z-index:          auto;
     display:          flex;
+    flex:             1;
     flex-wrap:        wrap;
     justify-content:  space-between;
     padding:          2ch;
