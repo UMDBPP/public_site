@@ -22,7 +22,7 @@ body {
     background-size:     cover;
 }
 
-.content {
+.text {
     flex:    2;
     padding: 0 1ch;
 }
