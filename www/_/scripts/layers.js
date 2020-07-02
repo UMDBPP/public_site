@@ -4,8 +4,13 @@ let BASE_LAYERS = {
     'Esri Topography': L.tileLayer.provider('Esri.WorldTopoMap'),
     'Esri Road': L.tileLayer.provider('Esri.WorldStreetMap'),
     'Esri Gray': L.tileLayer.provider('Esri.WorldGrayCanvas'),
-    'Esri Imagery': L.tileLayer.provider('Esri.WorldImagery')
+    'Esri Imagery': L.tileLayer.provider('Esri.WorldImagery'),
+    'maritime chart': L.tileLayer('https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png', {transparent: true})
 };
+
+BASE_LAYERS['maritime chart'].on('add', function (event) {
+    event.target._mapToAdd.addLayer(BASE_LAYERS['Esri Gray']);
+});
 
 /* asynchronously load polygons of controlled airspace from GeoJSON file */
 let CONTROLLED_AIRSPACE_LAYER = L.geoJson.ajax(DATA_DIRECTORY + 'controlled_airspace.geojson', {
@@ -28,7 +33,7 @@ let CONTROLLED_AIRSPACE_LAYER = L.geoJson.ajax(DATA_DIRECTORY + 'controlled_airs
 /* asynchronously load polygons of uncontrolled airspace from GeoJSON file */
 let UNCONTROLLED_AIRSPACE_LAYER = L.geoJson.ajax(DATA_DIRECTORY + 'uncontrolled_airspace.geojson', {
     'onEachFeature': popupFeaturePropertiesOnClick, 'style': function (feature) {
-        return {'color': '#6F1E51', 'dashArray': '4'};
+        return {'color': '#6f1e51', 'dashArray': '4'};
     }, 'attribution': 'Airspace &copy; FAA'
 });
 
@@ -41,7 +46,7 @@ let LAUNCH_LOCATIONS_LAYER = L.geoJson.ajax(DATA_DIRECTORY + 'launch_locations.g
 let MCDONALDS_LOCATIONS_LAYER = L.geoJson.ajax(DATA_DIRECTORY + 'mcdonalds_locations.geojson', {
     'onEachFeature': popupFeaturePropertiesOnClick, 'pointToLayer': function (feature, latlng) {
         return L.circleMarker(latlng, {
-            'radius': 4, 'fillColor': '#EE5A24', 'color': '#000000', 'weight': 1, 'opacity': 1, 'fillOpacity': 0.8
+            'radius': 4, 'fillColor': '#ee5a24', 'color': '#000', 'weight': 1, 'opacity': 1, 'fillOpacity': 0.8
         });
     }
 });
@@ -55,7 +60,7 @@ let OVERLAY_LAYERS = {
 
 /* add Leaflet map to 'map' div with grouped layer control */
 let MAP = L.map('map', {
-    'layers': [BASE_LAYERS['Esri Topography']], 'zoomSnap': 0, 'zoomControl': false
+    'layers': [BASE_LAYERS['Esri Topography']], 'zoomSnap': 0, 'zoomControl': false, 'touchZoom': true, dragging: true
 });
 MAP.on('layeradd', sinkReferenceLayers);
 MAP.addControl(L.control.scale());
