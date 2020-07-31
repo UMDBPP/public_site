@@ -34,19 +34,19 @@
         <section>
             <label for="ascent_rate">Ascent Rate (m/s)</label>
 
-            <input id="ascent_rate" onchange="updatePredictLayers()" style="width: 4ch;" title="expected average ascent rate" type="number" value="5.5">
+            <input id="ascent_rate" onchange="updatePredictLayers()" style="width: 6ch;" title="expected average ascent rate" type="number" value="5.5">
         </section>
         <section>
             <label for="burst_altitude">Burst Altitude (m)</label>
 
-            <input id="burst_altitude" onchange="updatePredictLayers()" style="width: 5ch;" title="expected burst altitude" type="number" value="28000">
+            <input id="burst_altitude" onchange="updatePredictLayers()" style="width: 8ch;" title="expected burst altitude" type="number" value="28000">
         </section>
         <section>
             <label for="sea_level_descent_rate">S.L. Descent Rate (m/s)</label>
 
-            <input id="sea_level_descent_rate" onchange="updatePredictLayers()" style="width: 4ch;" title="expected descent rate (at sea level)" type="number" value="9">
+            <input id="sea_level_descent_rate" onchange="updatePredictLayers()" style="width: 6ch;" title="expected descent rate (at sea level)" type="number" value="9">
         </section>
-        <button id="reload_APRS_button" onclick="updatePredictLayers()">Reload</button>
+        <button id="reload_APRS_button" onclick="updatePredictLayers()">Calculate</button>
     </section>
     <section style="flex-grow: 1;">
         Resize:
