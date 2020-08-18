@@ -43,7 +43,7 @@ const AJAX = {
         };
 
         if (method === 'POST') {
-            xml_http_request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xml_http_request.setRequestHeader('Content-type', 'application/x-docs-form-urlencoded');
         }
 
         xml_http_request.send(data);

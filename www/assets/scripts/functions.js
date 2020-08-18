@@ -20,7 +20,7 @@ function popupFeaturePropertiesOnClick(feature, layer) {
 }
 
 function highlightFeature(feature) {
-    feature.setStyle({'color': '#12CBC4', 'weight': feature.options.weight + 3});
+    feature.setStyle({'color': '#12cbc4', 'weight': feature.options.weight + 3});
     feature.bringToFront();
 }
 

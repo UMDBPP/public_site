@@ -21,7 +21,7 @@ body {
     letter-spacing:      0.3ch;
     color:               white;
     background-color:    #ccc;
-    background-image:    url(/_/images/flights/sun.jpg);
+    background-image:    url(../images/flights/sun.jpg);
     background-repeat:   no-repeat;
     background-position: center;
     background-size:     cover;
