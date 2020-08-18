@@ -1,0 +1,6 @@
+[submodule "www/assets/scripts/leaflet-groupedlayercontrol"]
+	path = www/assets/scripts/leaflet-groupedlayercontrol
+	url = https://github.com/AcrossTheCloud/leaflet-groupedlayercontrol.git
+[submodule "www/assets/scripts/tokml"]
+	path = www/assets/scripts/tokml
+	url = https://github.com/mapbox/tokml.git
