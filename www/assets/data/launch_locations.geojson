@@ -29,6 +29,24 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "Mt. Airy Elementary School",
+        "phone": 4107513540,
+        "address": "405 N Main St, Mt Airy, MD 21771",
+        "url": "<a href='https:\/\/www.carrollk12.org\/schools\/elementary\/mae\/Pages\/default.aspx'>link<\/a>",
+        "x": -77.14878,
+        "y": 39.389586
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.14878,
+          39.389586
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "Harpers Ferry Middle School",
         "phone": 3045356357,
         "address": "1710 West Washington Street, Harpers Ferry, WV 25425",
