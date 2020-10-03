@@ -4,3 +4,6 @@
 [submodule "www/assets/scripts/tokml"]
 	path = www/assets/scripts/tokml
 	url = https://github.com/mapbox/tokml.git
+[submodule "www/predicts"]
+	path = www/predicts
+	url = https://github.com/zacharyburnett/BalloonPredictionMap.git
