@@ -1,3 +1,16 @@
-.idea
-node_modules
-www/_/scripts/api_keys.js
+# Web server configuration files
+nearspace/.htaccess
+nearspace/robots.txt
+
+# Image and other assets
+nearspace/assets/images/launch/*
+nearspace/assets/images/payloads/*
+nearspace/assets/news/*
+
+# Other pages
+nearspace/archives
+nearspace/_h5ai
+nearspace/develop
+
+# Legacy page, to be removed after optimizing and improving the new predicts map
+nearspace/legacy_predicts

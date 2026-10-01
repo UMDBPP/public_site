@@ -1,4 +1,6 @@
-[submodule "www/scripts/leaflet-groupedlayercontrol"]
-	path = www/scripts/leaflet-groupedlayercontrol
-	url = https://github.com/AcrossTheCloud/leaflet-groupedlayercontrol.git
-	branch = gh-pages
+[submodule "nearspace/predicts/BalloonPredictionMap"]
+	path = nearspace/predicts/BalloonPredictionMap
+	url = https://github.com/UMDBPP/BalloonPredictionMap
+[submodule "nearspace/flights/BalloonFlightsMap"]
+	path = nearspace/flights/BalloonFlightsMap
+	url = https://github.com/UMDBPP/BalloonFlightsMap

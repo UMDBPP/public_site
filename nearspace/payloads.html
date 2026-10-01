@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta name="color-scheme" content="dark light" />
+    <!--#comment
+        TODO: add meta description element
+    -->
+    <base href="./">
+
+    <link href="assets/images/favicon.png" rel="shortcut icon" type="image/png">
+    <title>BPP - Payloads</title>
+    
+    <script src="assets/scripts/gallery_funcs.js" onload="init_galleries();"></script>
+    
+    <link href="assets/styles/content.css" rel="stylesheet" type="text/css">
+    <link href="assets/styles/header.css" rel="stylesheet" type="text/css">
+    <link href="assets/styles/footer.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<!--#include virtual="assets/header.html" -->
+<main class="payloads_page">
+<section class="flex_content" style="/*display: flex;*/">
+    <article class="main_content" style="flex: 1;/*padding-right: 0;*/">
+        <h1>Payloads</h1>
+        <p class="text">
+            At any given time in the program, a number of payloads are in various stages of preparation for future flights.
+            
+            The payloads we fly range from sentimental items flown to near-space or simple sensor-in-a-box type payloads to complex locomotive payloads with several moving parts, payloads 
+            with radio transceivers powerful enough to stream data from the balloon in-flight, and everything in between.
+            
+            <!-- Effectively, almost any kind of payload 
+            less than 2-3 pounds (&gt;1.3 kg) can be flown with us, provided that it passes the relevant FAA regulations, our own payload regulations, and our internal design reviews and 
+            flight-readiness checks. -->
+        </p>
+    </article>
+    <article class="main_content" style="flex: 3;">
+        <h2 class="section_header">Active Payloads</h2>
+        <p class="text">
+            These payloads are currently being developed or are regular occurrences on flights. They will likely be flying on upcoming flights.
+        </p>
+        <div class="gallery payloads active"><span style="grid-column: 1/-1;">Loading payload gallery...</span></div>
+    </article>
+</section>
+<section class="main_content">
+    <h2 class="section_header">Inactive Payloads</h2>
+    <p class="text">
+        This is a selection of payloads that have completed their intended scientific / engineering goals, no longer have an active team to work on them, or 
+        are otherwise no longer flying for one reason or another.
+    </p>
+    <div class="gallery payloads inactive small"><span style="grid-column: 1/-1;">Loading payload gallery...</span></div>
+</section>
+</main>
+<!--#include virtual="assets/footer.html" -->
+<script>create_sheet_controlled_galleries();</script>
+<script type="module" src="assets/scripts/gallery_starter.js"></script>
+</body>
+</html>
