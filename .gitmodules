@@ -1,9 +1,6 @@
-[submodule "www/assets/scripts/leaflet-groupedlayercontrol"]
-	path = www/assets/scripts/leaflet-groupedlayercontrol
-	url = https://github.com/AcrossTheCloud/leaflet-groupedlayercontrol.git
-[submodule "www/assets/scripts/tokml"]
-	path = www/assets/scripts/tokml
-	url = https://github.com/mapbox/tokml.git
-[submodule "www/predicts"]
-	path = www/predicts
-	url = https://github.com/zacharyburnett/BalloonPredictionMap.git
+[submodule "nearspace/predicts/BalloonPredictionMap"]
+	path = nearspace/predicts/BalloonPredictionMap
+	url = https://github.com/UMDBPP/BalloonPredictionMap
+[submodule "nearspace/flights/BalloonFlightsMap"]
+	path = nearspace/flights/BalloonFlightsMap
+	url = https://github.com/UMDBPP/BalloonFlightsMap

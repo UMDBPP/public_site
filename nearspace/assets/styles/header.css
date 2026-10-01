@@ -1,0 +1,143 @@
+header {
+    position:         fixed;
+    width:            100%;
+    height:           3em; /* <-- Header height */
+    display:          flex;
+    flex-wrap:        wrap;
+    /* align-items:      center; */
+    justify-content:  space-between;
+    z-index:          99;
+
+    border-bottom:    0.3ch solid #e21833;
+    box-sizing:       unset; /* <-- unset to align border with flyout menu border */
+
+    background-color: black;
+
+    /* font-size:        clamp(8pt, 3vw, 1em); */
+    font-weight:      bold;
+    color:            white;
+}
+
+header a {
+    padding:         0;
+
+    text-decoration: none;
+    letter-spacing:  0.1ch;
+    color:           white;
+}
+
+header a:hover {
+    color: #e21833;
+}
+
+header a:has(img):has(span) {
+    display:         flex;
+    align-items:     center;
+    height:          100%;
+    padding:         0;
+
+    /* border-bottom:   inherit; */
+}
+
+header a img {
+    max-height:      100%;
+    padding-left:    0.5em;
+    padding-right:   0.5em;
+}
+
+@media (min-width: 600px) {
+    header > a > span {
+        display:  inherit;
+    }
+    header > a > span.short {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    header > a > span {
+        display:  none;
+    }
+    header > a > span.short {
+        display: inherit;
+    }
+}
+
+.flyout {
+    padding:         1em;
+}
+
+.flyout_content a {
+    text-decoration: none;
+    text-align:      right;
+}
+
+
+/* Set options for when the viewport is wide enough to show the flyout links */
+@media (min-width: 1600px) {
+    .flyout button {
+        display: none;
+    }
+
+    .flyout {
+        display:   flex;
+        flex-wrap: wrap;
+    }
+
+    .flyout a {
+        margin-left: 1ch;
+    }
+}
+
+
+/* Set options for when the viewport is too small
+    and the flyout links are collapsed into a menu */
+@media (max-width: 1600px) {
+    .flyout button {
+        position:         relative;
+        padding:          0;
+
+        border:           none;
+
+        background-color: inherit;
+
+        font-family:      inherit;
+        font-size:        inherit;
+        font-weight:      inherit;
+        color:            #ffffff;
+    }
+
+    .flyout:hover button {
+        color: #e21833;
+    }
+
+    .flyout:hover .flyout_content {
+        visibility: visible;
+    }
+
+    .flyout_content {
+        position:         absolute;
+        right:            0;
+        top:              0;
+        z-index:          99;
+        visibility:       hidden;
+        min-width:        10ch;
+        margin-top:       3em; /* <-- Set to header height */
+
+        border:           0.3ch solid #e21833;
+        border-top-style: dotted;
+
+        background-color: #000000;
+
+        box-shadow:       0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .flyout_content a {
+        display:         block;
+        padding:          1ch;
+    }
+
+    .flyout_content a:hover {
+        background-color: #ffffff;
+    }
+}

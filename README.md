@@ -1,6 +1,6 @@
 # public_site
 Public facing info website for BPP
 
-located at http://nearspace.umd.edu
+located at http://bpp.umd.edu
 
-staging is at http://nearspace.umd.edu/develop
+staging is at http://bpp.umd.edu/develop

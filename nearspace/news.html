@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta name="color-scheme" content="dark light" />
+    <!--#comment
+        TODO: add meta description element
+    -->
+    <base href="./">
+
+    <link href="assets/images/favicon.png" rel="shortcut icon" type="image/png">
+    <title>BPP - News</title>
+    
+    <link href="assets/styles/content.css" rel="stylesheet" type="text/css">
+    <link href="assets/styles/header.css" rel="stylesheet" type="text/css">
+    <link href="assets/styles/footer.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<!--#include virtual="assets/header.html" -->
+<main class="main_content dark_content">
+<div id="news_header">
+    <h2>
+        BPP Newsletters
+    </h2>
+    <h3 id="current_news_name">
+        2026-04-01 19:10 - Nearspace Newsletter 02
+    </h3>
+</div>
+<div id="news_container">
+    <object id="news_embed" data="assets/news/Newsletters/20260401_Nearspace_Newsletter_02.pdf" type="application/pdf">
+        <p>Unable to display PDF file. <a href="assets/news/Newsletters/20260401_Nearspace_Newsletter_02.pdf">Download</a> instead.</p>
+    </object>
+    <menu id="news_menu">
+        <p>Loading news archive...</p>
+        <!-- <details>
+            <summary>Nearspace Newsletter</summary>
+        </details>
+        <details>
+            <summary>Launch Email Archives (2018-Present)</summary>
+        </details>
+        <details>
+            <summary>PR Email Archives (2015-2017)</summary>
+        </details> -->
+    </menu>
+</div>
+</main>
+<!--#include virtual="assets/footer.html" -->
+<script>
+    // This code is basically just the create_sheet_controlled_galleries function from assets/scripts/gallery_funcs.js
+    // But for generating the news menu instead of a gallery
+
+    // Get the base element to store the menu in
+    let news_menu_element = document.querySelector("#news_menu");
+
+    // Not the ID of the editable spreadsheet. The one for the published sheets
+    const sheet_public_id = "2PACX-1vQIacXD50Gp2CT76XQ1yXGBNeaNFfVvER0UmjuP6kvQeyZkX8v45TRLX0Uyobu8yPVcfvgwBrWkhUL7";
+    // URL to fetch from. Append sheet GID to end to get that sheet
+    const sheet_url = "https://docs.google.com/spreadsheets/d/e/" + sheet_public_id + "/pub?output=csv&gid=";
+    // GID of the sheet
+    const news_gid = "458999710";
+
+    // Declare common variables used below
+    import("https://unpkg.com/csv-parse@5.6.0/dist/esm/sync.js").then(async (csv_parse) => {
+        
+        let response, sheet_csv, sheet_row, Newsletters_html, Emails_html, PR_Email_Archives_html, tmp_html;
+        try {
+            // Fetch the CSV of the sheet
+            response = await fetch(sheet_url + news_gid);
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+
+            // Parse the fetch response into an array of objects
+            sheet_csv = csv_parse.parse(await response.text(), {
+                columns: true,
+                skip_empty_lines: true
+            });
+
+            // Initialize the HTML for each news group
+            Newsletters_html = `<details open=""><summary>Nearspace Newsletter</summary>`;
+            Emails_html = `<details><summary>Launch Email Archives (2018-Present)</summary>`;
+            PR_Email_Archives_html = `<details><summary>PR Email Archives (2015-2017)</summary>`;
+
+            for(let row_idx = 0, row_count = sheet_csv.length; row_idx < row_count; row_idx++){
+                sheet_row = sheet_csv[row_idx];
+                
+                tmp_html = `<li>
+                    <button class="news_selector_button" data-path="` + sheet_row["Filename"] + `" data-group="` + sheet_row["Group"] + `">` + sheet_row["Timestamp"] + ` - ` + sheet_row["Name"] + `</button>
+                </li>`;
+
+                if(sheet_row["Group"] === "Newsletters"){
+                    Newsletters_html += tmp_html;
+                } else if(sheet_row["Group"] === "Emails"){
+                    Emails_html += tmp_html;
+                } else if(sheet_row["Group"] === "PR_Email_Archives"){
+                    PR_Email_Archives_html += tmp_html;
+                }
+
+            }
+
+            Newsletters_html += `</details>`;
+            Emails_html += `</details>`;
+            PR_Email_Archives_html += `</details>`;
+
+            news_menu_element.innerHTML = Newsletters_html + Emails_html + PR_Email_Archives_html;
+
+            const news_embed_obj = document.getElementById("news_embed");
+            const news_buttons = document.querySelectorAll("details button");
+            const base_path = "assets/news/";
+            const current_news_label = document.getElementById("current_news_name");
+
+            news_buttons.forEach(clicked_button => {
+                clicked_button.addEventListener("click", (event) => {
+                    news_embed_obj.data = base_path + clicked_button.dataset.group + `/` + clicked_button.dataset.path;
+                    news_embed_obj.children[0].children[0].href = base_path + clicked_button.dataset.group + `/` + clicked_button.dataset.path;
+                    current_news_label.textContent = clicked_button.textContent;
+                });
+            });
+
+        } catch(error) {
+            console.error(error.message);
+        }
+    });
+</script>
+</body>
+</html>
